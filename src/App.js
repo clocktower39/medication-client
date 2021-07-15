@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+import { Container, makeStyles } from '@material-ui/core';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Home from './Components/Home'
 import './App.css';
 
+const useStyles = makeStyles({
+  root: {
+    height: '100%',
+    backgroundColor: '#2C2F33',
+  }
+});
+
 function App() {
+  const classes = useStyles();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container className={classes.root} maxWidth="sm">
+      <Router basename="/Medication-Tracking-System/">
+        <Switch>
+          <Route exact path="/"><Home /></Route>
+          <Route exact path="/enroll"><>Enroll</></Route>
+          <Route exact path="/profile"><>Profile</></Route>
+        </Switch>
+      </Router>
+    </Container>
   );
 }
 
