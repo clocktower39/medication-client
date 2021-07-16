@@ -1,6 +1,7 @@
 import { ERROR } from './actions';
+import { agent } from './states'
 
-export let reducer = (state = { }, action) => {
+export let reducer = (state = { agent }, action) => {
     switch(action.type){
         case ERROR:
             return {

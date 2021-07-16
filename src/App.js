@@ -1,6 +1,6 @@
 import { Container, makeStyles } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Home from './Components/Home'
+import Home from './Components/Home';
 import './App.css';
 
 const useStyles = makeStyles({
@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 function App() {
   const classes = useStyles();
   return (
-    <Container className={classes.root} maxWidth="sm">
+    <Container className={classes.root} maxWidth="lg">
       <Router basename="/Medication-Tracking-System/">
         <Switch>
           <Route exact path="/"><Home /></Route>
