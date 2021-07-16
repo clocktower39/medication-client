@@ -2,6 +2,9 @@ import { Container, makeStyles } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Components/Home';
 import Navbar from './Components/Navbar';
+import Search from './Components/Search';
+import EnrollContainer from './Components/Enroll/EnrollContainer';
+import ProfileContainer from './Components/Profile/ProfileContainer';
 import './App.css';
 
 const useStyles = makeStyles({
@@ -19,8 +22,9 @@ function App() {
         <Navbar />
         <Switch>
           <Route exact path="/"><Home /></Route>
-          <Route exact path="/enroll"><>Enroll</></Route>
-          <Route exact path="/profile"><>Profile</></Route>
+          <Route exact path="/search"><Search/></Route>
+          <Route exact path="/enroll"><EnrollContainer/></Route>
+          <Route exact path="/profile"><ProfileContainer/></Route>
         </Switch>
       </Router>
     </Container>

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// MUI stuff
 import { AppBar, Button, Toolbar } from '@material-ui/core';
-// Icons
 import { Home, Search, Create } from '@material-ui/icons';
 
 export default function Navbar() {

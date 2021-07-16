@@ -56,15 +56,15 @@ export default function Home() {
             <List className={classes.PinnedRoot} subheader={<li />} >
                 <ListSubheader className={classes.li}>Schedule</ListSubheader>
                 {props.breakdown.map( scheduleSection => (
-                    <ListItem>
+                    <ListItem key={scheduleSection.start}>
                         <ListItemText primary={`${scheduleSection.start} - ${scheduleSection.end}: `} className={classes.liTimes} />
                         <ListItemText primary={`${scheduleSection.task}`} className={classes.liTimes} />
                     </ListItem>
                 ))}
                 <br />
                 <ListSubheader className={classes.li}>Weekly Projects</ListSubheader>
-                {agent.schedule.weeklyProjects.map(project=>(
-                    <ListItem>
+                {agent.schedule.weeklyProjects.map((project)=>(
+                    <ListItem key={project}>
                         <ListItemText primary={project} className={classes.liTimes} />
                     </ListItem>
                 ))}
@@ -75,10 +75,10 @@ export default function Home() {
     return (
         <div className={classes.root}>
             <Typography variant="h4" align="center" className={classes.Typography} >Welcome {agent.username}!</Typography>
-            <Grid container spacing={1} justify="center" alignItems="center">
-                <Grid container item xs={12} spacing={3} justify="center" alignItems="center">
+            <Grid container spacing={1} justifyContent="center" alignItems="center">
+                <Grid container item xs={12} spacing={3} justifyContent="center" alignItems="center">
                     {agent.schedule.week.map(day => (
-                        <Grid item >
+                        <Grid item key={day.day} >
                             <Paper className={classes.paper}>{day.day}</Paper>
                             <PinnedSubheaderList breakdown={day.breakdown}/>
                         </Grid>
