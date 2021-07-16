@@ -1,6 +1,7 @@
 import { Container, makeStyles } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Components/Home';
+import Navbar from './Components/Navbar';
 import './App.css';
 
 const useStyles = makeStyles({
@@ -15,6 +16,7 @@ function App() {
   return (
     <Container className={classes.root} maxWidth="lg">
       <Router basename="/Medication-Tracking-System/">
+        <Navbar />
         <Switch>
           <Route exact path="/"><Home /></Route>
           <Route exact path="/enroll"><>Enroll</></Route>
