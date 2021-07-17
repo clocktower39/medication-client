@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Link, StepLabel, Paper, Stepper, Step, Typography, makeStyles } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Review from './Review';
 import AddressForm from './AddressForm';
 import PrescriberDemographics from './PrescriberDemographics';
 
@@ -42,16 +43,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ['Personal Information', 'Address', 'Review your order'];
+const steps = ['Personal Information', 'Address', 'Review enrollment information'];
 
-function getStepContent(step) {
+function getStepContent(step, page1, page2) {
   switch (step) {
     case 0:
-      return <PrescriberDemographics />;
+      return <PrescriberDemographics values={page1.values} setters={page1.setters} />;
     case 1:
-      return <AddressForm />;
+      return <AddressForm values={page2.values} setters={page2.setters} />;
     case 2:
-      return <>Nothin</>;
+      return <Review />;
     default:
       throw new Error('Unknown step');
   }
@@ -72,7 +73,31 @@ function Copyright() {
 
 export default function PrescriberEnrollmentForm() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [faxNumber, setFaxNumber] = useState('');
+  const [npiNumber, setNpiNumber] = useState('');
+  const [deaNumber, setDeaNumber] = useState('');
+  
+  const [practiceName, setPracticeName] = useState('');
+  const [address1, setAddress1] = useState('');
+  const [address2, setAddress2] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zip, setZip] = useState('');
+  const [country, setCountry] = useState('');
+
+  const page1 = {
+    values:[firstName,lastName,phoneNumber,faxNumber,npiNumber,deaNumber],
+    setters:[setFirstName, setLastName, setPhoneNumber, setFaxNumber, setNpiNumber, setDeaNumber]
+  }
+  const page2 = {
+    values:[practiceName, address1, address2, city, state, zip, country],
+    setters:[setPracticeName, setAddress1, setAddress2, setCity, setState, setZip, setCountry]
+  }
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -110,7 +135,7 @@ export default function PrescriberEnrollmentForm() {
               </>
             ) : (
               <>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep, page1, page2)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} className={classes.button}>

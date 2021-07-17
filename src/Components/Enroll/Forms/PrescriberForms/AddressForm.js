@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
-export default function AddressForm() {
+export default function AddressForm(props) {
   return (
     <>
       <Grid container spacing={3}>
@@ -14,6 +14,8 @@ export default function AddressForm() {
             name="practiceName"
             label="Practice Name"
             fullWidth
+            value={props.values[0]}
+            onChange={(e)=>props.setters[0](e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -24,6 +26,8 @@ export default function AddressForm() {
             label="Address line 1"
             fullWidth
             autoComplete="shipping address-line1"
+            value={props.values[1]}
+            onChange={(e)=>props.setters[1](e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -33,6 +37,8 @@ export default function AddressForm() {
             label="Address line 2"
             fullWidth
             autoComplete="shipping address-line2"
+            value={props.values[2]}
+            onChange={(e)=>props.setters[2](e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -42,11 +48,14 @@ export default function AddressForm() {
             name="city"
             label="City"
             fullWidth
-            autoComplete="shipping address-level2"
+            value={props.values[3]}
+            onChange={(e)=>props.setters[3](e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField id="state" name="state" label="State/Province/Region" fullWidth />
+          <TextField id="state" name="state" label="State/Province/Region" fullWidth 
+            value={props.values[4]}
+            onChange={(e)=>props.setters[4](e.target.value)}/>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -56,6 +65,8 @@ export default function AddressForm() {
             label="Zip / Postal code"
             fullWidth
             autoComplete="shipping postal-code"
+            value={props.values[5]}
+            onChange={(e)=>props.setters[5](e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -66,6 +77,8 @@ export default function AddressForm() {
             label="Country"
             fullWidth
             autoComplete="shipping country"
+            value={props.values[6]}
+            onChange={(e)=>props.setters[6](e.target.value)}
           />
         </Grid>
       </Grid>
