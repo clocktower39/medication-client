@@ -1,14 +1,8 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { Button, Link, StepLabel, Paper, Stepper, Step, Typography, makeStyles } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
 import AddressForm from './AddressForm';
+import PrescriberDemographics from './PrescriberDemographics';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,20 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ['Demographics', 'Payment details', 'Review your order'];
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <>Nothin</>;
-    case 2:
-      return <>Nothin</>;
-    default:
-      throw new Error('Unknown step');
-  }
-}
+const steps = ['Personal Information', 'Address', 'Review your order'];
 
 function Copyright() {
   return (
@@ -78,7 +59,22 @@ function Copyright() {
 
 export default function PrescriberEnrollmentForm() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [faxNumber, setFaxNumber] = useState('');
+  const [npiNumber, setNpiNumber] = useState('');
+  const [deaNumber, setDeaNumber] = useState('');
+  
+  const [practiceName, setPracticeName] = useState('');
+  const [address1, setAddress1] = useState('');
+  const [address2, setAddress2] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zip, setZip] = useState('');
+  const [country, setCountry] = useState('');
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -107,16 +103,22 @@ export default function PrescriberEnrollmentForm() {
             {activeStep === steps.length ? (
               <>
                 <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order confirmation, and will
-                  send you an update when your order has shipped.
+                  Presciber successfully enrolled
                 </Typography>
               </>
             ) : (
               <>
-                {getStepContent(activeStep)}
+                {()=>{
+                  switch (activeStep) {
+                  case 0:
+                    return <PrescriberDemographics firstName={firstName}/>;
+                  case 1:
+                    return <AddressForm />;
+                  case 2:
+                    return <>Nothin</>;
+                  default:
+                    throw new Error('Unknown step');
+                }}}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} className={classes.button}>
