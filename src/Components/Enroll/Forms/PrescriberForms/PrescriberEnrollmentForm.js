@@ -79,6 +79,10 @@ export default function PrescriberEnrollmentForm() {
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
+  
+  const handleChange = (e, setter) => {
+    setter(e.target.value);
+  }
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
@@ -111,7 +115,7 @@ export default function PrescriberEnrollmentForm() {
                 {()=>{
                   switch (activeStep) {
                   case 0:
-                    return <PrescriberDemographics firstName={firstName}/>;
+                    return <PrescriberDemographics firstName={[firstName,setFirstName]} lastName={[]} faxNumber={[]} phoneNumber={[]} handleChange={handleChange}/>
                   case 1:
                     return <AddressForm />;
                   case 2:
