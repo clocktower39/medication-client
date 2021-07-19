@@ -52,7 +52,7 @@ function getStepContent(step, page1, page2) {
     case 1:
       return <AddressForm values={page2.values} setters={page2.setters} />;
     case 2:
-      return <Review />;
+      return <Review values={[...page1.values, ...page2.values]} />;
     default:
       throw new Error('Unknown step');
   }

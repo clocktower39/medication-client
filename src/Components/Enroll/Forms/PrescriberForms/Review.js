@@ -4,21 +4,10 @@ import { Grid, Typography } from '@material-ui/core/';
 export default function Review(props) {
     return (
         <Grid container spacing={3}>
-          <Grid item xs={12}>
-              <Typography variant="body1">test</Typography>
-          </Grid>
-          <Grid item xs={12}>
-          </Grid>
-          <Grid item xs={12}>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-          </Grid>
+            {props.values.map((value) => (
+            <Grid item md={4} sm={6} xs={12}>
+                <Typography variant="body1">{value}</Typography>
+            </Grid>))}
         </Grid>
     )
 }
