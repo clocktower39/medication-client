@@ -81,6 +81,7 @@ export default function PrescriberEnrollmentForm() {
   const [faxNumber, setFaxNumber] = useState('');
   const [npiNumber, setNpiNumber] = useState('');
   const [deaNumber, setDeaNumber] = useState('');
+  const [email, setEmail] = useState('');
   
   const [practiceName, setPracticeName] = useState('');
   const [address1, setAddress1] = useState('');
@@ -91,8 +92,8 @@ export default function PrescriberEnrollmentForm() {
   const [country, setCountry] = useState('');
 
   const page1 = {
-    values:[firstName,lastName,phoneNumber,faxNumber,npiNumber,deaNumber],
-    setters:[setFirstName, setLastName, setPhoneNumber, setFaxNumber, setNpiNumber, setDeaNumber]
+    values:[firstName,lastName,phoneNumber,faxNumber,npiNumber,deaNumber, email],
+    setters:[setFirstName, setLastName, setPhoneNumber, setFaxNumber, setNpiNumber, setDeaNumber, setEmail]
   }
   const page2 = {
     values:[practiceName, address1, address2, city, state, zip, country],
