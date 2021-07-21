@@ -18,20 +18,29 @@ export default function PrescriberSearch(props) {
     }
 
     const handleSearch = () => {
-        const params = JSON.stringify({
-            // firstName,
-            lastName
-            // phoneNumber,
-            // faxNumber,
-            // email,
-            // npiNumber,
-            // deaNumber,
-            // zip
-        });
+        const params = {
+            firstName,
+            lastName,
+            phoneNumber,
+            faxNumber,
+            email,
+            npiNumber,
+            deaNumber,
+            zip
+        };
+        // convert params into an array so we can filter
+        const asArray = Object.entries(params);
+
+        //filter the converted params array to remove unnecessary fields
+        const notEmpty = asArray.filter(([key, value]) => value !== '');
+
+        // convert back into an object
+        const filteredParams = Object.fromEntries(notEmpty);
+        
         fetch('http://localhost:5518/searchPrescribers', {
             method: 'post',
             dataType: 'json',
-            body: params,
+            body: JSON.stringify(filteredParams),
             headers: {
               "Content-type": "application/json; charset=UTF-8"
             }
@@ -70,7 +79,7 @@ export default function PrescriberSearch(props) {
                 <Button variant="contained" onClick={handleSearch} >Search</Button>
             </Grid>
             
-            {searchResults?searchResults.map(result => (<Grid item xs={12}>{result.firstName} {result.lastName}</Grid>)):<></>}
+            {searchResults?searchResults.map((result, index) => (<Grid key={result._id} item xs={12}>{result.firstName} {result.lastName}</Grid>)):<></>}
         </>
     )
 }
