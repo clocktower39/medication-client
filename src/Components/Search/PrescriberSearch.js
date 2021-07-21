@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, TextField } from '@material-ui/core';
+import { Button, Grid, TextField } from '@material-ui/core';
 
 
 export default function PrescriberSearch(props) {
@@ -15,6 +15,30 @@ export default function PrescriberSearch(props) {
     const handleChange = (e, setter) => {
         setter(e.target.value);
     }
+
+    const handleSearch = () => {
+        const params = JSON.stringify({
+            firstName,
+            lastName,
+            phoneNumber,
+            faxNumber,
+            email,
+            npiNumber,
+            deaNumber,
+            zip
+        });
+        fetch('http://localhost:5518/searchPrescribers', {
+            method: 'post',
+            dataType: 'json',
+            body: params,
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+          .then(res => res.json())
+          .then(data => console.log(data));
+    }
+    
     return (
         <>
             <Grid item xs={12} sm={4}>
@@ -40,6 +64,9 @@ export default function PrescriberSearch(props) {
             </Grid>
             <Grid item xs={12} sm={4}>
                 <TextField label="Zip Code" fullWidth value={zip} onChange={(e)=>handleChange(e, setZip)}/>
+            </Grid>
+            <Grid container justify="center" item xs={12}>
+                <Button variant="contained" onClick={handleSearch} >Search</Button>
             </Grid>
         </>
     )

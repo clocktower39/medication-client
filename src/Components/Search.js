@@ -6,7 +6,6 @@ import PatientSearch from './Search/PatientSearch';
 const useStyles = makeStyles({
     root: {
         height: 'calc(100% - 114px)',
-        margin: '25px',
         padding: '10px 15px',
     },
     FormControl:{

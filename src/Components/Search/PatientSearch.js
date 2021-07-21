@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, TextField } from '@material-ui/core';
+import { Button, Grid, TextField } from '@material-ui/core';
 
 
 export default function PatientSearch(props) {
@@ -32,6 +32,9 @@ export default function PatientSearch(props) {
             </Grid>
             <Grid item xs={12} sm={4}>
                 <TextField label="Zip Code" fullWidth value={zip} onChange={(e)=>handleChange(e, setZip)}/>
+            </Grid>
+            <Grid container justify="center" item xs={12}>
+                <Button variant="contained" >Search</Button>
             </Grid>
         </>
     )
