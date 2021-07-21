@@ -11,6 +11,7 @@ export default function PrescriberSearch(props) {
     const [npiNumber, setNpiNumber] = useState('');
     const [deaNumber, setDeaNumber] = useState('');
     const [zip, setZip ] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
 
     const handleChange = (e, setter) => {
         setter(e.target.value);
@@ -18,14 +19,14 @@ export default function PrescriberSearch(props) {
 
     const handleSearch = () => {
         const params = JSON.stringify({
-            firstName,
-            lastName,
-            phoneNumber,
-            faxNumber,
-            email,
-            npiNumber,
-            deaNumber,
-            zip
+            // firstName,
+            lastName
+            // phoneNumber,
+            // faxNumber,
+            // email,
+            // npiNumber,
+            // deaNumber,
+            // zip
         });
         fetch('http://localhost:5518/searchPrescribers', {
             method: 'post',
@@ -36,7 +37,7 @@ export default function PrescriberSearch(props) {
             }
           })
           .then(res => res.json())
-          .then(data => console.log(data));
+          .then(data => setSearchResults(data));
     }
     
     return (
@@ -68,6 +69,8 @@ export default function PrescriberSearch(props) {
             <Grid container justify="center" item xs={12}>
                 <Button variant="contained" onClick={handleSearch} >Search</Button>
             </Grid>
+            
+            {searchResults?searchResults.map(result => (<Grid item xs={12}>{result.firstName} {result.lastName}</Grid>)):<></>}
         </>
     )
 }
