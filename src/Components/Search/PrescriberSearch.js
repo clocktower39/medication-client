@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Grid, TextField } from '@material-ui/core';
 
 
@@ -75,11 +76,21 @@ export default function PrescriberSearch(props) {
             <Grid item xs={12} sm={4}>
                 <TextField label="Zip Code" fullWidth value={zip} onChange={(e)=>handleChange(e, setZip)}/>
             </Grid>
-            <Grid container justify="center" item xs={12}>
+            <Grid container justifyContent="center" item xs={12}>
                 <Button variant="contained" onClick={handleSearch} >Search</Button>
             </Grid>
             
-            {searchResults?searchResults.map((result, index) => (<Grid key={result._id} item xs={12}>{result.firstName} {result.lastName}</Grid>)):<></>}
+
+            {searchResults.length>0 ? searchResults.map((result) => (
+                <Grid key={result._id} container item xs={12}>
+                    <Grid item xs={2}>{result.firstName}</Grid>
+                    <Grid item xs={2}>{result.lastName}</Grid>
+                    <Grid item xs={2}>{result.phoneNumber}</Grid>
+                    <Grid item xs={2}>{result.npiNumber}</Grid>
+                    <Grid item xs={2}>{result.deaNumber}</Grid>
+                    <Grid item xs={2}>{result.zip}</Grid>
+                    <Grid item xs={2}><Button component={Link} to={`/profile/${result._id}`}>Open</Button></Grid>
+                </Grid>)) : <></>}
         </>
     )
 }
