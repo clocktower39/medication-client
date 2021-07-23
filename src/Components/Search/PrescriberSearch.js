@@ -89,7 +89,7 @@ export default function PrescriberSearch(props) {
                     <Grid item xs={2}>{result.npiNumber}</Grid>
                     <Grid item xs={2}>{result.deaNumber}</Grid>
                     <Grid item xs={2}>{result.zip}</Grid>
-                    <Grid item xs={2}><Button component={Link} to={`/profile/${result._id}`}>Open</Button></Grid>
+                    <Grid item xs={2}><Button component={Link} to={`/prescriberProfile/${result._id}`}>Open</Button></Grid>
                 </Grid>)) : <></>}
         </>
     )

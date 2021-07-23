@@ -77,7 +77,7 @@ export default function PatientSearch(props) {
                     <Grid item xs={2}>{result.dateOfBirth.substr(0,10)}</Grid>
                     <Grid item xs={2}>{result.phoneNumber}</Grid>
                     <Grid item xs={2}>{result.zip}</Grid>
-                    <Grid item xs={2}><Button component={Link} to={`/profile/${result._id}`}>Open</Button></Grid>
+                    <Grid item xs={2}><Button component={Link} to={`/patientProfile/${result._id}`}>Open</Button></Grid>
                 </Grid>)) : <></>}
         </>
     )

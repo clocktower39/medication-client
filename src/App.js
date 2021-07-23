@@ -4,7 +4,8 @@ import Home from './Components/Home';
 import Navbar from './Components/Navbar';
 import Search from './Components/Search';
 import EnrollContainer from './Components/Enroll/EnrollContainer';
-import ProfileContainer from './Components/Profile/ProfileContainer';
+import PatientProfile from './Components/Profile/PatientProfile';
+import PrescriberProfile from './Components/Profile/PrescriberProfile';
 import './App.css';
 
 const useStyles = makeStyles({
@@ -24,7 +25,8 @@ function App() {
           <Route exact path="/"><Home /></Route>
           <Route exact path="/search"><Search/></Route>
           <Route exact path="/enroll"><EnrollContainer/></Route>
-          <Route exact path="/profile"><ProfileContainer/></Route>
+          <Route path="/patientProfile"><PatientProfile/></Route>
+          <Route path="/prescriberProfile"><PrescriberProfile/></Route>
         </Switch>
       </Router>
     </Container>
