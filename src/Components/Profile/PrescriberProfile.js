@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Container, Grid, Paper, Typography, makeStyles } from '@material-ui/core';
+import { Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
     root:{},
     rootGrid:{
         marginTop: '12.5px',
-    }
+    },
+    Paper: {
+        padding: '12.5px',
+        width: '100%',
+    },
 })
 
 export default function PrescriberProfile(props) {
@@ -50,11 +54,131 @@ export default function PrescriberProfile(props) {
                     </Grid>
                 </Paper>
             </Grid>
-            <Grid container item xs={12}>
-                <Paper>
-                    <Typography variant="h5" align="center" >Relations/Affiliations</Typography>
-                </Paper>
-            </Grid>
+                <Grid container item xs={12}>
+                    <Paper className={classes.Paper}>
+                        <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
+                        <Typography variant="h6" align="center" >Prescribers</Typography>
+                        <TableContainer component={Paper}>
+                            <Table size="small">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>First Name</TableCell>
+                                        <TableCell>Last Name</TableCell>
+                                        <TableCell>Phone Number</TableCell>
+                                        <TableCell>NPI Number</TableCell>
+                                        <TableCell>DEA Number</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {/* patient.prescribers.active.length > 0 ? patient.prescribers.active.map(prescriber => (
+                                        <TableRow>
+                                            <TableCell>{prescriber.firstName}</TableCell>
+                                            <TableCell>{prescriber.lastName}</TableCell>
+                                            <TableCell>{prescriber.phoneNumber}</TableCell>
+                                            <TableCell>{prescriber.npiNumber}</TableCell>
+                                            <TableCell>{prescriber.deaNumber}</TableCell>
+                                        </TableRow>
+                                    )) :
+                                        <TableRow>
+                                            <TableCell>No active prescribers</TableCell>
+                                        </TableRow>
+                                    */}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
+                </Grid>
+                <Grid container item xs={12}>
+                    <Paper className={classes.Paper}>
+                        <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
+                        <TableContainer component={Paper}>
+                            <Table size="small">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Date</TableCell>
+                                        <TableCell>Note Type</TableCell>
+                                        <TableCell>Created By</TableCell>
+                                        <TableCell>Note Summary</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
+                </Grid>
+                <Grid container item xs={12}>
+                    <Paper className={classes.Paper}>
+                        <Typography variant="h5" align="center" gutterBottom >Services</Typography>
+                        <TableContainer component={Paper}>
+                            <Table size="small">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Start Date</TableCell>
+                                        <TableCell>Service</TableCell>
+                                        <TableCell>Service Type</TableCell>
+                                        <TableCell>Status</TableCell>
+                                        <TableCell>Status Date</TableCell>
+                                        <TableCell>Outcome</TableCell>
+                                        <TableCell>Outcome Reason</TableCell>
+                                        <TableCell>Created By</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
+                </Grid>
+                <Grid container item xs={12}>
+                    <Paper className={classes.Paper}>
+                        <Typography variant="h5" align="center" gutterBottom >Contact Log</Typography>
+                        <TableContainer component={Paper}>
+                            <Table size="small">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Date</TableCell>
+                                        <TableCell>Channel</TableCell>
+                                        <TableCell>Direction</TableCell>
+                                        <TableCell>Contact Reason</TableCell>
+                                        <TableCell>Contact Name</TableCell>
+                                        <TableCell>Outcome</TableCell>
+                                        <TableCell>Outcome Reason</TableCell>
+                                        <TableCell>Created By</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                        <TableCell>STUFF</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
+                </Grid>
         </Grid>
     </Container>
   );
