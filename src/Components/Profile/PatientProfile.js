@@ -9,7 +9,8 @@ const useStyles = makeStyles({
     },
     Paper: {
         padding: '12.5px',
-        width: '100%',
+        minWidth: '100%',
+        maxWidth: '100%',
     },
 })
 
