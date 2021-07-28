@@ -20,6 +20,7 @@ export default function PatientProfile(props) {
     const classes = useStyles();
     const location = useLocation();
     const [patient, setPatient] = useState(null);
+    const [prescribers, setPrescribers] = useState([]);
 
     useEffect(() => {
         fetch(`http://localhost:5518${location.pathname}`)
@@ -29,8 +30,15 @@ export default function PatientProfile(props) {
             fetch(`http://localhost:5518/relationships/patient/${p._id}`)
             .then(res => res.json())
             .then(data => {
-                p.prescribers.active = data
-                setPatient(p);
+                data.forEach(pr => {
+                    fetch(`http://localhost:5518/prescriberProfile/${pr.prescriberId}`)
+                    .then(res=>res.json())
+                    .then(prData => {
+                        setPrescribers([...prescribers, prData[0]]);
+                    })
+                })
+            }).then(()=>{
+                setPatient(p)
             })
         });
     }, [location]);
@@ -38,7 +46,7 @@ export default function PatientProfile(props) {
     return patient === null ? <>Loading</> : (
         <Container maxWidth="lg">
             <Grid container spacing={3} className={classes.rootGrid}>
-                <Grid container item sm={4} xs={12}>
+                <Grid container item md={4} xs={12}>
                     <Paper className={classes.Paper}>
                         <Typography variant="h5" align="center" gutterBottom >Patient Profile Summary</Typography>
                         <Grid container>
@@ -67,7 +75,7 @@ export default function PatientProfile(props) {
                         </Grid>
                     </Paper>
                 </Grid>
-                <Grid container item sm={8} xs={12}>
+                <Grid container item md={8} xs={12}>
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
@@ -84,8 +92,8 @@ export default function PatientProfile(props) {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {patient.prescribers.active.length > 0 ? patient.prescribers.active.map(prescriber => (
-                                            <TableRow>
+                                        {prescribers.length > 0 ? prescribers.map((prescriber, index) => (
+                                            <TableRow key={prescriber._id}>
                                                 <TableCell>{prescriber._id}</TableCell>
                                                 <TableCell>{prescriber.firstName}</TableCell>
                                                 <TableCell>{prescriber.lastName}</TableCell>
