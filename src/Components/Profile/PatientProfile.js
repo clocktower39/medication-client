@@ -34,7 +34,7 @@ export default function PatientProfile(props) {
                     fetch(`http://localhost:5518/prescriberProfile/${pr.prescriberId}`)
                     .then(res=>res.json())
                     .then(prData => {
-                        setPrescribers([...prescribers, prData[0]]);
+                        setPrescribers(prevPrescriberList => [...prevPrescriberList, {...prData[0]}]);
                     })
                 })
             }).then(()=>{
