@@ -22,26 +22,26 @@ export default function PatientProfile(props) {
     const [patient, setPatient] = useState(null);
     const [prescribers, setPrescribers] = useState([]);
 
-    useEffect(() => {
-        fetch(`http://localhost:5518${location.pathname}`)
-        .then(res => res.json())
-        .then(data => data[0])
-        .then((p)=>{
-            fetch(`http://localhost:5518/relationships/patient/${p._id}`)
-            .then(res => res.json())
-            .then(data => {
-                data.forEach(pr => {
-                    fetch(`http://localhost:5518/prescriberProfile/${pr.prescriberId}`)
-                    .then(res=>res.json())
-                    .then(prData => {
-                        setPrescribers(prevPrescriberList => [...prevPrescriberList, {...prData[0]}]);
-                    })
+    useEffect(()=>{
+        const getAccountInfo = async()=>{
+            // fetch the patient object
+            const patientObject = await fetch(`http://localhost:5518${location.pathname}`).then(res => res.json()).then(data => data[0]);
+
+            // fetch the patient relationships
+            const relationshipsArray = await fetch(`http://localhost:5518/relationships/patient/${patientObject._id}`).then(res => res.json());
+
+            // add each PR from the relationship history
+            relationshipsArray.forEach(pr => {
+                fetch(`http://localhost:5518/prescriberProfile/${pr.prescriberId}`)
+                .then(res=>res.json())
+                .then(prData => {
+                    setPrescribers(prevPrescriberList => [...prevPrescriberList, {...prData[0]}]);
                 })
-            }).then(()=>{
-                setPatient(p)
             })
-        });
-    }, [location]);
+            return patientObject;
+        }
+        getAccountInfo().then(res => setPatient(res));
+        }, [location]);
 
     return patient === null ? <>Loading</> : (
         <Container maxWidth="lg">
