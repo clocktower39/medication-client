@@ -12,7 +12,6 @@ const useStyles = makeStyles({
         margin: '7.5px',
         padding: '7.5px',
         width: '100%',
-        maxWidth: '100%',
         overflow: 'hidden',
     },
 })
@@ -23,12 +22,16 @@ export default function PatientProfile(props) {
     const [patient, setPatient] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:5518${location.pathname}`).then(res => {
-            console.log(res);
-            return res.json()
-        }).then(data => {
-            console.log(data);
-            setPatient(data[0])
+        fetch(`http://localhost:5518${location.pathname}`)
+        .then(res => res.json())
+        .then(data => data[0])
+        .then((p)=>{
+            fetch(`http://localhost:5518/relationships/patient/${p._id}`)
+            .then(res => res.json())
+            .then(data => {
+                p.prescribers.active = data
+                setPatient(p);
+            })
         });
     }, [location]);
 
@@ -73,9 +76,9 @@ export default function PatientProfile(props) {
                                 <Table size="small">
                                     <TableHead>
                                         <TableRow>
+                                            <TableCell>ID</TableCell>
                                             <TableCell>First Name</TableCell>
                                             <TableCell>Last Name</TableCell>
-                                            <TableCell>Phone Number</TableCell>
                                             <TableCell>NPI Number</TableCell>
                                             <TableCell>DEA Number</TableCell>
                                         </TableRow>
@@ -83,9 +86,9 @@ export default function PatientProfile(props) {
                                     <TableBody>
                                         {patient.prescribers.active.length > 0 ? patient.prescribers.active.map(prescriber => (
                                             <TableRow>
+                                                <TableCell>{prescriber._id}</TableCell>
                                                 <TableCell>{prescriber.firstName}</TableCell>
                                                 <TableCell>{prescriber.lastName}</TableCell>
-                                                <TableCell>{prescriber.phoneNumber}</TableCell>
                                                 <TableCell>{prescriber.npiNumber}</TableCell>
                                                 <TableCell>{prescriber.deaNumber}</TableCell>
                                             </TableRow>
