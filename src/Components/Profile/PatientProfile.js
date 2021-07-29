@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Container, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
+import { Container, Grid, IconButton, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles({
@@ -22,8 +22,9 @@ export default function PatientProfile(props) {
     const [patient, setPatient] = useState(null);
     const [prescribers, setPrescribers] = useState([]);
 
-    useEffect(()=>{
-        const getAccountInfo = async()=>{
+    useEffect(() => {
+        setPrescribers([]);
+        const getAccountInfo = async () => {
             // fetch the patient object
             const patientObject = await fetch(`http://localhost:5518${location.pathname}`).then(res => res.json()).then(data => data[0]);
 
@@ -34,17 +35,17 @@ export default function PatientProfile(props) {
             // add each PR from the relationship history
             uniqueRelationshipsArray.forEach(id => {
                 fetch(`http://localhost:5518/prescriberProfile/${id}`)
-                .then(res=>res.json())
-                .then(prData => {
-                    setPrescribers(prevPrescriberList => [...prevPrescriberList, {...prData[0]}]);
-                })
+                    .then(res => res.json())
+                    .then(prData => {
+                        setPrescribers(prevPrescriberList => [...prevPrescriberList, { ...prData[0] }]);
+                    })
             })
             return patientObject;
         }
         getAccountInfo().then(res => setPatient(res));
-        }, [location]);
+    }, [location]);
 
-    return patient === null ? <>Loading</> : (
+    return patient === null ? <LinearProgress variant="indeterminate" /> : (
         <Container maxWidth="lg">
             <Grid container spacing={3} className={classes.rootGrid}>
                 <Grid container item md={4} xs={12}>
@@ -114,7 +115,10 @@ export default function PatientProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
-                            <TextField /><IconButton><AddCircle /></IconButton>
+                            <Grid container>
+                                <Grid item xs={11}><TextField multiline fullWidth/></Grid>
+                                <Grid item xs={1}><IconButton><AddCircle /></IconButton></Grid>
+                            </Grid>
                             <TableContainer component={Paper}>
                                 <Table size="small">
                                     <TableHead>
@@ -127,10 +131,6 @@ export default function PatientProfile(props) {
                                     </TableHead>
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -164,6 +164,6 @@ export default function PatientProfile(props) {
                     </Grid>
                 </Grid>
             </Grid>
-            </Container>
+        </Container>
     );
 }

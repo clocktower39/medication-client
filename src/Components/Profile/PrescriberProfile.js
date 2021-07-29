@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Container, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
+import { Container, Grid, IconButton, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles({
@@ -44,7 +44,7 @@ export default function PrescriberProfile(props) {
         getAccountInfo().then(res => setPrescriber(res));
         }, [location]);
 
-    return prescriber === null ? <>Loading</> : (
+    return prescriber === null ? <LinearProgress variant="indeterminate" /> : (
         <Container maxWidth="lg">
             <Grid container spacing={3} className={classes.rootGrid}>
                 <Grid container item md={4} xs={12}>
@@ -78,14 +78,14 @@ export default function PrescriberProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
-                            <Typography variant="h6" align="center" >Prescribers</Typography>
+                            <Typography variant="h6" align="center" >Patients</Typography>
                             <TableContainer component={Paper}>
                                 <Table size="small">
                                     <TableHead>
                                         <TableRow>
+                                            <TableCell>ID</TableCell>
                                             <TableCell>First Name</TableCell>
                                             <TableCell>Last Name</TableCell>
-                                            <TableCell>Phone Number</TableCell>
                                             <TableCell>Date of Birth</TableCell>
                                             <TableCell>Zip Code</TableCell>
                                         </TableRow>
@@ -96,7 +96,7 @@ export default function PrescriberProfile(props) {
                                                 <TableCell><Link to={`/patientProfile/${patient._id}`}>{patient._id}</Link></TableCell>
                                                 <TableCell>{patient.firstName}</TableCell>
                                                 <TableCell>{patient.lastName}</TableCell>
-                                                <TableCell>{patient.dateOfBirth}</TableCell>
+                                                <TableCell>{patient.dateOfBirth.substr(0,10)}</TableCell>
                                                 <TableCell>{patient.zip}</TableCell>
                                             </TableRow>
                                         )) :
@@ -112,7 +112,10 @@ export default function PrescriberProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
-                            <TextField /><IconButton><AddCircle /></IconButton>
+                            <Grid container>
+                                <Grid item xs={11}><TextField multiline fullWidth/></Grid>
+                                <Grid item xs={1}><IconButton><AddCircle /></IconButton></Grid>
+                            </Grid>
                             <TableContainer component={Paper}>
                                 <Table size="small">
                                     <TableHead>
@@ -125,10 +128,6 @@ export default function PrescriberProfile(props) {
                                     </TableHead>
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
