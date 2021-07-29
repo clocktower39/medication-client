@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Container, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 
@@ -29,10 +29,11 @@ export default function PatientProfile(props) {
 
             // fetch the patient relationships
             const relationshipsArray = await fetch(`http://localhost:5518/relationships/patient/${patientObject._id}`).then(res => res.json());
+            const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item.prescriberId))];
 
             // add each PR from the relationship history
-            relationshipsArray.forEach(pr => {
-                fetch(`http://localhost:5518/prescriberProfile/${pr.prescriberId}`)
+            uniqueRelationshipsArray.forEach(id => {
+                fetch(`http://localhost:5518/prescriberProfile/${id}`)
                 .then(res=>res.json())
                 .then(prData => {
                     setPrescribers(prevPrescriberList => [...prevPrescriberList, {...prData[0]}]);
@@ -94,7 +95,7 @@ export default function PatientProfile(props) {
                                     <TableBody>
                                         {prescribers.length > 0 ? prescribers.map((prescriber, index) => (
                                             <TableRow key={prescriber._id}>
-                                                <TableCell>{prescriber._id}</TableCell>
+                                                <TableCell><Link to={`/prescriberProfile/${prescriber._id}`}>{prescriber._id}</Link> </TableCell>
                                                 <TableCell>{prescriber.firstName}</TableCell>
                                                 <TableCell>{prescriber.lastName}</TableCell>
                                                 <TableCell>{prescriber.npiNumber}</TableCell>
