@@ -95,7 +95,7 @@ export default function PatientProfile(props) {
                                     <TableBody>
                                         {prescribers.length > 0 ? prescribers.map((prescriber, index) => (
                                             <TableRow key={prescriber._id}>
-                                                <TableCell><Link to={`/prescriberProfile/${prescriber._id}`}>{prescriber._id}</Link> </TableCell>
+                                                <TableCell><Link to={`/prescriberProfile/${prescriber._id}`}>{prescriber._id}</Link></TableCell>
                                                 <TableCell>{prescriber.firstName}</TableCell>
                                                 <TableCell>{prescriber.lastName}</TableCell>
                                                 <TableCell>{prescriber.npiNumber}</TableCell>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Container, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 
@@ -9,10 +9,9 @@ const useStyles = makeStyles({
         marginTop: '12.5px',
     },
     Paper: {
-        margin: '5px',
-        padding: '15px',
+        margin: '7.5px',
+        padding: '7.5px',
         width: '100%',
-        maxWidth: '100%',
         overflow: 'hidden',
     },
 })
@@ -21,15 +20,34 @@ export default function PrescriberProfile(props) {
     const classes = useStyles();
     const location = useLocation();
     const [prescriber, setPrescriber] = useState(null);
+    const [patients, setPatients] = useState([]);
 
-    useEffect(() => {
-        fetch(`http://localhost:5518${location.pathname}`).then(res => res.json()).then(data => setPrescriber(data[0]));
-    }, [location]);
+    useEffect(()=>{
+        const getAccountInfo = async()=>{
+            // fetch the prescriber object
+            const prescriberObject = await fetch(`http://localhost:5518${location.pathname}`).then(res => res.json()).then(data => data[0]);
+
+            // fetch the prescriber relationships
+            const relationshipsArray = await fetch(`http://localhost:5518/relationships/prescriber/${prescriberObject._id}`).then(res => res.json());
+            const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item.patientId))];
+
+            // add each PT from the relationship history
+            uniqueRelationshipsArray.forEach(id => {
+                fetch(`http://localhost:5518/patientProfile/${id}`)
+                .then(res=>res.json())
+                .then(ptData => {
+                    setPatients(prevPatientList => [...prevPatientList, {...ptData[0]}]);
+                })
+            })
+            return prescriberObject;
+        }
+        getAccountInfo().then(res => setPrescriber(res));
+        }, [location]);
 
     return prescriber === null ? <>Loading</> : (
         <Container maxWidth="lg">
             <Grid container spacing={3} className={classes.rootGrid}>
-                <Grid container item sm={4} xs={12}>
+                <Grid container item md={4} xs={12}>
                     <Paper className={classes.Paper}>
                         <Typography variant="h5" align="center" >Prescriber Profile Summary</Typography>
                         <Grid container>
@@ -56,7 +74,7 @@ export default function PrescriberProfile(props) {
                         </Grid>
                     </Paper>
                 </Grid>
-                <Grid container item sm={8} xs={12}>
+                <Grid container item md={8} xs={12}>
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
@@ -73,11 +91,11 @@ export default function PrescriberProfile(props) {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {prescriber.patients.active.length > 0 ? prescriber.patients.active.map(patient => (
+                                        {patients.length > 0 ? patients.map(patient => (
                                             <TableRow>
+                                                <TableCell><Link to={`/patientProfile/${patient._id}`}>{patient._id}</Link></TableCell>
                                                 <TableCell>{patient.firstName}</TableCell>
                                                 <TableCell>{patient.lastName}</TableCell>
-                                                <TableCell>{patient.phoneNumber}</TableCell>
                                                 <TableCell>{patient.dateOfBirth}</TableCell>
                                                 <TableCell>{patient.zip}</TableCell>
                                             </TableRow>
