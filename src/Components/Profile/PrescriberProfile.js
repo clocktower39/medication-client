@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
 import { Container, Grid, IconButton, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
@@ -21,6 +22,32 @@ export default function PrescriberProfile(props) {
     const location = useLocation();
     const [prescriber, setPrescriber] = useState(null);
     const [patients, setPatients] = useState([]);
+    const [newNote, setNewNote] = useState('');
+    const [notes, setNotes] = useState([]);
+    const agent = useSelector(state=> state.agent);
+
+    const handleNoteChange = (e) => {
+        setNewNote(e.target.value);
+    }
+
+    const submitNote = () => {
+        fetch('http://localhost:5518/submitNote', {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify({
+                note: newNote,
+                accountId: prescriber._id,
+                noteType: 'user',
+                createdBy: agent.username,
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then(res => res.json())
+        .then(data => setNotes(prevNotes => [...prevNotes, data.note]))
+        setNewNote('');
+    }
 
     useEffect(()=>{
         const getAccountInfo = async()=>{
@@ -39,6 +66,10 @@ export default function PrescriberProfile(props) {
                     setPatients(prevPatientList => [...prevPatientList, {...ptData[0]}]);
                 })
             })
+
+            // fetch the account notes
+            fetch(`http://localhost:5518/notes/${prescriberObject._id}`).then(res => res.json()).then(data => setNotes(data));
+            
             return prescriberObject;
         }
         getAccountInfo().then(res => setPrescriber(res));
@@ -113,8 +144,8 @@ export default function PrescriberProfile(props) {
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
                             <Grid container>
-                                <Grid item xs={11}><TextField multiline fullWidth/></Grid>
-                                <Grid item xs={1}><IconButton><AddCircle /></IconButton></Grid>
+                                <Grid item xs={11}><TextField onChange={handleNoteChange} multiline fullWidth value={newNote} /></Grid>
+                                <Grid item xs={1}><IconButton onClick={submitNote}><AddCircle /></IconButton></Grid>
                             </Grid>
                             <TableContainer component={Paper}>
                                 <Table size="small">
@@ -127,8 +158,16 @@ export default function PrescriberProfile(props) {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        <TableRow>
-                                        </TableRow>
+                                        {notes.length > 0?
+                                        notes.map(n => (
+                                            <TableRow key={n._id}>
+                                                <TableCell>{n.date}</TableCell>
+                                                <TableCell>{n.noteType}</TableCell>
+                                                <TableCell>{n.createdBy}</TableCell>
+                                                <TableCell>{n.note}</TableCell>
+                                            </TableRow>
+                                        )):
+                                        <TableRow><TableCell>No notes </TableCell></TableRow>}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
