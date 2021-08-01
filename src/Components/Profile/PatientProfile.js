@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 import { useLocation, Link } from 'react-router-dom';
-import { Container, Grid, IconButton, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
+import { Button, Container, Grid, IconButton, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles({
@@ -25,6 +25,7 @@ export default function PatientProfile(props) {
     const [prescribers, setPrescribers] = useState([]);
     const [notes, setNotes] = useState([]);
     const agent = useSelector(state=> state.agent);
+    const [editMode, setEditMode] = useState(false);
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -84,26 +85,54 @@ export default function PatientProfile(props) {
                         <Typography variant="h5" align="center" gutterBottom >Patient Profile Summary</Typography>
                         <Grid container>
                             <Grid container item xs={12} >
-                                <Grid item xs={6}><Typography variant="body1">First Name</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.firstName}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.lastName}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.dateOfBirth.substr(0, 10)}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.phoneNumber}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.address1}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.address2}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">City</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.city}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">State</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.state}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.zip}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">Country</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body2">{patient.country}</Typography></Grid>
+                                {!editMode?
+                                <>
+                                    <Grid item xs={6}><Typography variant="body1">First Name</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.firstName}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.lastName}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.dateOfBirth.substr(0, 10)}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.phoneNumber}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.address1}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.address2}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">City</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.city}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">State</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.state}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.zip}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Country</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body2">{patient.country}</Typography></Grid>
+                                    <Grid container item xs={12} justifyContent="center" ><Button variant="outlined" onClick={()=>setEditMode(!editMode)} >Edit</Button></Grid>
+                                </>:
+                                <>
+                                    <Grid item xs={6}><Typography variant="body1">First Name</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">City</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">State</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">Country</Typography></Grid>
+                                    <Grid item xs={6}><TextField /></Grid>
+                                    <Grid container item xs={6} justifyContent="center" ><Button variant="outlined"  onClick={()=>setEditMode(!editMode)} >Cancel</Button></Grid>
+                                    <Grid container item xs={6} justifyContent="center" ><Button variant="outlined"  onClick={()=>setEditMode(!editMode)} >Save</Button></Grid>
+                                </>}
                             </Grid>
                         </Grid>
                     </Paper>
