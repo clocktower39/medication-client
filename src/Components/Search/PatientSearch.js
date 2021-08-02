@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Grid, TextField } from '@material-ui/core';
+import { Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@material-ui/core';
 
 
 export default function PatientSearch(props) {
@@ -70,15 +70,32 @@ export default function PatientSearch(props) {
                 <Button variant="contained" onClick={handleSearch} >Search</Button>
             </Grid>
 
-            {searchResults.length>0 ? searchResults.map((result) => (
-                <Grid key={result._id} container item xs={12}>
-                    <Grid item xs={2}>{result.firstName}</Grid>
-                    <Grid item xs={2}>{result.lastName}</Grid>
-                    <Grid item xs={2}>{result.dateOfBirth.substr(0,10)}</Grid>
-                    <Grid item xs={2}>{result.phoneNumber}</Grid>
-                    <Grid item xs={2}>{result.zip}</Grid>
-                    <Grid item xs={2}><Button component={Link} to={`/patientProfile/${result._id}`}>Open</Button></Grid>
-                </Grid>)) : <></>}
+            <TableContainer component={Paper}>
+                <Table size="small">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>First Name</TableCell>
+                            <TableCell>Last Name</TableCell>
+                            <TableCell>DOB</TableCell>
+                            <TableCell>Phone Number</TableCell>
+                            <TableCell>Zip Code</TableCell>
+                            <TableCell> </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {searchResults.length > 0 ? searchResults.map((result) => (
+                            <TableRow key={result._id} >
+                                <TableCell>{result.firstName}</TableCell>
+                                <TableCell>{result.lastName}</TableCell>
+                                <TableCell>{result.dateOfBirth.substr(0, 10)}</TableCell>
+                                <TableCell>{result.phoneNumber}</TableCell>
+                                <TableCell>{result.zip}</TableCell>
+                                <TableCell><Button variant="outlined" component={Link} to={`/patientProfile/${result._id}`}>Open</Button></TableCell>
+                            </TableRow>
+                        )) : <></>}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </>
     )
 }
