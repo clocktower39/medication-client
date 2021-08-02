@@ -24,11 +24,25 @@ export default function PatientProfile(props) {
     const [patient, setPatient] = useState(null);
     const [prescribers, setPrescribers] = useState([]);
     const [notes, setNotes] = useState([]);
-    const agent = useSelector(state=> state.agent);
+    const agent = useSelector(state => state.agent);
     const [editMode, setEditMode] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [dateOfBirth, setDOB] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [address1, setAddress1] = useState('');
+    const [address2, setAddress2] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [zip, setZip] = useState('');
+    const [country, setCountry] = useState('');
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
+    }
+
+    const handleAccountChange = (e, setter) => {
+        setter(e.target.value)
     }
 
     const submitNote = () => {
@@ -45,9 +59,37 @@ export default function PatientProfile(props) {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-        .then(res => res.json())
-        .then(data => setNotes(prevNotes => [...prevNotes, data.note]))
+            .then(res => res.json())
+            .then(data => setNotes(prevNotes => [...prevNotes, data.note]))
         setNewNote('');
+    }
+
+    const resetEditData = (matchObject) => {
+        setFirstName(matchObject.firstName);
+        setLastName(matchObject.lastName);
+        setDOB(matchObject.dateOfBirth.substr(0, 10));
+        setPhoneNumber(matchObject.phoneNumber);
+        setAddress1(matchObject.address1);
+        setAddress2(matchObject.address2);
+        setCity(matchObject.city);
+        setState(matchObject.state);
+        setZip(matchObject.zip);
+        setCountry(matchObject.country);
+    }
+
+    const updatePatientEdit = () => {
+        setPatient({
+            firstName,
+            lastName,
+            dateOfBirth,
+            phoneNumber,
+            address1,
+            address2,
+            city,
+            state,
+            zip,
+            country,
+        })
     }
 
     useEffect(() => {
@@ -71,7 +113,8 @@ export default function PatientProfile(props) {
 
             // fetch the account notes
             fetch(`http://localhost:5518/notes/${patientObject._id}`).then(res => res.json()).then(data => setNotes(data));
-            
+            resetEditData(patientObject);
+
             return patientObject;
         }
         getAccountInfo().then(res => setPatient(res));
@@ -85,54 +128,60 @@ export default function PatientProfile(props) {
                         <Typography variant="h5" align="center" gutterBottom >Patient Profile Summary</Typography>
                         <Grid container>
                             <Grid container item xs={12} >
-                                {!editMode?
-                                <>
-                                    <Grid item xs={6}><Typography variant="body1">First Name</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.firstName}</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.lastName}</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.dateOfBirth.substr(0, 10)}</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.phoneNumber}</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.address1}</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.address2}</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">City</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.city}</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">State</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.state}</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.zip}</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Country</Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body2">{patient.country}</Typography></Grid>
-                                    <Grid container item xs={12} justifyContent="center" ><Button variant="outlined" onClick={()=>setEditMode(!editMode)} >Edit</Button></Grid>
-                                </>:
-                                <>
-                                    <Grid item xs={6}><Typography variant="body1">First Name</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">City</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">State</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">Country</Typography></Grid>
-                                    <Grid item xs={6}><TextField /></Grid>
-                                    <Grid container item xs={6} justifyContent="center" ><Button variant="outlined"  onClick={()=>setEditMode(!editMode)} >Cancel</Button></Grid>
-                                    <Grid container item xs={6} justifyContent="center" ><Button variant="outlined"  onClick={()=>setEditMode(!editMode)} >Save</Button></Grid>
-                                </>}
+                                {!editMode ?
+                                    <>
+                                        <Grid item xs={6}><Typography variant="body1">First Name</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.firstName}</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.lastName}</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.dateOfBirth.substr(0, 10)}</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.phoneNumber}</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.address1}</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.address2}</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">City</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.city}</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">State</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.state}</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.zip}</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Country</Typography></Grid>
+                                        <Grid item xs={6}><Typography variant="body2">{patient.country}</Typography></Grid>
+                                        <Grid container item xs={12} justifyContent="center" ><Button variant="outlined" onClick={() => setEditMode(!editMode)} >Edit</Button></Grid>
+                                    </> :
+                                    <>
+                                        <Grid item xs={6}><Typography variant="body1">First Name</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={firstName} onChange={(e) => handleAccountChange(e, setFirstName)} /></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={lastName} onChange={(e) => handleAccountChange(e, setLastName)} /></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={dateOfBirth} onChange={(e) => handleAccountChange(e, setDOB)} /></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={phoneNumber} onChange={(e) => handleAccountChange(e, setPhoneNumber)} /></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={address1} onChange={(e) => handleAccountChange(e, setAddress1)} /></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={address2} onChange={(e) => handleAccountChange(e, setAddress2)} /></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">City</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={city} onChange={(e) => handleAccountChange(e, setCity)} /></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">State</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={state} onChange={(e) => handleAccountChange(e, setState)} /></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={zip} onChange={(e) => handleAccountChange(e, setZip)} /></Grid>
+                                        <Grid item xs={6}><Typography variant="body1">Country</Typography></Grid>
+                                        <Grid item xs={6}><TextField value={country} onChange={(e) => handleAccountChange(e, setCountry)} /></Grid>
+                                        <Grid container item xs={6} justifyContent="center" ><Button variant="outlined" onClick={() => {
+                                            resetEditData(patient);
+                                            setEditMode(!editMode)
+                                        }} >Cancel</Button></Grid>
+                                        <Grid container item xs={6} justifyContent="center" ><Button variant="outlined" onClick={() => {
+                                            updatePatientEdit();
+                                            setEditMode(!editMode)}
+                                    } >Save</Button></Grid>
+                                    </>}
                             </Grid>
                         </Grid>
                     </Paper>
@@ -190,16 +239,16 @@ export default function PatientProfile(props) {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {notes.length > 0?
-                                        notes.map(n => (
-                                            <TableRow key={n._id}>
-                                                <TableCell>{n.date}</TableCell>
-                                                <TableCell>{n.noteType}</TableCell>
-                                                <TableCell>{n.createdBy}</TableCell>
-                                                <TableCell>{n.note}</TableCell>
-                                            </TableRow>
-                                        )):
-                                        <TableRow><TableCell>No notes </TableCell></TableRow>}
+                                        {notes.length > 0 ?
+                                            notes.map(n => (
+                                                <TableRow key={n._id}>
+                                                    <TableCell>{n.date}</TableCell>
+                                                    <TableCell>{n.noteType}</TableCell>
+                                                    <TableCell>{n.createdBy}</TableCell>
+                                                    <TableCell>{n.note}</TableCell>
+                                                </TableRow>
+                                            )) :
+                                            <TableRow><TableCell>No notes </TableCell></TableRow>}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
