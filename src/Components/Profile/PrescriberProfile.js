@@ -114,10 +114,11 @@ export default function PrescriberProfile(props) {
             const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item.patientId))];
 
             // add each PT from the relationship history
-            uniqueRelationshipsArray.forEach(id => {
+            uniqueRelationshipsArray.forEach((id, i) => {
                 fetch(`http://localhost:5518/patientProfile/${id}`)
                     .then(res => res.json())
                     .then(ptData => {
+                        (i === 0)?setPatients([{ ...ptData[0] }]):
                         setPatients(prevPatientList => [...prevPatientList, { ...ptData[0] }]);
                     })
             })
@@ -129,7 +130,8 @@ export default function PrescriberProfile(props) {
             return prescriberObject;
         }
         getAccountInfo().then(res => setPrescriber(res));
-    }, [location]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return prescriber === null ? <LinearProgress variant="indeterminate" /> : (
         <Container maxWidth="lg">

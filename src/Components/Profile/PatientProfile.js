@@ -36,6 +36,9 @@ export default function PatientProfile(props) {
     const [state, setState] = useState('');
     const [zip, setZip] = useState('');
     const [country, setCountry] = useState('');
+    const [labs, setLabs] = useState([]);
+    const [bloodDrawDate, setBloodDrawDate] = useState('');
+    const [anc, setAnc] = useState('');
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -92,6 +95,24 @@ export default function PatientProfile(props) {
         })
     }
 
+    const handleLabChange = (e, setter) => {
+        setter(e.target.value);
+    }
+
+    const addLab = () => {
+        fetch('http://localhost:5518/submitLab', {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify({ anc, bloodDrawDate, accountId: patient._id, createdBy: agent.username }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(res => res.json())
+        .then(data => {
+            setLabs(prevLabs => [...prevLabs, {...data.lab}])
+        })
+    }
+
     useEffect(() => {
         setPrescribers([]);
         const getAccountInfo = async () => {
@@ -115,10 +136,18 @@ export default function PatientProfile(props) {
             fetch(`http://localhost:5518/notes/${patientObject._id}`).then(res => res.json()).then(data => setNotes(data));
             resetEditData(patientObject);
 
+            // fetch patients labs
+            fetch(`http://localhost:5518/labs/${patientObject._id}`).then(res => res.json()).then(data => {
+                setLabs(data)
+                setAnc('');
+                setBloodDrawDate('');
+            });
+
             return patientObject;
         }
         getAccountInfo().then(res => setPatient(res));
-    }, [location]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return patient === null ? <LinearProgress variant="indeterminate" /> : (
         <Container maxWidth="lg">
@@ -179,8 +208,9 @@ export default function PatientProfile(props) {
                                         }} >Cancel</Button></Grid>
                                         <Grid container item xs={6} justifyContent="center" ><Button variant="outlined" onClick={() => {
                                             updatePatientEdit();
-                                            setEditMode(!editMode)}
-                                    } >Save</Button></Grid>
+                                            setEditMode(!editMode)
+                                        }
+                                        } >Save</Button></Grid>
                                     </>}
                             </Grid>
                         </Grid>
@@ -256,24 +286,28 @@ export default function PatientProfile(props) {
                     </Grid>
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
-                            <Typography variant="h5" align="center" gutterBottom >Services</Typography>
+                            <Typography variant="h5" align="center" >Labs</Typography>
+                            <Grid container justifyContent="center" ><Grid item xs={12} sm={5} ><TextField label="Blood Draw Date" value={bloodDrawDate} onChange={(e) => handleLabChange(e, setBloodDrawDate)} /></Grid><Grid item xs={12} sm={3} ><TextField label="ANC" value={anc} onChange={(e) => handleLabChange(e, setAnc)} /></Grid><IconButton onClick={addLab}><AddCircle /></IconButton></Grid>
                             <TableContainer component={Paper}>
                                 <Table size="small">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell>Date</TableCell>
-                                            <TableCell>Service</TableCell>
-                                            <TableCell>Status</TableCell>
+                                            <TableCell>Timestamp</TableCell>
+                                            <TableCell>BDD</TableCell>
+                                            <TableCell>ANC</TableCell>
                                             <TableCell>Created By</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        <TableRow>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
-                                        </TableRow>
+                                        {labs.map(lab => (
+                                            <TableRow>
+                                                <TableCell>{lab.timestamp}</TableCell>
+                                                <TableCell>{lab.bloodDrawDate}</TableCell>
+                                                <TableCell>{lab.anc}</TableCell>
+                                                <TableCell>{lab.createdBy}</TableCell>
+                                            </TableRow>
+                                        ))}
+
                                     </TableBody>
                                 </Table>
                             </TableContainer>
