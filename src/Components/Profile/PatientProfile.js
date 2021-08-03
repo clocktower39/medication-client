@@ -109,7 +109,9 @@ export default function PatientProfile(props) {
             }
         }).then(res => res.json())
         .then(data => {
-            setLabs(prevLabs => [...prevLabs, {...data.lab}])
+            setLabs(prevLabs => [...prevLabs, {...data.lab}]);
+            setAnc('');
+            setBloodDrawDate('');
         })
     }
 
@@ -139,8 +141,6 @@ export default function PatientProfile(props) {
             // fetch patients labs
             fetch(`http://localhost:5518/labs/${patientObject._id}`).then(res => res.json()).then(data => {
                 setLabs(data)
-                setAnc('');
-                setBloodDrawDate('');
             });
 
             return patientObject;
