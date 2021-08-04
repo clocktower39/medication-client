@@ -81,17 +81,27 @@ export default function PatientProfile(props) {
     }
 
     const updatePatientEdit = () => {
-        setPatient({
-            firstName,
-            lastName,
-            dateOfBirth,
-            phoneNumber,
-            address1,
-            address2,
-            city,
-            state,
-            zip,
-            country,
+
+        fetch('http://localhost:5518/updatePatient', {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify({ filter:{_id: patient._id}, update: {firstName, lastName, dateOfBirth, phoneNumber, address1, address2, city, state, zip, country }}),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(()=>{
+            setPatient({
+                firstName,
+                lastName,
+                dateOfBirth,
+                phoneNumber,
+                address1,
+                address2,
+                city,
+                state,
+                zip,
+                country,
+            })
         })
     }
 
@@ -108,11 +118,11 @@ export default function PatientProfile(props) {
                 "Content-type": "application/json; charset=UTF-8"
             }
         }).then(res => res.json())
-        .then(data => {
-            setLabs(prevLabs => [...prevLabs, {...data.lab}]);
-            setAnc('');
-            setBloodDrawDate('');
-        })
+            .then(data => {
+                setLabs(prevLabs => [...prevLabs, { ...data.lab }]);
+                setAnc('');
+                setBloodDrawDate('');
+            })
     }
 
     useEffect(() => {
