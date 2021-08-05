@@ -68,6 +68,20 @@ export default function PrescriberProfile(props) {
         setNewNote('');
     }
 
+    const updatePrescriberEdit = () => {
+
+        fetch('http://localhost:5518/updatePrescriber', {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify({ filter: { _id: prescriber._id }, update: { firstName, lastName, phoneNumber, faxNumber, email, npiNumber, deaNumber, practiceName, address1, address2, city, state, zip, country } }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(() => {
+            setPrescriber({ firstName, lastName, phoneNumber, faxNumber, email, npiNumber, deaNumber, practiceName, address1, address2, city, state, zip, country })
+        })
+    }
+
     const resetEditData = (matchObject) => {
         setFirstName(matchObject.firstName);
         setLastName(matchObject.lastName);
@@ -85,25 +99,6 @@ export default function PrescriberProfile(props) {
         setCountry(matchObject.country);
     }
 
-    const updatePrescriberEdit = () => {
-        setPrescriber({
-            firstName,
-            lastName,
-            phoneNumber,
-            faxNumber,
-            email,
-            npiNumber,
-            deaNumber,
-            practiceName,
-            address1,
-            address2,
-            city,
-            state,
-            zip,
-            country,
-        })
-    }
-
     useEffect(() => {
         const getAccountInfo = async () => {
             // fetch the prescriber object
@@ -118,8 +113,8 @@ export default function PrescriberProfile(props) {
                 fetch(`http://localhost:5518/patientProfile/${id}`)
                     .then(res => res.json())
                     .then(ptData => {
-                        (i === 0)?setPatients([{ ...ptData[0] }]):
-                        setPatients(prevPatientList => [...prevPatientList, { ...ptData[0] }]);
+                        (i === 0) ? setPatients([{ ...ptData[0] }]) :
+                            setPatients(prevPatientList => [...prevPatientList, { ...ptData[0] }]);
                     })
             })
 
