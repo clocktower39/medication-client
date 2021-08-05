@@ -310,7 +310,7 @@ export default function PatientProfile(props) {
                                     </TableHead>
                                     <TableBody>
                                         {labs.map(lab => (
-                                            <TableRow>
+                                            <TableRow key={lab._id}>
                                                 <TableCell>{lab.timestamp}</TableCell>
                                                 <TableCell>{lab.bloodDrawDate}</TableCell>
                                                 <TableCell>{lab.anc}</TableCell>
