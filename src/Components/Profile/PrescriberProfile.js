@@ -214,7 +214,7 @@ export default function PrescriberProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
-                            <Typography variant="h6" align="center" >Patients</Typography>
+                            <Typography variant="h6" align="center" >Patients <IconButton onClick={()=>alert("Modal")}><AddCircle /></IconButton></Typography>
                             <TableContainer component={Paper}>
                                 <Table size="small">
                                     <TableHead>

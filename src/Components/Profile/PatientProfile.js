@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 import { useLocation, Link } from 'react-router-dom';
-import { Button, Container, Grid, IconButton, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
+import { Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
+  
+  function getModalStyle() {
+    const top = 50
+    const left = 50
+  
+    return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`,
+    };
+  }
 
 const useStyles = makeStyles({
     root: {},
@@ -14,6 +25,13 @@ const useStyles = makeStyles({
         padding: '7.5px',
         width: '100%',
         overflow: 'hidden',
+    },
+    ModalPaper:{
+        position: 'absolute',
+        padding: '7.5px',
+        width: '65%',
+        backgroundColor: '#ccc',
+        border: '2px solid #000',
     },
 })
 
@@ -39,6 +57,8 @@ export default function PatientProfile(props) {
     const [labs, setLabs] = useState([]);
     const [bloodDrawDate, setBloodDrawDate] = useState('');
     const [anc, setAnc] = useState('');
+    const [modalStyle] = useState(getModalStyle());
+    const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -230,7 +250,19 @@ export default function PatientProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
-                            <Typography variant="h6" align="center" >Prescribers</Typography>
+                            <Typography variant="h6" align="center" >Prescribers <IconButton onClick={()=>setToggleRelationshipModal(true)}><AddCircle /></IconButton></Typography>
+                            <Modal
+                                open={toggleRelationshipModal}
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description"
+                            >
+                                <div style={modalStyle} className={classes.ModalPaper}>
+                                <h2 id="simple-modal-title">Text in a modal</h2>
+                                <p id="simple-modal-description">
+                                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                                </p>
+                                </div>
+                            </Modal>
                             <TableContainer component={Paper}>
                                 <Table size="small">
                                     <TableHead>
