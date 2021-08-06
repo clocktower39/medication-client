@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
-import { Button, Container, Grid, IconButton, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
+import { Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
+import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles({
     root: {},
@@ -14,6 +14,15 @@ const useStyles = makeStyles({
         padding: '7.5px',
         width: '100%',
         overflow: 'hidden',
+    },
+    ModalPaper: {
+        position: 'absolute',
+        padding: '7.5px',
+        width: '65%',
+        backgroundColor: '#fcfcfc',
+        top: `45%`,
+        left: '50%',
+        transform: 'translate(-50%, 50%)',
     },
 })
 
@@ -40,6 +49,7 @@ export default function PrescriberProfile(props) {
     const [state, setState] = useState('');
     const [zip, setZip] = useState('');
     const [country, setCountry] = useState('');
+    const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -214,7 +224,50 @@ export default function PrescriberProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
-                            <Typography variant="h6" align="center" >Patients <IconButton onClick={()=>alert("Modal")}><AddCircle /></IconButton></Typography>
+                            <Typography variant="h6" align="center" >Patients <IconButton onClick={() => setToggleRelationshipModal(true)}><AddCircle /></IconButton></Typography>                            <Modal
+                                open={toggleRelationshipModal}
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description"
+                            >
+                                <div className={classes.ModalPaper}>
+                                    <div>
+                                        <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
+                                    </div>
+                                    <Grid container spacing={1} justifyContent="center" style={{ paddingBottom: '25px', }}>
+                                        <Grid item><TextField label="First Name" /></Grid>
+                                        <Grid item><TextField label="Last Name" /></Grid>
+                                        <Grid item><TextField label="Date of Birth" /></Grid>
+                                        <Grid item><TextField label="Zip Code" /></Grid>
+                                        <Grid item><Button variant="outlined" >Search</Button></Grid>
+                                    </Grid>
+                                    <TableContainer component={Paper}>
+                                        <Table size="small">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>First Name</TableCell>
+                                                    <TableCell>Last Name</TableCell>
+                                                    <TableCell>DOB</TableCell>
+                                                    <TableCell>Phone Number</TableCell>
+                                                    <TableCell>Zip Code</TableCell>
+                                                    <TableCell> </TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {/* {searchResults.length > 0 ? searchResults.map((result) => (
+                            <TableRow key={result._id} >
+                                <TableCell>{result.firstName}</TableCell>
+                                <TableCell>{result.lastName}</TableCell>
+                                <TableCell>{result.dateOfBirth.substr(0, 10)}</TableCell>
+                                <TableCell>{result.phoneNumber}</TableCell>
+                                <TableCell>{result.zip}</TableCell>
+                                <TableCell><Button variant="outlined" component={Link} to={`/patientProfile/${result._id}`}>Open</Button></TableCell>
+                            </TableRow>
+                        )) : <></>} */}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </div>
+                            </Modal>
                             <TableContainer component={Paper}>
                                 <Table size="small">
                                     <TableHead>

@@ -2,18 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 import { useLocation, Link } from 'react-router-dom';
 import { Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
-  
-  function getModalStyle() {
-    const top = 50
-    const left = 50
-  
-    return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`,
-    };
-  }
+import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles({
     root: {},
@@ -26,12 +15,14 @@ const useStyles = makeStyles({
         width: '100%',
         overflow: 'hidden',
     },
-    ModalPaper:{
+    ModalPaper: {
         position: 'absolute',
         padding: '7.5px',
         width: '65%',
-        backgroundColor: '#ccc',
-        border: '2px solid #000',
+        backgroundColor: '#fcfcfc',
+        top: `45%`,
+        left: '50%',
+        transform: 'translate(-50%, 50%)',
     },
 })
 
@@ -57,7 +48,6 @@ export default function PatientProfile(props) {
     const [labs, setLabs] = useState([]);
     const [bloodDrawDate, setBloodDrawDate] = useState('');
     const [anc, setAnc] = useState('');
-    const [modalStyle] = useState(getModalStyle());
     const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
 
     const handleNoteChange = (e) => {
@@ -105,11 +95,11 @@ export default function PatientProfile(props) {
         fetch('http://localhost:5518/updatePatient', {
             method: 'post',
             dataType: 'json',
-            body: JSON.stringify({ filter:{_id: patient._id}, update: {firstName, lastName, dateOfBirth, phoneNumber, address1, address2, city, state, zip, country }}),
+            body: JSON.stringify({ filter: { _id: patient._id }, update: { firstName, lastName, dateOfBirth, phoneNumber, address1, address2, city, state, zip, country } }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        }).then(()=>{
+        }).then(() => {
             setPatient({
                 firstName,
                 lastName,
@@ -250,17 +240,49 @@ export default function PatientProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
-                            <Typography variant="h6" align="center" >Prescribers <IconButton onClick={()=>setToggleRelationshipModal(true)}><AddCircle /></IconButton></Typography>
+                            <Typography variant="h6" align="center" >Prescribers <IconButton onClick={() => setToggleRelationshipModal(true)}><AddCircle /></IconButton></Typography>
                             <Modal
                                 open={toggleRelationshipModal}
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
                             >
-                                <div style={modalStyle} className={classes.ModalPaper}>
-                                <h2 id="simple-modal-title">Text in a modal</h2>
-                                <p id="simple-modal-description">
-                                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                                </p>
+                                <div className={classes.ModalPaper}>
+                                    <div>
+                                        <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
+                                    </div>
+                                    <Grid container spacing={1} justifyContent="center" style={{ paddingBottom: '25px', }}>
+                                        <Grid item><TextField label="First Name" /></Grid>
+                                        <Grid item><TextField label="Last Name" /></Grid>
+                                        <Grid item><TextField label="NPI" /></Grid>
+                                        <Grid item><TextField label="DEA" /></Grid>
+                                        <Grid item><Button variant="outlined" >Search</Button></Grid>
+                                    </Grid>
+                                    <TableContainer component={Paper}>
+                                        <Table size="small">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>First Name</TableCell>
+                                                    <TableCell>Last Name</TableCell>
+                                                    <TableCell>NPI</TableCell>
+                                                    <TableCell>DEA</TableCell>
+                                                    <TableCell>Zip Code</TableCell>
+                                                    <TableCell> </TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {/* {searchResults.length > 0 ? searchResults.map((result) => (
+                                                    <TableRow key={result._id} >
+                                                        <TableCell>{result.firstName}</TableCell>
+                                                        <TableCell>{result.lastName}</TableCell>
+                                                        <TableCell>{result.dateOfBirth.substr(0, 10)}</TableCell>
+                                                        <TableCell>{result.phoneNumber}</TableCell>
+                                                        <TableCell>{result.zip}</TableCell>
+                                                        <TableCell><Button variant="outlined" component={Link} to={`/patientProfile/${result._id}`}>Open</Button></TableCell>
+                                                    </TableRow>
+                                                )) : <></>} */}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
                                 </div>
                             </Modal>
                             <TableContainer component={Paper}>
