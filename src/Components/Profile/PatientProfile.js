@@ -20,7 +20,6 @@ const useStyles = makeStyles({
         padding: '7.5px',
         width: '65%',
         backgroundColor: '#fcfcfc',
-        top: `45%`,
         left: '50%',
         transform: 'translate(-50%, 50%)',
     },
@@ -49,6 +48,11 @@ export default function PatientProfile(props) {
     const [bloodDrawDate, setBloodDrawDate] = useState('');
     const [anc, setAnc] = useState('');
     const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
+    const [searchFirstName, setSearchFirstName] = useState('');
+    const [searchLastName, setSearchLastName] = useState('');
+    const [searchNpiNumber, setSearchNpiNumber] = useState('');
+    const [searchDeaNumber, setSearchDeaNumber] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -56,6 +60,38 @@ export default function PatientProfile(props) {
 
     const handleAccountChange = (e, setter) => {
         setter(e.target.value)
+    }
+
+    const handleSearchChange = (e, setter) => {
+        setter(e.target.value)
+    }
+
+    const handleSearch = () => {
+        const params = {
+            firstName: searchFirstName,
+            lastName: searchLastName,
+            npiNumber: searchNpiNumber,
+            deaNumber: searchDeaNumber,
+        };
+        // convert params into an array so we can filter
+        const asArray = Object.entries(params);
+
+        //filter the converted params array to remove unnecessary fields
+        const notEmpty = asArray.filter(([key, value]) => value !== '');
+
+        // convert back into an object
+        const filteredParams = Object.fromEntries(notEmpty);
+        
+        fetch('http://localhost:5518/searchPrescribers', {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify(filteredParams),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+          .then(res => res.json())
+          .then(data => setSearchResults(data));
     }
 
     const submitNote = () => {
@@ -251,11 +287,11 @@ export default function PatientProfile(props) {
                                         <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
                                     </div>
                                     <Grid container spacing={1} justifyContent="center" style={{ paddingBottom: '25px', }}>
-                                        <Grid item><TextField label="First Name" /></Grid>
-                                        <Grid item><TextField label="Last Name" /></Grid>
-                                        <Grid item><TextField label="NPI" /></Grid>
-                                        <Grid item><TextField label="DEA" /></Grid>
-                                        <Grid item><Button variant="outlined" >Search</Button></Grid>
+                                        <Grid item><TextField label="First Name" value={searchFirstName} onChange={(e)=>handleSearchChange(e, setSearchFirstName)}/></Grid>
+                                        <Grid item><TextField label="Last Name" value={searchLastName} onChange={(e)=>handleSearchChange(e, setSearchLastName)}/></Grid>
+                                        <Grid item><TextField label="NPI number" value={searchNpiNumber} onChange={(e)=>handleSearchChange(e, setSearchNpiNumber)}/></Grid>
+                                        <Grid item><TextField label="DEA number" value={searchDeaNumber} onChange={(e)=>handleSearchChange(e, setSearchDeaNumber)}/></Grid>
+                                        <Grid container item xs={12} justifyContent="center" ><Button variant="outlined" onClick={handleSearch}>Search</Button></Grid>
                                     </Grid>
                                     <TableContainer component={Paper}>
                                         <Table size="small">
@@ -265,21 +301,20 @@ export default function PatientProfile(props) {
                                                     <TableCell>Last Name</TableCell>
                                                     <TableCell>NPI</TableCell>
                                                     <TableCell>DEA</TableCell>
-                                                    <TableCell>Zip Code</TableCell>
+                                                    <TableCell> </TableCell>
                                                     <TableCell> </TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {/* {searchResults.length > 0 ? searchResults.map((result) => (
+                                                {searchResults.length > 0 ? searchResults.map((result) => (
                                                     <TableRow key={result._id} >
                                                         <TableCell>{result.firstName}</TableCell>
                                                         <TableCell>{result.lastName}</TableCell>
-                                                        <TableCell>{result.dateOfBirth.substr(0, 10)}</TableCell>
-                                                        <TableCell>{result.phoneNumber}</TableCell>
-                                                        <TableCell>{result.zip}</TableCell>
-                                                        <TableCell><Button variant="outlined" component={Link} to={`/patientProfile/${result._id}`}>Open</Button></TableCell>
+                                                        <TableCell>{result.npiNumber}</TableCell>
+                                                        <TableCell>{result.deaNumber}</TableCell>
+                                                        <TableCell><Button variant="outlined" >Select</Button></TableCell>
                                                     </TableRow>
-                                                )) : <></>} */}
+                                                )) : <></>}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>

@@ -254,15 +254,15 @@ export default function PrescriberProfile(props) {
                                             </TableHead>
                                             <TableBody>
                                                 {/* {searchResults.length > 0 ? searchResults.map((result) => (
-                            <TableRow key={result._id} >
-                                <TableCell>{result.firstName}</TableCell>
-                                <TableCell>{result.lastName}</TableCell>
-                                <TableCell>{result.dateOfBirth.substr(0, 10)}</TableCell>
-                                <TableCell>{result.phoneNumber}</TableCell>
-                                <TableCell>{result.zip}</TableCell>
-                                <TableCell><Button variant="outlined" component={Link} to={`/patientProfile/${result._id}`}>Open</Button></TableCell>
-                            </TableRow>
-                        )) : <></>} */}
+                                                    <TableRow key={result._id} >
+                                                        <TableCell>{result.firstName}</TableCell>
+                                                        <TableCell>{result.lastName}</TableCell>
+                                                        <TableCell>{result.dateOfBirth.substr(0, 10)}</TableCell>
+                                                        <TableCell>{result.phoneNumber}</TableCell>
+                                                        <TableCell>{result.zip}</TableCell>
+                                                        <TableCell><Button variant="outlined" component={Link} to={`/patientProfile/${result._id}`}>Open</Button></TableCell>
+                                                    </TableRow>
+                                                )) : <></>} */}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
