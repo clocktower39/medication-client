@@ -94,6 +94,21 @@ export default function PatientProfile(props) {
           .then(data => setSearchResults(data));
     }
 
+    const createRelationship = (prescriberId) => {
+        fetch('http://localhost:5518/manageRelationship', {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify({
+                patientId: patient._id,
+                prescriberId,
+                action: 'activate',
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+    }
+
     const submitNote = () => {
         fetch('http://localhost:5518/submitNote', {
             method: 'post',
@@ -311,7 +326,7 @@ export default function PatientProfile(props) {
                                                         <TableCell>{result.lastName}</TableCell>
                                                         <TableCell>{result.npiNumber}</TableCell>
                                                         <TableCell>{result.deaNumber}</TableCell>
-                                                        <TableCell><Button variant="outlined" >Select</Button></TableCell>
+                                                        <TableCell><Button variant="outlined" onClick={()=>createRelationship(result._id)} >Select</Button></TableCell>
                                                     </TableRow>
                                                 )) : <></>}
                                             </TableBody>

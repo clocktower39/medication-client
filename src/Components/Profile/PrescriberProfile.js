@@ -95,6 +95,20 @@ export default function PrescriberProfile(props) {
           .then(data => setSearchResults(data));
     }
 
+    const createRelationship = (patientId) => {
+        fetch('http://localhost:5518/manageRelationship', {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify({
+                patientId,
+                prescriberId: prescriber._id,
+                action: 'activate',
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+    }
 
     const submitNote = () => {
         fetch('http://localhost:5518/submitNote', {
@@ -295,7 +309,7 @@ export default function PrescriberProfile(props) {
                                                         <TableCell>{result.lastName}</TableCell>
                                                         <TableCell>{result.dateOfBirth.substr(0,10)}</TableCell>
                                                         <TableCell>{result.zip}</TableCell>
-                                                        <TableCell><Button variant="outlined" >Select</Button></TableCell>
+                                                        <TableCell><Button variant="outlined" onClick={()=>createRelationship(result._id)} >Select</Button></TableCell>
                                                     </TableRow>
                                                 )) : <></>}
                                             </TableBody>
