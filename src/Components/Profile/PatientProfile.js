@@ -302,7 +302,6 @@ export default function PatientProfile(props) {
                                                     <TableCell>NPI</TableCell>
                                                     <TableCell>DEA</TableCell>
                                                     <TableCell> </TableCell>
-                                                    <TableCell> </TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>

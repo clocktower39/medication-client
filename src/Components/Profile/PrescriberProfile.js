@@ -20,7 +20,6 @@ const useStyles = makeStyles({
         padding: '7.5px',
         width: '65%',
         backgroundColor: '#fcfcfc',
-        top: `45%`,
         left: '50%',
         transform: 'translate(-50%, 50%)',
     },
@@ -50,6 +49,11 @@ export default function PrescriberProfile(props) {
     const [zip, setZip] = useState('');
     const [country, setCountry] = useState('');
     const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
+    const [searchFirstName, setSearchFirstName] = useState('');
+    const [searchLastName, setSearchLastName] = useState('');
+    const [searchDateOfBirth, setSearchDateOfBirth] = useState('');
+    const [searchZip, setSearchZip] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -58,6 +62,39 @@ export default function PrescriberProfile(props) {
     const handleAccountChange = (e, setter) => {
         setter(e.target.value)
     }
+
+    const handleSearchChange = (e, setter) => {
+        setter(e.target.value)
+    }
+
+    const handleSearch = () => {
+        const params = {
+            firstName: searchFirstName,
+            lastName: searchLastName,
+            dateOfBirth: searchDateOfBirth,
+            zip: searchZip,
+        };
+        // convert params into an array so we can filter
+        const asArray = Object.entries(params);
+
+        //filter the converted params array to remove unnecessary fields
+        const notEmpty = asArray.filter(([key, value]) => value !== '');
+
+        // convert back into an object
+        const filteredParams = Object.fromEntries(notEmpty);
+        
+        fetch('http://localhost:5518/searchPatients', {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify(filteredParams),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+          .then(res => res.json())
+          .then(data => setSearchResults(data));
+    }
+
 
     const submitNote = () => {
         fetch('http://localhost:5518/submitNote', {
@@ -234,11 +271,11 @@ export default function PrescriberProfile(props) {
                                         <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
                                     </div>
                                     <Grid container spacing={1} justifyContent="center" style={{ paddingBottom: '25px', }}>
-                                        <Grid item><TextField label="First Name" /></Grid>
-                                        <Grid item><TextField label="Last Name" /></Grid>
-                                        <Grid item><TextField label="Date of Birth" /></Grid>
-                                        <Grid item><TextField label="Zip Code" /></Grid>
-                                        <Grid item><Button variant="outlined" >Search</Button></Grid>
+                                        <Grid item><TextField label="First Name" value={searchFirstName} onChange={(e)=>{handleSearchChange(e, setSearchFirstName)}}/></Grid>
+                                        <Grid item><TextField label="Last Name" value={searchLastName} onChange={(e)=>{handleSearchChange(e, setSearchLastName)}}/></Grid>
+                                        <Grid item><TextField label="Date of Birth" value={searchDateOfBirth} onChange={(e)=>{handleSearchChange(e, setSearchDateOfBirth)}}/></Grid>
+                                        <Grid item><TextField label="Zip Code" value={searchZip} onChange={(e)=>{handleSearchChange(e, setSearchZip)}}/></Grid>
+                                        <Grid item><Button variant="outlined" onClick={handleSearch}>Search</Button></Grid>
                                     </Grid>
                                     <TableContainer component={Paper}>
                                         <Table size="small">
@@ -247,22 +284,20 @@ export default function PrescriberProfile(props) {
                                                     <TableCell>First Name</TableCell>
                                                     <TableCell>Last Name</TableCell>
                                                     <TableCell>DOB</TableCell>
-                                                    <TableCell>Phone Number</TableCell>
                                                     <TableCell>Zip Code</TableCell>
                                                     <TableCell> </TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {/* {searchResults.length > 0 ? searchResults.map((result) => (
+                                                {searchResults.length > 0 ? searchResults.map((result) => (
                                                     <TableRow key={result._id} >
                                                         <TableCell>{result.firstName}</TableCell>
                                                         <TableCell>{result.lastName}</TableCell>
-                                                        <TableCell>{result.dateOfBirth.substr(0, 10)}</TableCell>
-                                                        <TableCell>{result.phoneNumber}</TableCell>
+                                                        <TableCell>{result.dateOfBirth.substr(0,10)}</TableCell>
                                                         <TableCell>{result.zip}</TableCell>
-                                                        <TableCell><Button variant="outlined" component={Link} to={`/patientProfile/${result._id}`}>Open</Button></TableCell>
+                                                        <TableCell><Button variant="outlined" >Select</Button></TableCell>
                                                     </TableRow>
-                                                )) : <></>} */}
+                                                )) : <></>}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
