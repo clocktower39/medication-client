@@ -81,17 +81,17 @@ export default function PatientProfile(props) {
 
         // convert back into an object
         const filteredParams = Object.fromEntries(notEmpty);
-        
+
         fetch('http://localhost:5518/searchPrescribers', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify(filteredParams),
             headers: {
-              "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8"
             }
-          })
-          .then(res => res.json())
-          .then(data => setSearchResults(data));
+        })
+            .then(res => res.json())
+            .then(data => setSearchResults(data));
     }
 
     const createRelationship = (prescriberId) => {
@@ -104,9 +104,9 @@ export default function PatientProfile(props) {
                 action: 'activate',
             }),
             headers: {
-              "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8"
             }
-          })
+        })
     }
 
     const submitNote = () => {
@@ -201,7 +201,7 @@ export default function PatientProfile(props) {
                 fetch(`http://localhost:5518/prescriberProfile/${id}`)
                     .then(res => res.json())
                     .then(prData => {
-                        setPrescribers(prevPrescriberList => [...prevPrescriberList, { ...prData[0] }]);
+                        setPrescribers(prevPrescriberList => [...prevPrescriberList, { ...prData[0], completeHistory: relationshipsArray.filter(item => item.prescriberId === id) }]);
                     })
             })
 
@@ -302,10 +302,10 @@ export default function PatientProfile(props) {
                                         <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
                                     </div>
                                     <Grid container spacing={1} justifyContent="center" style={{ paddingBottom: '25px', }}>
-                                        <Grid item><TextField label="First Name" value={searchFirstName} onChange={(e)=>handleSearchChange(e, setSearchFirstName)}/></Grid>
-                                        <Grid item><TextField label="Last Name" value={searchLastName} onChange={(e)=>handleSearchChange(e, setSearchLastName)}/></Grid>
-                                        <Grid item><TextField label="NPI number" value={searchNpiNumber} onChange={(e)=>handleSearchChange(e, setSearchNpiNumber)}/></Grid>
-                                        <Grid item><TextField label="DEA number" value={searchDeaNumber} onChange={(e)=>handleSearchChange(e, setSearchDeaNumber)}/></Grid>
+                                        <Grid item><TextField label="First Name" value={searchFirstName} onChange={(e) => handleSearchChange(e, setSearchFirstName)} /></Grid>
+                                        <Grid item><TextField label="Last Name" value={searchLastName} onChange={(e) => handleSearchChange(e, setSearchLastName)} /></Grid>
+                                        <Grid item><TextField label="NPI number" value={searchNpiNumber} onChange={(e) => handleSearchChange(e, setSearchNpiNumber)} /></Grid>
+                                        <Grid item><TextField label="DEA number" value={searchDeaNumber} onChange={(e) => handleSearchChange(e, setSearchDeaNumber)} /></Grid>
                                         <Grid container item xs={12} justifyContent="center" ><Button variant="outlined" onClick={handleSearch}>Search</Button></Grid>
                                     </Grid>
                                     <TableContainer component={Paper}>
@@ -326,7 +326,7 @@ export default function PatientProfile(props) {
                                                         <TableCell>{result.lastName}</TableCell>
                                                         <TableCell>{result.npiNumber}</TableCell>
                                                         <TableCell>{result.deaNumber}</TableCell>
-                                                        <TableCell><Button variant="outlined" onClick={()=>createRelationship(result._id)} >Select</Button></TableCell>
+                                                        <TableCell><Button variant="outlined" onClick={() => createRelationship(result._id)} >Select</Button></TableCell>
                                                     </TableRow>
                                                 )) : <></>}
                                             </TableBody>
@@ -343,17 +343,39 @@ export default function PatientProfile(props) {
                                             <TableCell>Last Name</TableCell>
                                             <TableCell>NPI Number</TableCell>
                                             <TableCell>DEA Number</TableCell>
+                                            <TableCell></TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {prescribers.length > 0 ? prescribers.map((prescriber, index) => (
-                                            <TableRow key={prescriber._id}>
-                                                <TableCell><Link to={`/prescriberProfile/${prescriber._id}`}>{prescriber._id}</Link></TableCell>
-                                                <TableCell>{prescriber.firstName}</TableCell>
-                                                <TableCell>{prescriber.lastName}</TableCell>
-                                                <TableCell>{prescriber.npiNumber}</TableCell>
-                                                <TableCell>{prescriber.deaNumber}</TableCell>
-                                            </TableRow>
+                                            <>
+                                                <TableRow key={prescriber._id}>
+                                                    <TableCell><Link to={`/prescriberProfile/${prescriber._id}`}>{prescriber._id}</Link></TableCell>
+                                                    <TableCell>{prescriber.firstName}</TableCell>
+                                                    <TableCell>{prescriber.lastName}</TableCell>
+                                                    <TableCell>{prescriber.npiNumber}</TableCell>
+                                                    <TableCell>{prescriber.deaNumber}</TableCell>
+                                                    <TableCell><IconButton></IconButton></TableCell>
+                                                </TableRow>
+                                                <TableContainer component={Paper}>
+                                                    <Table size="small">
+                                                        <TableHead>
+                                                            <TableRow>
+                                                                <TableCell>Date</TableCell>
+                                                                <TableCell>Action</TableCell>
+                                                            </TableRow>
+                                                        </TableHead>
+                                                        <TableBody>
+                                                            {prescriber.completeHistory.map(historyItem => (
+                                                                <TableRow key={historyItem.date}>
+                                                                    <TableCell>{historyItem.date}</TableCell>
+                                                                    <TableCell>{historyItem.action}</TableCell>
+                                                                </TableRow>
+                                                            ))}
+                                                        </TableBody>
+                                                    </Table>
+                                                </TableContainer>
+                                            </>
                                         )) :
                                             <TableRow>
                                                 <TableCell>No active prescribers</TableCell>
