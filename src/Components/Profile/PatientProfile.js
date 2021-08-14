@@ -357,24 +357,20 @@ export default function PatientProfile(props) {
                                                     <TableCell>{prescriber.deaNumber}</TableCell>
                                                     <TableCell><IconButton></IconButton></TableCell>
                                                 </TableRow>
-                                                <TableContainer component={Paper}>
-                                                    <Table size="small">
-                                                        <TableHead>
-                                                            <TableRow>
-                                                                <TableCell>Date</TableCell>
-                                                                <TableCell>Action</TableCell>
-                                                            </TableRow>
-                                                        </TableHead>
-                                                        <TableBody>
-                                                            {prescriber.completeHistory.map(historyItem => (
-                                                                <TableRow key={historyItem.date}>
-                                                                    <TableCell>{historyItem.date}</TableCell>
-                                                                    <TableCell>{historyItem.action}</TableCell>
-                                                                </TableRow>
-                                                            ))}
-                                                        </TableBody>
-                                                    </Table>
-                                                </TableContainer>
+
+                                                <TableRow>
+                                                    <TableCell colSpan={1} ></TableCell>
+                                                    <TableCell colSpan={2} >Date</TableCell>
+                                                    <TableCell colSpan={2} >Action</TableCell>
+                                                </TableRow>
+                                                
+                                                {prescriber.completeHistory.map(historyItem => (
+                                                    <TableRow key={historyItem.date}>
+                                                        <TableCell colSpan={1} ></TableCell>
+                                                        <TableCell colSpan={2} >{historyItem.date}</TableCell>
+                                                        <TableCell colSpan={2} >{historyItem.action}</TableCell>
+                                                    </TableRow>
+                                                ))}
                                             </>
                                         )) :
                                             <TableRow>
