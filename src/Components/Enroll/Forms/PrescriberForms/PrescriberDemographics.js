@@ -74,6 +74,17 @@ export default function PrescriberDemographics(props) {
             onChange={(e)=>props.setters[5](e.target.value)}
           />
         </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="email"
+            name="email"
+            label="Email"
+            fullWidth
+            value={props.values[6]}
+            onChange={(e)=>props.setters[6](e.target.value)}
+          />
+        </Grid>
 
       </Grid>
     </>

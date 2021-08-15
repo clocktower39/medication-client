@@ -101,7 +101,19 @@ export default function PrescriberEnrollmentForm() {
   }
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    if(activeStep === 0){
+      if(firstName !== "" && lastName !== "" && phoneNumber !== "" && faxNumber !== "" && npiNumber !== "" && deaNumber !== "" && email !== ""){
+        setActiveStep(activeStep + 1);
+      }
+    }
+    else if(activeStep === 1){
+      if(practiceName !== "" && address1 !== "" && address2 !== "" && city !== "" && state !== "" && zip !== "" && country !== ""){
+        setActiveStep(activeStep + 1);
+      }
+    }
+    else {
+      setActiveStep(activeStep + 1);
+    }
   };
 
   const handleBack = () => {

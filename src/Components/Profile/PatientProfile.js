@@ -23,6 +23,9 @@ const useStyles = makeStyles({
         left: '50%',
         transform: 'translate(-50%, 50%)',
     },
+    TableHeader:{
+        fontWeight: 600,
+    },
 })
 
 export default function PatientProfile(props) {
@@ -338,11 +341,11 @@ export default function PatientProfile(props) {
                                 <Table size="small">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell>ID</TableCell>
-                                            <TableCell>First Name</TableCell>
-                                            <TableCell>Last Name</TableCell>
-                                            <TableCell>NPI Number</TableCell>
-                                            <TableCell>DEA Number</TableCell>
+                                            <TableCell className={classes.TableHeader}>ID</TableCell>
+                                            <TableCell className={classes.TableHeader}>First Name</TableCell>
+                                            <TableCell className={classes.TableHeader}>Last Name</TableCell>
+                                            <TableCell className={classes.TableHeader}>NPI Number</TableCell>
+                                            <TableCell className={classes.TableHeader}>DEA Number</TableCell>
                                             <TableCell></TableCell>
                                         </TableRow>
                                     </TableHead>
@@ -359,9 +362,9 @@ export default function PatientProfile(props) {
                                                 </TableRow>
 
                                                 <TableRow>
-                                                    <TableCell colSpan={1} ></TableCell>
-                                                    <TableCell colSpan={2} >Date</TableCell>
-                                                    <TableCell colSpan={2} >Action</TableCell>
+                                                    <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
+                                                    <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
+                                                    <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
                                                 </TableRow>
                                                 
                                                 {prescriber.completeHistory.map(historyItem => (
