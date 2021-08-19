@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import PrescriberEnrollmentForm from './Forms/PrescriberForms/PrescriberEnrollmentForm';
+import PatientEnrollmentForm from './Forms/PatientForms/PatientEnrollmentForm';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,7 +76,6 @@ export default function EnrollContainer() {
         >
           <Tab label="Prescriber" {...a11yProps(0)} />
           <Tab label="Patient" {...a11yProps(1)} />
-          <Tab label="Other" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -87,10 +87,7 @@ export default function EnrollContainer() {
           <PrescriberEnrollmentForm />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Patient Enrollment Form
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          Other Enrollment Forms
+          <PatientEnrollmentForm />
         </TabPanel>
       </SwipeableViews>
     </div>
