@@ -34,7 +34,7 @@ export default function PatientSearch(props) {
         // convert back into an object
         const filteredParams = Object.fromEntries(notEmpty);
 
-        fetch('http://localhost:5518/searchPatients', {
+        fetch('https://stark-garden-91538.herokuapp.com/searchPatients', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify(filteredParams),

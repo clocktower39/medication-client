@@ -85,7 +85,7 @@ export default function PatientProfile(props) {
         // convert back into an object
         const filteredParams = Object.fromEntries(notEmpty);
 
-        fetch('http://localhost:5518/searchPrescribers', {
+        fetch('https://stark-garden-91538.herokuapp.com/searchPrescribers', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify(filteredParams),
@@ -98,7 +98,7 @@ export default function PatientProfile(props) {
     }
 
     const createRelationship = (prescriberId) => {
-        fetch('http://localhost:5518/manageRelationship', {
+        fetch('https://stark-garden-91538.herokuapp.com/manageRelationship', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({
@@ -113,7 +113,7 @@ export default function PatientProfile(props) {
     }
 
     const submitNote = () => {
-        fetch('http://localhost:5518/submitNote', {
+        fetch('https://stark-garden-91538.herokuapp.com/submitNote', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({
@@ -146,7 +146,7 @@ export default function PatientProfile(props) {
 
     const updatePatientEdit = () => {
 
-        fetch('http://localhost:5518/updatePatient', {
+        fetch('https://stark-garden-91538.herokuapp.com/updatePatient', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({ filter: { _id: patient._id }, update: { firstName, lastName, dateOfBirth, phoneNumber, address1, address2, city, state, zip, country } }),
@@ -174,7 +174,7 @@ export default function PatientProfile(props) {
     }
 
     const addLab = () => {
-        fetch('http://localhost:5518/submitLab', {
+        fetch('https://stark-garden-91538.herokuapp.com/submitLab', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({ anc, bloodDrawDate, accountId: patient._id, createdBy: agent.username }),
@@ -193,15 +193,15 @@ export default function PatientProfile(props) {
         setPrescribers([]);
         const getAccountInfo = async () => {
             // fetch the patient object
-            const patientObject = await fetch(`http://localhost:5518${location.pathname}`).then(res => res.json()).then(data => data[0]);
+            const patientObject = await fetch(`https://stark-garden-91538.herokuapp.com${location.pathname}`).then(res => res.json()).then(data => data[0]);
 
             // fetch the patient relationships
-            const relationshipsArray = await fetch(`http://localhost:5518/relationships/patient/${patientObject._id}`).then(res => res.json());
+            const relationshipsArray = await fetch(`https://stark-garden-91538.herokuapp.com/relationships/patient/${patientObject._id}`).then(res => res.json());
             const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item.prescriberId))];
 
             // add each PR from the relationship history
             uniqueRelationshipsArray.forEach((id) => {
-                fetch(`http://localhost:5518/prescriberProfile/${id}`)
+                fetch(`https://stark-garden-91538.herokuapp.com/prescriberProfile/${id}`)
                     .then(res => res.json())
                     .then(prData => {
                         setPrescribers(prevPrescriberList => [...prevPrescriberList, { ...prData[0], completeHistory: relationshipsArray.filter(item => item.prescriberId === id) }]);
@@ -209,11 +209,11 @@ export default function PatientProfile(props) {
             })
 
             // fetch the account notes
-            fetch(`http://localhost:5518/notes/${patientObject._id}`).then(res => res.json()).then(data => setNotes(data));
+            fetch(`https://stark-garden-91538.herokuapp.com/notes/${patientObject._id}`).then(res => res.json()).then(data => setNotes(data));
             resetEditData(patientObject);
 
             // fetch patients labs
-            fetch(`http://localhost:5518/labs/${patientObject._id}`).then(res => res.json()).then(data => {
+            fetch(`https://stark-garden-91538.herokuapp.com/labs/${patientObject._id}`).then(res => res.json()).then(data => {
                 setLabs(data)
             });
 

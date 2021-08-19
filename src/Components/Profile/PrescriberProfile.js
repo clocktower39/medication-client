@@ -83,7 +83,7 @@ export default function PrescriberProfile(props) {
         // convert back into an object
         const filteredParams = Object.fromEntries(notEmpty);
 
-        fetch('http://localhost:5518/searchPatients', {
+        fetch('https://stark-garden-91538.herokuapp.com/searchPatients', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify(filteredParams),
@@ -96,7 +96,7 @@ export default function PrescriberProfile(props) {
     }
 
     const createRelationship = (patientId) => {
-        fetch('http://localhost:5518/manageRelationship', {
+        fetch('https://stark-garden-91538.herokuapp.com/manageRelationship', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({
@@ -111,7 +111,7 @@ export default function PrescriberProfile(props) {
     }
 
     const submitNote = () => {
-        fetch('http://localhost:5518/submitNote', {
+        fetch('https://stark-garden-91538.herokuapp.com/submitNote', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({
@@ -131,7 +131,7 @@ export default function PrescriberProfile(props) {
 
     const updatePrescriberEdit = () => {
 
-        fetch('http://localhost:5518/updatePrescriber', {
+        fetch('https://stark-garden-91538.herokuapp.com/updatePrescriber', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({ filter: { _id: prescriber._id }, update: { firstName, lastName, phoneNumber, faxNumber, email, npiNumber, deaNumber, practiceName, address1, address2, city, state, zip, country } }),
@@ -163,15 +163,15 @@ export default function PrescriberProfile(props) {
     useEffect(() => {
         const getAccountInfo = async () => {
             // fetch the prescriber object
-            const prescriberObject = await fetch(`http://localhost:5518${location.pathname}`).then(res => res.json()).then(data => data[0]);
+            const prescriberObject = await fetch(`https://stark-garden-91538.herokuapp.com${location.pathname}`).then(res => res.json()).then(data => data[0]);
 
             // fetch the prescriber relationships
-            const relationshipsArray = await fetch(`http://localhost:5518/relationships/prescriber/${prescriberObject._id}`).then(res => res.json());
+            const relationshipsArray = await fetch(`https://stark-garden-91538.herokuapp.com/relationships/prescriber/${prescriberObject._id}`).then(res => res.json());
             const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item.patientId))];
 
             // add each PT from the relationship history
             uniqueRelationshipsArray.forEach((id, i) => {
-                fetch(`http://localhost:5518/patientProfile/${id}`)
+                fetch(`https://stark-garden-91538.herokuapp.com/patientProfile/${id}`)
                     .then(res => res.json())
                     .then(ptData => {
                         setPatients(prevPatientList => [...prevPatientList, { ...ptData[0], completeHistory: relationshipsArray.filter(item => item.patientId === id) }]);
@@ -179,7 +179,7 @@ export default function PrescriberProfile(props) {
             })
 
             // fetch the account notes
-            fetch(`http://localhost:5518/notes/${prescriberObject._id}`).then(res => res.json()).then(data => setNotes(data));
+            fetch(`https://stark-garden-91538.herokuapp.com/notes/${prescriberObject._id}`).then(res => res.json()).then(data => setNotes(data));
             resetEditData(prescriberObject);
 
             return prescriberObject;

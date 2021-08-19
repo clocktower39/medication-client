@@ -38,7 +38,7 @@ export default function PrescriberSearch(props) {
         // convert back into an object
         const filteredParams = Object.fromEntries(notEmpty);
         
-        fetch('http://localhost:5518/searchPrescribers', {
+        fetch('https://stark-garden-91538.herokuapp.com/searchPrescribers', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify(filteredParams),

@@ -1,5 +1,6 @@
 {
   "name": "medication-client",
+  "homepage": "https://mattkearns.dev/medication-tracking-system/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

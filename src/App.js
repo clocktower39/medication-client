@@ -19,7 +19,7 @@ function App() {
   const classes = useStyles();
   return (
     <Container className={classes.root} maxWidth="lg">
-      <Router basename="/Medication-Tracking-System/">
+      <Router basename="/medication-tracking-system/">
         <Navbar />
         <Switch>
           <Route exact path="/"><Home /></Route>
