@@ -23,7 +23,7 @@ const useStyles = makeStyles({
         left: '50%',
         transform: 'translate(-50%, 50%)',
     },
-    TableHeader:{
+    TableHeader: {
         fontWeight: 600,
     },
 })
@@ -366,7 +366,7 @@ export default function PatientProfile(props) {
                                                     <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
                                                     <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
                                                 </TableRow>
-                                                
+
                                                 {prescriber.completeHistory.map(historyItem => (
                                                     <TableRow key={historyItem.date}>
                                                         <TableCell colSpan={1} ></TableCell>

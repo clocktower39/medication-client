@@ -82,17 +82,17 @@ export default function PrescriberProfile(props) {
 
         // convert back into an object
         const filteredParams = Object.fromEntries(notEmpty);
-        
+
         fetch('http://localhost:5518/searchPatients', {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify(filteredParams),
             headers: {
-              "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8"
             }
-          })
-          .then(res => res.json())
-          .then(data => setSearchResults(data));
+        })
+            .then(res => res.json())
+            .then(data => setSearchResults(data));
     }
 
     const createRelationship = (patientId) => {
@@ -105,9 +105,9 @@ export default function PrescriberProfile(props) {
                 action: 'activate',
             }),
             headers: {
-              "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8"
             }
-          })
+        })
     }
 
     const submitNote = () => {
@@ -174,8 +174,7 @@ export default function PrescriberProfile(props) {
                 fetch(`http://localhost:5518/patientProfile/${id}`)
                     .then(res => res.json())
                     .then(ptData => {
-                        (i === 0) ? setPatients([{ ...ptData[0] }]) :
-                            setPatients(prevPatientList => [...prevPatientList, { ...ptData[0] }]);
+                        setPatients(prevPatientList => [...prevPatientList, { ...ptData[0], completeHistory: relationshipsArray.filter(item => item.patientId === id) }]);
                     })
             })
 
@@ -275,7 +274,8 @@ export default function PrescriberProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
-                            <Typography variant="h6" align="center" >Patients <IconButton onClick={() => setToggleRelationshipModal(true)}><AddCircle /></IconButton></Typography>                            <Modal
+                            <Typography variant="h6" align="center" >Patients <IconButton onClick={() => setToggleRelationshipModal(true)}><AddCircle /></IconButton></Typography>
+                            <Modal
                                 open={toggleRelationshipModal}
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
@@ -285,10 +285,10 @@ export default function PrescriberProfile(props) {
                                         <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
                                     </div>
                                     <Grid container spacing={1} justifyContent="center" style={{ paddingBottom: '25px', }}>
-                                        <Grid item><TextField label="First Name" value={searchFirstName} onChange={(e)=>{handleSearchChange(e, setSearchFirstName)}}/></Grid>
-                                        <Grid item><TextField label="Last Name" value={searchLastName} onChange={(e)=>{handleSearchChange(e, setSearchLastName)}}/></Grid>
-                                        <Grid item><TextField label="Date of Birth" value={searchDateOfBirth} onChange={(e)=>{handleSearchChange(e, setSearchDateOfBirth)}}/></Grid>
-                                        <Grid item><TextField label="Zip Code" value={searchZip} onChange={(e)=>{handleSearchChange(e, setSearchZip)}}/></Grid>
+                                        <Grid item><TextField label="First Name" value={searchFirstName} onChange={(e) => { handleSearchChange(e, setSearchFirstName) }} /></Grid>
+                                        <Grid item><TextField label="Last Name" value={searchLastName} onChange={(e) => { handleSearchChange(e, setSearchLastName) }} /></Grid>
+                                        <Grid item><TextField label="Date of Birth" value={searchDateOfBirth} onChange={(e) => { handleSearchChange(e, setSearchDateOfBirth) }} /></Grid>
+                                        <Grid item><TextField label="Zip Code" value={searchZip} onChange={(e) => { handleSearchChange(e, setSearchZip) }} /></Grid>
                                         <Grid item><Button variant="outlined" onClick={handleSearch}>Search</Button></Grid>
                                     </Grid>
                                     <TableContainer component={Paper}>
@@ -307,9 +307,9 @@ export default function PrescriberProfile(props) {
                                                     <TableRow key={result._id} >
                                                         <TableCell>{result.firstName}</TableCell>
                                                         <TableCell>{result.lastName}</TableCell>
-                                                        <TableCell>{result.dateOfBirth.substr(0,10)}</TableCell>
+                                                        <TableCell>{result.dateOfBirth.substr(0, 10)}</TableCell>
                                                         <TableCell>{result.zip}</TableCell>
-                                                        <TableCell><Button variant="outlined" onClick={()=>createRelationship(result._id)} >Select</Button></TableCell>
+                                                        <TableCell><Button variant="outlined" onClick={() => createRelationship(result._id)} >Select</Button></TableCell>
                                                     </TableRow>
                                                 )) : <></>}
                                             </TableBody>
@@ -330,13 +330,30 @@ export default function PrescriberProfile(props) {
                                     </TableHead>
                                     <TableBody>
                                         {patients.length > 0 ? patients.map(patient => (
-                                            <TableRow key={patient._id}>
-                                                <TableCell><Link to={`/patientProfile/${patient._id}`}>{patient._id}</Link></TableCell>
-                                                <TableCell>{patient.firstName}</TableCell>
-                                                <TableCell>{patient.lastName}</TableCell>
-                                                <TableCell>{patient.dateOfBirth.substr(0, 10)}</TableCell>
-                                                <TableCell>{patient.zip}</TableCell>
-                                            </TableRow>
+                                            <>
+                                                <TableRow key={patient._id}>
+                                                    <TableCell><Link to={`/patientProfile/${patient._id}`}>{patient._id}</Link></TableCell>
+                                                    <TableCell>{patient.firstName}</TableCell>
+                                                    <TableCell>{patient.lastName}</TableCell>
+                                                    <TableCell>{patient.dateOfBirth.substr(0, 10)}</TableCell>
+                                                    <TableCell>{patient.zip}</TableCell>
+                                                    <TableCell><IconButton></IconButton></TableCell>
+                                                </TableRow>
+
+                                                <TableRow>
+                                                    <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
+                                                    <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
+                                                    <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
+                                                </TableRow>
+
+                                                {patient.completeHistory.map(historyItem => (
+                                                    <TableRow key={historyItem.date}>
+                                                        <TableCell colSpan={1} ></TableCell>
+                                                        <TableCell colSpan={2} >{historyItem.date}</TableCell>
+                                                        <TableCell colSpan={2} >{historyItem.action}</TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </>
                                         )) :
                                             <TableRow>
                                                 <TableCell>No active patients</TableCell>
