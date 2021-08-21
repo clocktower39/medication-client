@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
 import { Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
-import { AddCircle, RemoveCircle } from '@material-ui/icons';
+import { AddCircle, ExpandMore, RemoveCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles({
     root: {},
@@ -54,6 +54,7 @@ export default function PrescriberProfile(props) {
     const [searchDateOfBirth, setSearchDateOfBirth] = useState('');
     const [searchZip, setSearchZip] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [expandHistory, setExpandHistory] = useState(false);
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -337,8 +338,10 @@ export default function PrescriberProfile(props) {
                                                     <TableCell>{patient.lastName}</TableCell>
                                                     <TableCell>{patient.dateOfBirth.substr(0, 10)}</TableCell>
                                                     <TableCell>{patient.zip}</TableCell>
-                                                    <TableCell><IconButton></IconButton></TableCell>
+                                                    <TableCell><IconButton onClick={()=>setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
                                                 </TableRow>
+                                                {expandHistory === true ? (
+                                                    <>
 
                                                 <TableRow>
                                                     <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
@@ -353,6 +356,8 @@ export default function PrescriberProfile(props) {
                                                         <TableCell colSpan={2} >{historyItem.action}</TableCell>
                                                     </TableRow>
                                                 ))}
+                                                </>
+                                                ):(<></>)}
                                             </>
                                         )) :
                                             <TableRow>

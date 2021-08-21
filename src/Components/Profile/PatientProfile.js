@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 import { useLocation, Link } from 'react-router-dom';
 import { Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
-import { AddCircle, RemoveCircle } from '@material-ui/icons';
+import { AddCircle, ExpandMore, RemoveCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles({
     root: {},
@@ -56,6 +56,7 @@ export default function PatientProfile(props) {
     const [searchNpiNumber, setSearchNpiNumber] = useState('');
     const [searchDeaNumber, setSearchDeaNumber] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [expandHistory, setExpandHistory] = useState(false);
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -358,22 +359,25 @@ export default function PatientProfile(props) {
                                                     <TableCell>{prescriber.lastName}</TableCell>
                                                     <TableCell>{prescriber.npiNumber}</TableCell>
                                                     <TableCell>{prescriber.deaNumber}</TableCell>
-                                                    <TableCell><IconButton></IconButton></TableCell>
+                                                    <TableCell><IconButton onClick={()=>setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
                                                 </TableRow>
-
-                                                <TableRow>
-                                                    <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
-                                                    <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
-                                                    <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
-                                                </TableRow>
+                                                {expandHistory === true ? (
+                                                    <>
+                                                    <TableRow>
+                                                        <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
+                                                        <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
+                                                        <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
+                                                    </TableRow>
 
                                                 {prescriber.completeHistory.map(historyItem => (
-                                                    <TableRow key={historyItem.date}>
-                                                        <TableCell colSpan={1} ></TableCell>
-                                                        <TableCell colSpan={2} >{historyItem.date}</TableCell>
-                                                        <TableCell colSpan={2} >{historyItem.action}</TableCell>
-                                                    </TableRow>
-                                                ))}
+                                                        <TableRow key={historyItem.date}>
+                                                            <TableCell colSpan={1} ></TableCell>
+                                                            <TableCell colSpan={2} >{historyItem.date}</TableCell>
+                                                            <TableCell colSpan={2} >{historyItem.action}</TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                    </>
+                                                    ):(<></>)}
                                             </>
                                         )) :
                                             <TableRow>
