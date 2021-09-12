@@ -54,7 +54,6 @@ export default function PrescriberProfile(props) {
     const [searchDateOfBirth, setSearchDateOfBirth] = useState('');
     const [searchZip, setSearchZip] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [expandHistory, setExpandHistory] = useState(false);
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -159,6 +158,39 @@ export default function PrescriberProfile(props) {
         setState(matchObject.state);
         setZip(matchObject.zip);
         setCountry(matchObject.country);
+    }
+
+    const RelationshipHistorySection = (props) => {
+        const [expandHistory, setExpandHistory] = useState(false);
+        return (
+            <>
+                <TableRow key={props.patient._id}>
+                    <TableCell><Link to={`/patientProfile/${props.patient._id}`}>{props.patient._id}</Link></TableCell>
+                    <TableCell>{props.patient.firstName}</TableCell>
+                    <TableCell>{props.patient.lastName}</TableCell>
+                    <TableCell>{props.patient.dateOfBirth.substr(0, 10)}</TableCell>
+                    <TableCell>{props.patient.zip}</TableCell>
+                    <TableCell><IconButton onClick={()=>setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
+                </TableRow>
+                {expandHistory === true ? (
+                    <>
+
+                <TableRow>
+                    <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
+                    <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
+                    <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
+                </TableRow>
+
+                {props.patient.completeHistory.map(historyItem => (
+                    <TableRow key={historyItem.date}>
+                        <TableCell colSpan={1} ></TableCell>
+                        <TableCell colSpan={2} >{historyItem.date}</TableCell>
+                        <TableCell colSpan={2} >{historyItem.action}</TableCell>
+                    </TableRow>
+                ))}
+                </>
+                ):(<></>)}
+            </>)
     }
 
     useEffect(() => {
@@ -331,34 +363,7 @@ export default function PrescriberProfile(props) {
                                     </TableHead>
                                     <TableBody>
                                         {patients.length > 0 ? patients.map(patient => (
-                                            <>
-                                                <TableRow key={patient._id}>
-                                                    <TableCell><Link to={`/patientProfile/${patient._id}`}>{patient._id}</Link></TableCell>
-                                                    <TableCell>{patient.firstName}</TableCell>
-                                                    <TableCell>{patient.lastName}</TableCell>
-                                                    <TableCell>{patient.dateOfBirth.substr(0, 10)}</TableCell>
-                                                    <TableCell>{patient.zip}</TableCell>
-                                                    <TableCell><IconButton onClick={()=>setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
-                                                </TableRow>
-                                                {expandHistory === true ? (
-                                                    <>
-
-                                                <TableRow>
-                                                    <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
-                                                    <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
-                                                    <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
-                                                </TableRow>
-
-                                                {patient.completeHistory.map(historyItem => (
-                                                    <TableRow key={historyItem.date}>
-                                                        <TableCell colSpan={1} ></TableCell>
-                                                        <TableCell colSpan={2} >{historyItem.date}</TableCell>
-                                                        <TableCell colSpan={2} >{historyItem.action}</TableCell>
-                                                    </TableRow>
-                                                ))}
-                                                </>
-                                                ):(<></>)}
-                                            </>
+                                            <RelationshipHistorySection patient={patient} />
                                         )) :
                                             <TableRow>
                                                 <TableCell>No active patients</TableCell>
