@@ -48,7 +48,7 @@ export default function PatientProfile(props) {
     const [zip, setZip] = useState('');
     const [country, setCountry] = useState('');
     const [labs, setLabs] = useState([]);
-    const [bloodDrawDate, setBloodDrawDate] = useState('');
+    const [bloodDrawDate, setBloodDrawDate] = useState(new Date().toISOString().slice(0,10));
     const [anc, setAnc] = useState('');
     const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
     const [searchFirstName, setSearchFirstName] = useState('');
@@ -185,7 +185,7 @@ export default function PatientProfile(props) {
             .then(data => {
                 setLabs(prevLabs => [...prevLabs, { ...data.lab }]);
                 setAnc('');
-                setBloodDrawDate('');
+                setBloodDrawDate(new Date().toISOString().slice(0,10));
             })
     }
 
@@ -199,25 +199,25 @@ export default function PatientProfile(props) {
                     <TableCell>{props.prescriber.lastName}</TableCell>
                     <TableCell>{props.prescriber.npiNumber}</TableCell>
                     <TableCell>{props.prescriber.deaNumber}</TableCell>
-                    <TableCell><IconButton onClick={()=>setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
+                    <TableCell><IconButton onClick={() => setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
                 </TableRow>
                 {expandHistory === true ? (
                     <>
-                    <TableRow>
-                        <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
-                        <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
-                        <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
-                    </TableRow>
-
-                {props.prescriber.completeHistory.map(historyItem => (
-                        <TableRow key={historyItem.date}>
-                            <TableCell colSpan={1} ></TableCell>
-                            <TableCell colSpan={2} >{historyItem.date}</TableCell>
-                            <TableCell colSpan={2} >{historyItem.action}</TableCell>
+                        <TableRow>
+                            <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
+                            <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
+                            <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
                         </TableRow>
-                    ))}
+
+                        {props.prescriber.completeHistory.map(historyItem => (
+                            <TableRow key={historyItem.date}>
+                                <TableCell colSpan={1} ></TableCell>
+                                <TableCell colSpan={2} >{historyItem.date}</TableCell>
+                                <TableCell colSpan={2} >{historyItem.action}</TableCell>
+                            </TableRow>
+                        ))}
                     </>
-                    ):(<></>)}
+                ) : (<></>)}
             </>)
     }
 
@@ -430,7 +430,27 @@ export default function PatientProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" >Labs</Typography>
-                            <Grid container justifyContent="center" ><Grid item xs={12} sm={5} ><TextField label="Blood Draw Date" value={bloodDrawDate} onChange={(e) => handleLabChange(e, setBloodDrawDate)} /></Grid><Grid item xs={12} sm={3} ><TextField label="ANC" value={anc} onChange={(e) => handleLabChange(e, setAnc)} /></Grid><IconButton onClick={addLab}><AddCircle /></IconButton></Grid>
+                            <Grid container justifyContent="center" >
+                                <Grid item xs={12} sm={5} >
+                                    <TextField
+                                        focused
+                                        id="bdd"
+                                        label="Blood Draw Date"
+                                        type="date"
+                                        color="primary"
+                                        value={bloodDrawDate}
+                                        className={classes.TextField}
+                                        onChange={(e) => handleLabChange(e, setBloodDrawDate)}
+                                    />
+                                    {/* <TextField label="Blood Draw Date" value={bloodDrawDate} onChange={(e) => handleLabChange(e, setBloodDrawDate)} /> */}
+                                </Grid>
+                                <Grid item xs={12} sm={3} >
+                                    <TextField label="ANC" value={anc} onChange={(e) => handleLabChange(e, setAnc)} />
+                                </Grid>
+                                <IconButton onClick={addLab}>
+                                    <AddCircle />
+                                </IconButton>
+                            </Grid>
                             <TableContainer component={Paper}>
                                 <Table size="small">
                                     <TableHead>
