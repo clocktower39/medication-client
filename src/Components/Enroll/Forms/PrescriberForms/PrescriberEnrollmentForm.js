@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Link, StepLabel, Paper, Stepper, Step, Typography, makeStyles } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { Button, Link, StepLabel, Paper, Stepper, Step, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import Review from './Review';
 import AddressForm from './AddressForm';
 import PrescriberDemographics from './PrescriberDemographics';

@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { Paper, Grid, FormControlLabel, FormControl, FormLabel, RadioGroup, Radio, makeStyles } from '@material-ui/core';
+import { Paper, Grid, FormControlLabel, FormControl, FormLabel, RadioGroup, Radio } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import PrescriberSearch from './Search/PrescriberSearch';
 import PatientSearch from './Search/PatientSearch';
 
 const useStyles = makeStyles({
     root: {
-        height: 'calc(100% - 114px)',
         padding: '10px 15px',
     },
     FormControl:{
@@ -34,7 +34,7 @@ export default function Search() {
                     <FormControlLabel value="pharmacy" disabled control={<Radio />} label="Pharmacy" labelPlacement="bottom" />
                 </RadioGroup>
             </FormControl>
-            <Grid container spacing={3} >
+            <Grid container>
                 {searchType === 'patient'? <PatientSearch />:searchType === 'prescriber'?<PrescriberSearch/>:<></>}
             </Grid>
         </Paper>

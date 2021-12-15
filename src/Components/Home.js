@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import { Grid, List, ListItem, ListItemText, ListSubheader, Paper, Typography, makeStyles } from '@material-ui/core/';
+import { Grid, List, ListItem, ListItemText, ListSubheader, Paper, Typography } from '@mui/material/';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -75,12 +76,13 @@ export default function Home() {
     return (
         <div className={classes.root}>
             <Typography variant="h4" align="center" className={classes.Typography} >Welcome {agent.username}!</Typography>
-            <Grid container spacing={1} justifyContent="center" alignItems="center">
-                <Grid container item xs={12} spacing={3} justifyContent="center" alignItems="center">
+            <Grid container spacing={1} style={{ justifyContent:"center", alignItems:"center" }}>
+                <Grid container item xs={12} spacing={3} style={{ justifyContent:"center", alignItems:"center" }}>
                     {agent.schedule.week.map(day => (
-                        <Grid item key={day.day} >
-                            <Paper className={classes.paper}>{day.day}</Paper>
-                            <PinnedSubheaderList breakdown={day.breakdown}/>
+                        <Grid item xs={3} key={day.day} >
+                            <Paper className={classes.paper}>{day.day}
+                                <PinnedSubheaderList breakdown={day.breakdown}/>
+                            </Paper>
                         </Grid>
                     ))}
                 </Grid>

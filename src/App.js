@@ -1,4 +1,5 @@
-import { Container, makeStyles } from '@material-ui/core';
+import { Container, ThemeProvider } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Components/Home';
 import Navbar from './Components/Navbar';
@@ -6,6 +7,7 @@ import Search from './Components/Search';
 import EnrollContainer from './Components/Enroll/EnrollContainer';
 import PatientProfile from './Components/Profile/PatientProfile';
 import PrescriberProfile from './Components/Profile/PrescriberProfile';
+import { theme } from './theme';
 import './App.css';
 
 const useStyles = makeStyles({
@@ -18,18 +20,20 @@ const useStyles = makeStyles({
 function App() {
   const classes = useStyles();
   return (
-    <Container className={classes.root} maxWidth="lg">
-      <Router basename="/medication-tracking-system/">
-        <Navbar />
-        <Switch>
-          <Route exact path="/"><Home /></Route>
-          <Route exact path="/search"><Search/></Route>
-          <Route exact path="/enroll"><EnrollContainer/></Route>
-          <Route path="/patientProfile"><PatientProfile/></Route>
-          <Route path="/prescriberProfile"><PrescriberProfile/></Route>
-        </Switch>
-      </Router>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Container className={classes.root} maxWidth="lg">
+        <Router basename="/medication-tracking-system/">
+          <Navbar />
+          <Switch>
+            <Route exact path="/"><Home /></Route>
+            <Route exact path="/search"><Search/></Route>
+            <Route exact path="/enroll"><EnrollContainer/></Route>
+            <Route path="/patientProfile"><PatientProfile/></Route>
+            <Route path="/prescriberProfile"><PrescriberProfile/></Route>
+          </Switch>
+        </Router>
+      </Container>
+    </ThemeProvider>
   );
 }
 
