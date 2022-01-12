@@ -202,7 +202,7 @@ export default function PatientProfile(props) {
                     <TableCell>{props.prescriber.deaNumber}</TableCell>
                     <TableCell><IconButton onClick={() => setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
                 </TableRow>
-                {expandHistory === true ? (
+                {expandHistory === true && (
                     <>
                         <TableRow>
                             <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
@@ -218,7 +218,7 @@ export default function PatientProfile(props) {
                             </TableRow>
                         ))}
                     </>
-                ) : (<></>)}
+                )}
             </>)
     }
 
@@ -356,7 +356,7 @@ export default function PatientProfile(props) {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {searchResults.length > 0 ? searchResults.map((result) => (
+                                                {searchResults.length > 0 && searchResults.map((result) => (
                                                     <TableRow key={result._id} >
                                                         <TableCell>{result.firstName}</TableCell>
                                                         <TableCell>{result.lastName}</TableCell>
@@ -364,7 +364,7 @@ export default function PatientProfile(props) {
                                                         <TableCell>{result.deaNumber}</TableCell>
                                                         <TableCell><Button variant="outlined" onClick={() => createRelationship(result._id)} >Select</Button></TableCell>
                                                     </TableRow>
-                                                )) : <></>}
+                                                ))}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>

@@ -173,7 +173,7 @@ export default function PrescriberProfile(props) {
                     <TableCell>{props.patient.zip}</TableCell>
                     <TableCell><IconButton onClick={()=>setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
                 </TableRow>
-                {expandHistory === true ? (
+                {expandHistory === true && (
                     <>
 
                 <TableRow>
@@ -190,7 +190,7 @@ export default function PrescriberProfile(props) {
                     </TableRow>
                 ))}
                 </>
-                ):(<></>)}
+                )}
             </>)
     }
 
@@ -337,7 +337,7 @@ export default function PrescriberProfile(props) {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {searchResults.length > 0 ? searchResults.map((result) => (
+                                                {searchResults.length > 0 && searchResults.map((result) => (
                                                     <TableRow key={result._id} >
                                                         <TableCell>{result.firstName}</TableCell>
                                                         <TableCell>{result.lastName}</TableCell>
@@ -345,7 +345,7 @@ export default function PrescriberProfile(props) {
                                                         <TableCell>{result.zip}</TableCell>
                                                         <TableCell><Button variant="outlined" onClick={() => createRelationship(result._id)} >Select</Button></TableCell>
                                                     </TableRow>
-                                                )) : <></>}
+                                                ))}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>

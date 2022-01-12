@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import { Button, CircularProgress, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 
 
 export default function PrescriberSearch(props) {
@@ -13,12 +13,14 @@ export default function PrescriberSearch(props) {
     const [deaNumber, setDeaNumber] = useState('');
     const [zip, setZip ] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e, setter) => {
         setter(e.target.value);
     }
 
     const handleSearch = () => {
+        setLoading(true);
         const params = {
             firstName,
             lastName,
@@ -47,7 +49,8 @@ export default function PrescriberSearch(props) {
             }
           })
           .then(res => res.json())
-          .then(data => setSearchResults(data));
+          .then(data => setSearchResults(data))
+          .then(()=>setLoading(false));
     }
     
     return (
@@ -77,10 +80,10 @@ export default function PrescriberSearch(props) {
                 <TextField label="Zip Code" fullWidth value={zip} onChange={(e)=>handleChange(e, setZip)}/>
             </Grid>
             <Grid container justifyContent="center" item xs={12}>
-                <Button variant="contained" onClick={handleSearch} >Search</Button>
+                <Button variant="contained" onClick={handleSearch} disabled={loading} >{loading? <CircularProgress /> : 'Search'}</Button>
             </Grid>
             
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{ margin: '10px 0px', minHeight: '100%'}}>
                 <Table size="small">
                     <TableHead>
                         <TableRow>
@@ -94,7 +97,7 @@ export default function PrescriberSearch(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {searchResults.length > 0 ? searchResults.map((result) => (
+                        {searchResults.length > 0 && searchResults.map((result) => (
                             <TableRow key={result._id} >
                                 <TableCell>{result.firstName}</TableCell>
                                 <TableCell>{result.lastName}</TableCell>
@@ -102,12 +105,13 @@ export default function PrescriberSearch(props) {
                                 <TableCell>{result.npiNumber}</TableCell>
                                 <TableCell>{result.deaNumber}</TableCell>
                                 <TableCell>{result.zip}</TableCell>
-                                <TableCell><Button variant="outlined" component={Link} to={`/prescriberProfile/${result._id}`}>Open</Button></TableCell>
+                                <TableCell><Button variant="outlined" component={Link} to={`/prescriberProfile/${result._id}`} >Open</Button></TableCell>
                             </TableRow>
-                        )) : <></>}
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+            {searchResults.length <= 0 && <Grid container item xs={12} sx={{ justifyContent: 'center' }} ><Typography variant="h5" >No Results</Typography></Grid>}
         </>
     )
 }

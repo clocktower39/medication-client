@@ -1,7 +1,6 @@
 export let agent = {
     username: 'Matt',
     schedule: {
-        weeklyProjects: ['Low ANC','Escalations'],
         week: [
             {
                 day: 'Monday',
@@ -36,7 +35,8 @@ export let agent = {
                         end: '13:30',
                         task: 'Open'
                     },
-                ]
+                ],
+                projects: ['Phones']
             },
             {
                 day: 'Tuesday',
@@ -71,7 +71,8 @@ export let agent = {
                         end: '13:30',
                         task: 'Open'
                     },
-                ]
+                ],
+                projects: ['Phones']
             },
             {
                 day: 'Wednesday',
@@ -106,7 +107,8 @@ export let agent = {
                         end: '13:30',
                         task: 'Open'
                     },
-                ]
+                ],
+                projects: ['Faxes','Escalations']
             },
             {
                 day: 'Thursday',
@@ -141,7 +143,8 @@ export let agent = {
                         end: '13:30',
                         task: 'Open'
                     },
-                ]
+                ],
+                projects: ['Low ANC']
             },
             {
                 day: 'Friday',
@@ -176,7 +179,8 @@ export let agent = {
                         end: '13:30',
                         task: 'Open'
                     },
-                ]
+                ],
+                projects: ['Faxes']
             },
         ]
     }
