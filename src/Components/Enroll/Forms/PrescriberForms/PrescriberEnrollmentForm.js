@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
-import { Button, Link, StepLabel, Paper, Stepper, Step, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Review from './Review';
-import AddressForm from './AddressForm';
-import PrescriberDemographics from './PrescriberDemographics';
-
+import React, { useState } from "react";
+import { Button, Link, StepLabel, Paper, Stepper, Step, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Review from "./Review";
+import AddressForm from "./AddressForm";
+import PrescriberDemographics from "./PrescriberDemographics";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    position: 'relative',
+    position: "relative",
   },
   layout: {
-    width: 'auto',
+    width: "auto",
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto',
+      marginLeft: "auto",
+      marginRight: "auto",
     },
   },
   paper: {
@@ -35,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3, 0, 5),
   },
   buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end',
+    display: "flex",
+    justifyContent: "flex-end",
   },
   button: {
     marginTop: theme.spacing(3),
@@ -44,30 +43,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ['Personal Information', 'Address', 'Review enrollment information'];
+const steps = ["Personal Information", "Address", "Review enrollment information"];
 
 function getStepContent(step, page1, page2) {
   switch (step) {
     case 0:
-      return <PrescriberDemographics values={page1.values} setters={page1.setters} />;
+      return <PrescriberDemographics values={page1.values} />;
     case 1:
-      return <AddressForm values={page2.values} setters={page2.setters} />;
+      return <AddressForm values={page2.values} setters={page2.setters} errors={page2.errors} />;
     case 2:
-      return <Review values={[...page1.values, ...page2.values]} />;
+      return <Review values={{ ...page1.values, ...page2.values }} />;
     default:
-      throw new Error('Unknown step');
+      throw new Error("Unknown step");
   }
 }
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -76,43 +75,153 @@ export default function PrescriberEnrollmentForm() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [faxNumber, setFaxNumber] = useState('');
-  const [npiNumber, setNpiNumber] = useState('');
-  const [deaNumber, setDeaNumber] = useState('');
-  const [email, setEmail] = useState('');
-  
-  const [practiceName, setPracticeName] = useState('');
-  const [address1, setAddress1] = useState('');
-  const [address2, setAddress2] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [zip, setZip] = useState('');
-  const [country, setCountry] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [faxNumber, setFaxNumber] = useState("");
+  const [faxNumberError, setFaxNumberError] = useState("");
+  const [npiNumber, setNpiNumber] = useState("");
+  const [npiNumberError, setNpiNumberError] = useState("");
+  const [deaNumber, setDeaNumber] = useState("");
+  const [deaNumberError, setDeaNumberError] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const [practiceName, setPracticeName] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  const [country, setCountry] = useState("");
+  const [practiceNameError, setPracticeNameError] = useState("");
+  const [address1Error, setAddress1Error] = useState("");
+  const [address2Error, setAddress2Error] = useState("");
+  const [cityError, setCityError] = useState("");
+  const [stateError, setStateError] = useState("");
+  const [zipError, setZipError] = useState("");
+  const [countryError, setCountryError] = useState("");
 
   const page1 = {
-    values:[firstName,lastName,phoneNumber,faxNumber,npiNumber,deaNumber, email],
-    setters:[setFirstName, setLastName, setPhoneNumber, setFaxNumber, setNpiNumber, setDeaNumber, setEmail]
-  }
+    values: {
+      firstName: {
+        value: firstName,
+        setValue: setFirstName,
+        error: firstNameError,
+        setError: setFirstNameError,
+      },
+      lastName: {
+        value: lastName,
+        setValue: setLastName,
+        error: lastNameError,
+        setError: setLastNameError,
+      },
+      phoneNumber: {
+        value: phoneNumber,
+        setValue: setPhoneNumber,
+        error: phoneNumberError,
+        setError: setPhoneNumberError,
+      },
+      faxNumber: {
+        value: faxNumber,
+        setValue: setFaxNumber,
+        error: faxNumberError,
+        setError: setFaxNumberError,
+      },
+      npiNumber: {
+        value: npiNumber,
+        setValue: setNpiNumber,
+        error: npiNumberError,
+        setError: setNpiNumberError,
+      },
+      deaNumber: {
+        value: deaNumber,
+        setValue: setDeaNumber,
+        error: deaNumberError,
+        setError: setDeaNumberError,
+      },
+      email: {
+        value: email,
+        setValue: setEmail,
+        error: emailError,
+        setError: setEmailError,
+      },
+    },
+  };
   const page2 = {
-    values:[practiceName, address1, address2, city, state, zip, country],
-    setters:[setPracticeName, setAddress1, setAddress2, setCity, setState, setZip, setCountry]
-  }
+    values: {
+      practiceName,
+      address1,
+      address2,
+      city,
+      state,
+      zip,
+      country,
+    },
+    setters: {
+      setPracticeName,
+      setAddress1,
+      setAddress2,
+      setCity,
+      setState,
+      setZip,
+      setCountry,
+      setPracticeNameError,
+      setAddress1Error,
+      setAddress2Error,
+      setCityError,
+      setStateError,
+      setZipError,
+      setCountryError,
+    },
+    errors: {
+      practiceNameError,
+      address1Error,
+      address2Error,
+      cityError,
+      stateError,
+      zipError,
+      countryError,
+    },
+  };
 
   const handleNext = () => {
-    if(activeStep === 0){
-      if(firstName !== "" && lastName !== "" && phoneNumber !== "" && faxNumber !== "" && npiNumber !== "" && deaNumber !== "" && email !== ""){
+    if (activeStep === 0) {
+      if (
+        firstName !== "" &&
+        lastName !== "" &&
+        phoneNumber !== "" &&
+        faxNumber !== "" &&
+        npiNumber !== "" &&
+        deaNumber !== "" &&
+        email !== ""
+      ) {
+        setActiveStep(activeStep + 1);
+      } else {
+        Object.keys(page1.values).forEach((value) => {
+          if (page1.values[value].value === "") {
+            page1.values[value].setError("Required Field Empty");
+          } else {
+            page1.values[value].setError("");
+          }
+        });
+      }
+    } else if (activeStep === 1) {
+      if (
+        practiceName !== "" &&
+        address1 !== "" &&
+        address2 !== "" &&
+        city !== "" &&
+        state !== "" &&
+        zip !== "" &&
+        country !== ""
+      ) {
         setActiveStep(activeStep + 1);
       }
-    }
-    else if(activeStep === 1){
-      if(practiceName !== "" && address1 !== "" && address2 !== "" && city !== "" && state !== "" && zip !== "" && country !== ""){
-        setActiveStep(activeStep + 1);
-      }
-    }
-    else {
+    } else {
       setActiveStep(activeStep + 1);
     }
   };
@@ -139,13 +248,7 @@ export default function PrescriberEnrollmentForm() {
           <>
             {activeStep === steps.length ? (
               <>
-                <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order confirmation, and will
-                  send you an update when your order has shipped.
-                </Typography>
+                <Typography variant="subtitle1">Prescriber Enrolled</Typography>
               </>
             ) : (
               <>
@@ -162,7 +265,7 @@ export default function PrescriberEnrollmentForm() {
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                    {activeStep === steps.length - 1 ? "Enroll" : "Next"}
                   </Button>
                 </div>
               </>

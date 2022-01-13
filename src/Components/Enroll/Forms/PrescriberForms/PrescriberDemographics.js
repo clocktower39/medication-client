@@ -1,8 +1,9 @@
-import React from 'react';
-import Grid from '@mui/material/Grid';
-import { TextField } from '@mui/material';
+import React from "react";
+import Grid from "@mui/material/Grid";
+import { TextField } from "@mui/material";
 
 export default function PrescriberDemographics(props) {
+  const { values } = props;
   return (
     <>
       <Grid container spacing={3}>
@@ -14,8 +15,10 @@ export default function PrescriberDemographics(props) {
             label="First name"
             fullWidth
             autoComplete="given-name"
-            value={props.values[0]}
-            onChange={(e)=>props.setters[0](e.target.value)}
+            value={values.firstName.value}
+            error={values.firstName.error.length > 0}
+            helperText={values.firstName.error}
+            onChange={(e) => values.firstName.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -26,8 +29,10 @@ export default function PrescriberDemographics(props) {
             label="Last name"
             fullWidth
             autoComplete="family-name"
-            value={props.values[1]}
-            onChange={(e)=>props.setters[1](e.target.value)}
+            value={values.lastName.value}
+            error={values.lastName.error.length > 0}
+            helperText={values.lastName.error}
+            onChange={(e) => values.lastName.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -37,8 +42,10 @@ export default function PrescriberDemographics(props) {
             name="phone"
             label="Phone Number"
             fullWidth
-            value={props.values[2]}
-            onChange={(e)=>props.setters[2](e.target.value)}
+            value={values.phoneNumber.value}
+            error={values.phoneNumber.error.length > 0}
+            helperText={values.phoneNumber.error}
+            onChange={(e) => values.phoneNumber.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -48,8 +55,10 @@ export default function PrescriberDemographics(props) {
             name="fax"
             label="Fax Number"
             fullWidth
-            value={props.values[3]}
-            onChange={(e)=>props.setters[3](e.target.value)}
+            value={values.faxNumber.value}
+            error={values.faxNumber.error.length > 0}
+            helperText={values.faxNumber.error}
+            onChange={(e) => values.faxNumber.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -59,8 +68,10 @@ export default function PrescriberDemographics(props) {
             name="npi"
             label="NPI Number"
             fullWidth
-            value={props.values[4]}
-            onChange={(e)=>props.setters[4](e.target.value)}
+            value={values.npiNumber.value}
+            error={values.npiNumber.error.length > 0}
+            helperText={values.npiNumber.error}
+            onChange={(e) => values.npiNumber.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -70,8 +81,10 @@ export default function PrescriberDemographics(props) {
             name="dea"
             label="DEA Number"
             fullWidth
-            value={props.values[5]}
-            onChange={(e)=>props.setters[5](e.target.value)}
+            value={values.deaNumber.value}
+            error={values.deaNumber.error.length > 0}
+            helperText={values.deaNumber.error}
+            onChange={(e) => values.deaNumber.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -81,11 +94,12 @@ export default function PrescriberDemographics(props) {
             name="email"
             label="Email"
             fullWidth
-            value={props.values[6]}
-            onChange={(e)=>props.setters[6](e.target.value)}
+            value={values.email.value}
+            error={values.email.error.length > 0}
+            helperText={values.email.error}
+            onChange={(e) => values.email.setValue(e.target.value)}
           />
         </Grid>
-
       </Grid>
     </>
   );
