@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, TextField } from "@mui/material";
 
 export default function AddressForm(props) {
-  const { values, setters, errors } = props;
+  const { values } = props;
   return (
     <>
       <Grid container spacing={3}>
@@ -13,10 +13,10 @@ export default function AddressForm(props) {
             name="practiceName"
             label="Practice Name"
             fullWidth
-            value={values.practiceName}
-            error={errors.practiceNameError.length > 0}
-            helperText={errors.practiceNameError}
-            onChange={(e) => setters.setPracticeName(e.target.value)}
+            value={values.practiceName.value}
+            error={values.practiceName.error.length > 0}
+            helperText={values.practiceName.error}
+            onChange={(e) => values.practiceName.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -27,10 +27,10 @@ export default function AddressForm(props) {
             label="Address line 1"
             fullWidth
             autoComplete="shipping address-line1"
-            value={values.address1}
-            error={errors.address1Error.length > 0}
-            helperText={errors.address1Error}
-            onChange={(e) => setters.setAddress1(e.target.value)}
+            value={values.address1.value}
+            error={values.address1.error.length > 0}
+            helperText={values.address1.error}
+            onChange={(e) => values.address1.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -40,10 +40,10 @@ export default function AddressForm(props) {
             label="Address line 2"
             fullWidth
             autoComplete="shipping address-line2"
-            value={values.address2}
-            error={errors.address2Error.length > 0}
-            helperText={errors.address2Error}
-            onChange={(e) => setters.setAddress2(e.target.value)}
+            value={values.address2.value}
+            error={values.address2.error.length > 0}
+            helperText={values.address2.error}
+            onChange={(e) => values.address2.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -53,10 +53,10 @@ export default function AddressForm(props) {
             name="city"
             label="City"
             fullWidth
-            value={values.city}
-            error={errors.cityError.length > 0}
-            helperText={errors.cityError}
-            onChange={(e) => setters.setCity(e.target.value)}
+            value={values.city.value}
+            error={values.city.error.length > 0}
+            helperText={values.city.error}
+            onChange={(e) => values.city.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -65,10 +65,10 @@ export default function AddressForm(props) {
             name="state"
             label="State/Province/Region"
             fullWidth
-            value={values.state}
-            error={errors.stateError.length > 0}
-            helperText={errors.stateError}
-            onChange={(e) => setters.setState(e.target.value)}
+            value={values.state.value}
+            error={values.state.error.length > 0}
+            helperText={values.state.error}
+            onChange={(e) => values.state.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -79,10 +79,10 @@ export default function AddressForm(props) {
             label="Zip / Postal code"
             fullWidth
             autoComplete="shipping postal-code"
-            value={values.zip}
-            error={errors.zipError.length > 0}
-            helperText={errors.zipError}
-            onChange={(e) => setters.setZip(e.target.value)}
+            value={values.zip.value}
+            error={values.zip.error.length > 0}
+            helperText={values.zip.error}
+            onChange={(e) => values.zip.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -93,10 +93,10 @@ export default function AddressForm(props) {
             label="Country"
             fullWidth
             autoComplete="shipping country"
-            value={values.country}
-            error={errors.countryError.length > 0}
-            helperText={errors.countryError}
-            onChange={(e) => setters.setCountry(e.target.value)}
+            value={values.country.value}
+            error={values.country.error.length > 0}
+            helperText={values.country.error}
+            onChange={(e) => values.country.setValue(e.target.value)}
           />
         </Grid>
       </Grid>

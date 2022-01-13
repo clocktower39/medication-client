@@ -8,7 +8,7 @@ export default function Review(props) {
     <Grid container spacing={3}>
       {Object.keys(values).map((value) => (
         <Grid item md={4} sm={6} xs={12}>
-          <Typography variant="body1">{values[value]}</Typography>
+          <Typography variant="body1">{values[value].value}</Typography>
         </Grid>
       ))}
     </Grid>

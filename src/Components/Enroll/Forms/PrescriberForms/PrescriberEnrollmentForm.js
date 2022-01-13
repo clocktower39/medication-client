@@ -50,7 +50,7 @@ function getStepContent(step, page1, page2) {
     case 0:
       return <PrescriberDemographics values={page1.values} />;
     case 1:
-      return <AddressForm values={page2.values} setters={page2.setters} errors={page2.errors} />;
+      return <AddressForm values={page2.values} />;
     case 2:
       return <Review values={{ ...page1.values, ...page2.values }} />;
     default:
@@ -63,7 +63,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        MattKearns.dev
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -153,38 +153,48 @@ export default function PrescriberEnrollmentForm() {
   };
   const page2 = {
     values: {
-      practiceName,
-      address1,
-      address2,
-      city,
-      state,
-      zip,
-      country,
-    },
-    setters: {
-      setPracticeName,
-      setAddress1,
-      setAddress2,
-      setCity,
-      setState,
-      setZip,
-      setCountry,
-      setPracticeNameError,
-      setAddress1Error,
-      setAddress2Error,
-      setCityError,
-      setStateError,
-      setZipError,
-      setCountryError,
-    },
-    errors: {
-      practiceNameError,
-      address1Error,
-      address2Error,
-      cityError,
-      stateError,
-      zipError,
-      countryError,
+      practiceName: {
+        value: practiceName,
+        setValue: setPracticeName,
+        error: practiceNameError,
+        setError: setPracticeNameError,
+      },
+      address1: {
+        value: address1,
+        setValue: setAddress1,
+        error: address1Error,
+        setError: setAddress1Error,
+      },
+      address2: {
+        value: address2,
+        setValue: setAddress2,
+        error: address2Error,
+        setError: setAddress2Error,
+      },
+      city: {
+        value: city,
+        setValue: setCity,
+        error: cityError,
+        setError: setCityError,
+      },
+      state: {
+        value: state,
+        setValue: setState,
+        error: stateError,
+        setError: setStateError,
+      },
+      zip: {
+        value: zip,
+        setValue: setZip,
+        error: zipError,
+        setError: setZipError,
+      },
+      country: {
+        value: country,
+        setValue: setCountry,
+        error: countryError,
+        setError: setCountryError,
+      },
     },
   };
 
@@ -199,6 +209,7 @@ export default function PrescriberEnrollmentForm() {
         deaNumber !== "" &&
         email !== ""
       ) {
+        Object.keys(page1.values).forEach((value) => page1.values[value].setError(""));
         setActiveStep(activeStep + 1);
       } else {
         Object.keys(page1.values).forEach((value) => {
