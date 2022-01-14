@@ -1,7 +1,8 @@
-import React from 'react';
-import { Grid, TextField } from '@mui/material';
+import React from "react";
+import { Grid, TextField } from "@mui/material";
 
 export default function AddressForm(props) {
+  const { values } = props;
   return (
     <>
       <Grid container spacing={3}>
@@ -13,8 +14,10 @@ export default function AddressForm(props) {
             label="Address line 1"
             fullWidth
             autoComplete="shipping address-line1"
-            value={props.values[0]}
-            onChange={(e)=>props.setters[0](e.target.value)}
+            value={values.address1.value}
+            error={values.address1.error.length > 0}
+            helperText={values.address1.error}
+            onChange={(e) => values.address1.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -24,8 +27,10 @@ export default function AddressForm(props) {
             label="Address line 2"
             fullWidth
             autoComplete="shipping address-line2"
-            value={props.values[1]}
-            onChange={(e)=>props.setters[1](e.target.value)}
+            value={values.address2.value}
+            error={values.address2.error.length > 0}
+            helperText={values.address2.error}
+            onChange={(e) => values.address2.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -35,14 +40,24 @@ export default function AddressForm(props) {
             name="city"
             label="City"
             fullWidth
-            value={props.values[2]}
-            onChange={(e)=>props.setters[2](e.target.value)}
+            value={values.city.value}
+            error={values.city.error.length > 0}
+            helperText={values.city.error}
+            onChange={(e) => values.city.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField id="state" name="state" label="State/Province/Region" fullWidth 
-            value={props.values[3]}
-            onChange={(e)=>props.setters[3](e.target.value)}/>
+          <TextField
+            required
+            id="state"
+            name="state"
+            label="State/Province/Region"
+            fullWidth
+            value={values.state.value}
+            error={values.state.error.length > 0}
+            helperText={values.state.error}
+            onChange={(e) => values.state.setValue(e.target.value)}
+          />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -52,8 +67,10 @@ export default function AddressForm(props) {
             label="Zip / Postal code"
             fullWidth
             autoComplete="shipping postal-code"
-            value={props.values[4]}
-            onChange={(e)=>props.setters[4](e.target.value)}
+            value={values.zip.value}
+            error={values.zip.error.length > 0}
+            helperText={values.zip.error}
+            onChange={(e) => values.zip.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -64,8 +81,10 @@ export default function AddressForm(props) {
             label="Country"
             fullWidth
             autoComplete="shipping country"
-            value={props.values[5]}
-            onChange={(e)=>props.setters[5](e.target.value)}
+            value={values.country.value}
+            error={values.country.error.length > 0}
+            helperText={values.country.error}
+            onChange={(e) => values.country.setValue(e.target.value)}
           />
         </Grid>
       </Grid>

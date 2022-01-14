@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Link, StepLabel, Paper, Stepper, Step, Typography } from "@mui/material";
+import { Button, Grid, Link, StepLabel, Paper, Stepper, Step, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Review from "./Review";
@@ -12,8 +12,6 @@ const useStyles = makeStyles((theme) => ({
   },
   layout: {
     width: "auto",
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 600,
       marginLeft: "auto",
@@ -24,18 +22,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      padding: theme.spacing(3),
-    },
   },
   stepper: {
     padding: theme.spacing(3, 0, 5),
-  },
-  buttons: {
-    display: "flex",
-    justifyContent: "flex-end",
   },
   button: {
     marginTop: theme.spacing(3),
@@ -151,6 +140,7 @@ export default function PrescriberEnrollmentForm() {
       },
     },
   };
+
   const page2 = {
     values: {
       practiceName: {
@@ -224,13 +214,21 @@ export default function PrescriberEnrollmentForm() {
       if (
         practiceName !== "" &&
         address1 !== "" &&
-        address2 !== "" &&
         city !== "" &&
         state !== "" &&
         zip !== "" &&
         country !== ""
       ) {
+        Object.keys(page2.values).forEach((value) => page2.values[value].setError(""));
         setActiveStep(activeStep + 1);
+      } else {
+        Object.keys(page2.values).forEach((value) => {
+          if (page2.values[value].value === "" && value !== "address2") {
+            page2.values[value].setError("Required Field Empty");
+          } else {
+            page2.values[value].setError("");
+          }
+        });
       }
     } else {
       setActiveStep(activeStep + 1);
@@ -264,21 +262,22 @@ export default function PrescriberEnrollmentForm() {
             ) : (
               <>
                 {getStepContent(activeStep, page1, page2)}
-                <div className={classes.buttons}>
+                <Grid container item xs={12} spacing={2} sx={{ justifyContent: 'center', marginTop: '15px' }}>
                   {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
+                      <Button onClick={handleBack} className={classes.button} variant="outlined" sx={{ margin: '0 5px' }}>
+                        Back
+                      </Button>
                   )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? "Enroll" : "Next"}
-                  </Button>
-                </div>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      className={classes.button}
+                      sx={{ margin: '0 5px' }}
+                    >
+                      {activeStep === steps.length - 1 ? "Enroll" : "Next"}
+                    </Button>
+                </Grid>
               </>
             )}
           </>

@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import { TextField } from '@mui/material';
 
 export default function PatientDemographics(props) {
+  const { values } = props;
   return (
     <>
       <Grid container spacing={3}>
@@ -14,8 +15,10 @@ export default function PatientDemographics(props) {
             label="First name"
             fullWidth
             autoComplete="given-name"
-            value={props.values[0]}
-            onChange={(e)=>props.setters[0](e.target.value)}
+            value={values.firstName.value}
+            error={values.firstName.error.length > 0}
+            helperText={values.firstName.error}
+            onChange={(e) => values.firstName.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -26,8 +29,10 @@ export default function PatientDemographics(props) {
             label="Last name"
             fullWidth
             autoComplete="family-name"
-            value={props.values[1]}
-            onChange={(e)=>props.setters[1](e.target.value)}
+            value={values.lastName.value}
+            error={values.lastName.error.length > 0}
+            helperText={values.lastName.error}
+            onChange={(e) => values.lastName.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -37,8 +42,10 @@ export default function PatientDemographics(props) {
             name="phone"
             label="Phone Number"
             fullWidth
-            value={props.values[2]}
-            onChange={(e)=>props.setters[2](e.target.value)}
+            value={values.phoneNumber.value}
+            error={values.phoneNumber.error.length > 0}
+            helperText={values.phoneNumber.error}
+            onChange={(e) => values.phoneNumber.setValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -48,8 +55,10 @@ export default function PatientDemographics(props) {
             name="dateOfBirth"
             label="Date of Birth"
             fullWidth
-            value={props.values[3]}
-            onChange={(e)=>props.setters[3](e.target.value)}
+            value={values.dateOfBirth.value}
+            error={values.dateOfBirth.error.length > 0}
+            helperText={values.dateOfBirth.error}
+            onChange={(e) => values.dateOfBirth.setValue(e.target.value)}
           />
         </Grid>
 
