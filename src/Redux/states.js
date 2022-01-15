@@ -4,7 +4,7 @@ export let agent = {
         week: [
             {
                 day: 'Monday',
-                breakdown:[
+                breakdown: [
                     {
                         start: '5:00',
                         end: '07:30',
@@ -40,7 +40,7 @@ export let agent = {
             },
             {
                 day: 'Tuesday',
-                breakdown:[
+                breakdown: [
                     {
                         start: '5:00',
                         end: '07:30',
@@ -76,7 +76,7 @@ export let agent = {
             },
             {
                 day: 'Wednesday',
-                breakdown:[
+                breakdown: [
                     {
                         start: '5:00',
                         end: '07:30',
@@ -108,11 +108,11 @@ export let agent = {
                         task: 'Open'
                     },
                 ],
-                projects: ['Faxes','Escalations']
+                projects: ['Faxes', 'Escalations']
             },
             {
                 day: 'Thursday',
-                breakdown:[
+                breakdown: [
                     {
                         start: '5:00',
                         end: '07:30',
@@ -148,7 +148,7 @@ export let agent = {
             },
             {
                 day: 'Friday',
-                breakdown:[
+                breakdown: [
                     {
                         start: '5:00',
                         end: '07:30',

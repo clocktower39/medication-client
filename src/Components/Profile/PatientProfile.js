@@ -21,8 +21,10 @@ const useStyles = makeStyles({
         padding: '7.5px',
         width: '65%',
         backgroundColor: '#fcfcfc',
-        left: '50%',
-        transform: 'translate(-50%, 50%)',
+        top: '5%',
+        left: '17.5%',
+        overflowY: 'scroll',
+        height: '90%'
     },
     TableHeader: {
         fontWeight: 600,
@@ -49,7 +51,7 @@ export default function PatientProfile(props) {
     const [zip, setZip] = useState('');
     const [country, setCountry] = useState('');
     const [labs, setLabs] = useState([]);
-    const [bloodDrawDate, setBloodDrawDate] = useState(new Date().toISOString().slice(0,10));
+    const [bloodDrawDate, setBloodDrawDate] = useState(new Date().toISOString().slice(0, 10));
     const [anc, setAnc] = useState('');
     const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
     const [searchFirstName, setSearchFirstName] = useState('');
@@ -186,7 +188,7 @@ export default function PatientProfile(props) {
             .then(data => {
                 setLabs(prevLabs => [...prevLabs, { ...data.lab }]);
                 setAnc('');
-                setBloodDrawDate(new Date().toISOString().slice(0,10));
+                setBloodDrawDate(new Date().toISOString().slice(0, 10));
             })
     }
 
@@ -262,64 +264,64 @@ export default function PatientProfile(props) {
                 <Grid container item md={4} xs={12}>
                     <Paper className={classes.Paper}>
                         <Typography variant="h5" align="center" gutterBottom >Patient Profile Summary</Typography>
-                        <Grid container>
-                            <Grid container item xs={12} >
-                                {!editMode ?
-                                    <>
-                                        <Grid item xs={6}><Typography variant="body1">First Name</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.firstName}</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.lastName}</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.dateOfBirth.substr(0, 10)}</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.phoneNumber}</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.address1}</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.address2}</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">City</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.city}</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">State</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.state}</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.zip}</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Country</Typography></Grid>
-                                        <Grid item xs={6}><Typography variant="body2">{patient.country}</Typography></Grid>
-                                        <Grid container item xs={12} justifyContent="center" ><Button variant="outlined" onClick={() => setEditMode(!editMode)} >Edit</Button></Grid>
-                                    </> :
-                                    <>
-                                        <Grid item xs={6}><Typography variant="body1">First Name</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={firstName} onChange={(e) => handleAccountChange(e, setFirstName)} /></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={lastName} onChange={(e) => handleAccountChange(e, setLastName)} /></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={dateOfBirth} onChange={(e) => handleAccountChange(e, setDOB)} /></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={phoneNumber} onChange={(e) => handleAccountChange(e, setPhoneNumber)} /></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={address1} onChange={(e) => handleAccountChange(e, setAddress1)} /></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={address2} onChange={(e) => handleAccountChange(e, setAddress2)} /></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">City</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={city} onChange={(e) => handleAccountChange(e, setCity)} /></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">State</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={state} onChange={(e) => handleAccountChange(e, setState)} /></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={zip} onChange={(e) => handleAccountChange(e, setZip)} /></Grid>
-                                        <Grid item xs={6}><Typography variant="body1">Country</Typography></Grid>
-                                        <Grid item xs={6}><TextField value={country} onChange={(e) => handleAccountChange(e, setCountry)} /></Grid>
-                                        <Grid container item xs={6} justifyContent="center" ><Button variant="outlined" onClick={() => {
+                        <Grid container item xs={12} spacing={1} >
+                            {!editMode ?
+                                <>
+                                    <Grid container item xs={6}><Typography variant="body1">First Name</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.firstName}</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body1">Last Name</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.lastName}</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body1">Date of Birth</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.dateOfBirth.substr(0, 10)}</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body1">Phone Number</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.phoneNumber}</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body1">Address 1</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.address1}</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body1">Address 2</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.address2}</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body1">City</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.city}</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body1">State</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.state}</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body1">Zip Code</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.zip}</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body1">Country</Typography></Grid>
+                                    <Grid container item xs={6}><Typography variant="body2">{patient.country}</Typography></Grid>
+                                    <Grid container item xs={12} justifyContent="center" ><Button variant="outlined" onClick={() => setEditMode(!editMode)} >Edit</Button></Grid>
+                                </> :
+                                <>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">First Name</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={firstName} onChange={(e) => handleAccountChange(e, setFirstName)} /></Grid>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Last Name</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={lastName} onChange={(e) => handleAccountChange(e, setLastName)} /></Grid>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Date of Birth</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={dateOfBirth} onChange={(e) => handleAccountChange(e, setDOB)} /></Grid>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Phone Number</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={phoneNumber} onChange={(e) => handleAccountChange(e, setPhoneNumber)} /></Grid>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Address 1</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={address1} onChange={(e) => handleAccountChange(e, setAddress1)} /></Grid>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Address 2</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={address2} onChange={(e) => handleAccountChange(e, setAddress2)} /></Grid>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">City</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={city} onChange={(e) => handleAccountChange(e, setCity)} /></Grid>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">State</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={state} onChange={(e) => handleAccountChange(e, setState)} /></Grid>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Zip Code</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={zip} onChange={(e) => handleAccountChange(e, setZip)} /></Grid>
+                                    <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Country</Typography></Grid>
+                                    <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField value={country} onChange={(e) => handleAccountChange(e, setCountry)} /></Grid>
+                                    <Grid container item xs={12} justifyContent="center" >
+                                        <Button variant="outlined" sx={{ margin: '5px' }} onClick={() => {
                                             resetEditData(patient);
                                             setEditMode(!editMode)
-                                        }} >Cancel</Button></Grid>
-                                        <Grid container item xs={6} justifyContent="center" ><Button variant="outlined" onClick={() => {
+                                        }} >Cancel</Button>
+                                        <Button variant="outlined" sx={{ margin: '5px' }} onClick={() => {
                                             updatePatientEdit();
                                             setEditMode(!editMode)
                                         }
-                                        } >Save</Button></Grid>
-                                    </>}
-                            </Grid>
+                                        } >Save</Button>
+                                    </Grid>
+                                </>}
                         </Grid>
                     </Paper>
                 </Grid>
@@ -398,9 +400,9 @@ export default function PatientProfile(props) {
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
-                            <Grid container>
-                                <Grid item xs={11}><TextField onChange={handleNoteChange} multiline fullWidth value={newNote} /></Grid>
-                                <Grid item xs={1}><IconButton onClick={submitNote}><AddCircle /></IconButton></Grid>
+                            <Grid container >
+                                <Grid container item xs={12} sx={{ alignContent: 'center', }}><TextField onChange={handleNoteChange} multiline fullWidth value={newNote} /></Grid>
+                                <Grid container item xs={12} sx={{ alignContent: 'center', justifyContent: 'center', }}><IconButton onClick={submitNote}><AddCircle /></IconButton></Grid>
                             </Grid>
                             <TableContainer component={Paper}>
                                 <Table size="small">
@@ -430,11 +432,12 @@ export default function PatientProfile(props) {
                     </Grid>
                     <Grid container item xs={12}>
                         <Paper className={classes.Paper}>
-                            <Typography variant="h5" align="center" >Labs</Typography>
-                            <Grid container justifyContent="center" >
-                                <Grid item xs={12} sm={5} >
+                            <Typography variant="h5" align="center" gutterBottom >Labs</Typography>
+                            <Grid container justifyContent="center" spacing={1} sx={{ marginBottom: '15px' }}>
+                                <Grid item xs={6} sm={5} >
                                     <TextField
                                         focused
+                                        fullWidth
                                         id="bdd"
                                         label="Blood Draw Date"
                                         type="date"
@@ -443,14 +446,15 @@ export default function PatientProfile(props) {
                                         className={classes.TextField}
                                         onChange={(e) => handleLabChange(e, setBloodDrawDate)}
                                     />
-                                    {/* <TextField label="Blood Draw Date" value={bloodDrawDate} onChange={(e) => handleLabChange(e, setBloodDrawDate)} /> */}
                                 </Grid>
-                                <Grid item xs={12} sm={3} >
-                                    <TextField label="ANC" value={anc} onChange={(e) => handleLabChange(e, setAnc)} />
+                                <Grid item xs={6} sm={5} >
+                                    <TextField fullWidth label="ANC" value={anc} onChange={(e) => handleLabChange(e, setAnc)} />
                                 </Grid>
-                                <IconButton onClick={addLab}>
-                                    <AddCircle />
-                                </IconButton>
+                                <Grid container item xs={12} sm={1} sx={{ alignContent: 'center', justifyContent: 'center', }}>
+                                    <IconButton onClick={addLab}>
+                                        <AddCircle />
+                                    </IconButton>
+                                </Grid>
                             </Grid>
                             <TableContainer component={Paper}>
                                 <Table size="small">

@@ -222,19 +222,19 @@ export default function PatientEnrollmentForm() {
                 {getStepContent(activeStep, page1, page2)}
                 <Grid container item xs={12} spacing={2} sx={{ justifyContent: 'center', marginTop: '15px' }}>
                   {activeStep !== 0 && (
-                      <Button onClick={handleBack} className={classes.button} variant="outlined" sx={{ margin: '0 5px' }}>
-                        Back
-                      </Button>
-                  )}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                      className={classes.button}
-                      sx={{ margin: '0 5px' }}
-                    >
-                      {activeStep === steps.length - 1 ? "Enroll" : "Next"}
+                    <Button onClick={handleBack} className={classes.button} variant="outlined" sx={{ margin: '0 5px' }}>
+                      Back
                     </Button>
+                  )}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                    sx={{ margin: '0 5px' }}
+                  >
+                    {activeStep === steps.length - 1 ? "Enroll" : "Next"}
+                  </Button>
                 </Grid>
               </>
             )}

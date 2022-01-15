@@ -24,7 +24,7 @@ export default function Home() {
                 </Grid>
                 <Grid container item xs={12} sx={{ justifyContent: 'center', marginTop: '15px' }} ><Typography variant="body1" gutterBottom >Projects</Typography></Grid>
                 {projects.map((project) => (
-                    <Grid container item xs={6} key={project} sx={{ justifyContent: 'center',}}>
+                    <Grid container item xs={6} key={project} sx={{ justifyContent: 'center', }}>
                         <Typography variant="body1" >{project}</Typography>
                     </Grid>
                 ))}

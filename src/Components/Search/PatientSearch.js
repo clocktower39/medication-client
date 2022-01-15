@@ -45,7 +45,7 @@ export default function PatientSearch(props) {
         })
             .then(res => res.json())
             .then(data => setSearchResults(data))
-            .then(()=>setLoading(false));
+            .then(() => setLoading(false));
     }
 
     return (
@@ -69,10 +69,10 @@ export default function PatientSearch(props) {
                 <TextField label="Zip Code" fullWidth value={zip} onChange={(e) => handleChange(e, setZip)} />
             </Grid>
             <Grid container justifyContent="center" item xs={12}>
-                <Button variant="contained" onClick={handleSearch} disabled={loading} >{loading? <CircularProgress /> : 'Search'}</Button>
+                <Button variant="contained" onClick={handleSearch} disabled={loading} >{loading ? <CircularProgress /> : 'Search'}</Button>
             </Grid>
 
-            <TableContainer component={Paper} sx={{ margin: '10px 0px', minHeight: '100%'}}>
+            <TableContainer component={Paper} sx={{ margin: '10px 0px', minHeight: '100%' }}>
                 <Table size="small">
                     <TableHead>
                         <TableRow>

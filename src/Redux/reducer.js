@@ -2,13 +2,13 @@ import { ERROR } from './actions';
 import { agent } from './states'
 
 export let reducer = (state = { agent }, action) => {
-    switch(action.type){
+    switch (action.type) {
         case ERROR:
             return {
                 ...state,
-                error: {...action.error}
+                error: { ...action.error }
             }
         default:
-            return {...state};
+            return { ...state };
     }
 }

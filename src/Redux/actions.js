@@ -2,7 +2,7 @@
 
 export const ERROR = 'ERROR';
 
-export function signupUser(user){
+export function signupUser(user) {
     return async (dispatch, getState) => {
         return dispatch({});
     }

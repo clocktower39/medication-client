@@ -7,7 +7,7 @@ import Search from './Components/Search';
 import EnrollContainer from './Components/Enroll/EnrollContainer';
 import PatientProfile from './Components/Profile/PatientProfile';
 import PrescriberProfile from './Components/Profile/PrescriberProfile';
-import { theme } from './theme';
+import theme from './theme';
 import './App.css';
 
 const useStyles = makeStyles({
@@ -26,10 +26,10 @@ function App() {
           <Navbar />
           <Switch>
             <Route exact path="/"><Home /></Route>
-            <Route exact path="/search"><Search/></Route>
-            <Route exact path="/enroll"><EnrollContainer/></Route>
-            <Route path="/patientProfile"><PatientProfile/></Route>
-            <Route path="/prescriberProfile"><PrescriberProfile/></Route>
+            <Route exact path="/search"><Search /></Route>
+            <Route exact path="/enroll"><EnrollContainer /></Route>
+            <Route path="/patientProfile"><PatientProfile /></Route>
+            <Route path="/prescriberProfile"><PrescriberProfile /></Route>
           </Switch>
         </Router>
       </Container>
