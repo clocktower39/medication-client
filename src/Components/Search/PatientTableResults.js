@@ -183,14 +183,16 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable(props) {
+export default function TableResults(props) {
+  const { searchResults, type, onClickFunc } = props;
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const rows = [...props.searchResults];
+  const rows = [...searchResults];
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -269,12 +271,21 @@ export default function EnhancedTable(props) {
                       <TableCell padding="normal">{row.phoneNumber}</TableCell>
                       <TableCell padding="normal">{row.zip}</TableCell>
                       <TableCell padding="normal">
-                        <Button
-                          variant="outlined"
-                          onClick={() => history.push(`/patientProfile/${row._id}`)}
-                        >
-                          Open
-                        </Button>
+                        {type === 'select' ? (
+                          <Button
+                            variant="outlined"
+                            onClick={() => onClickFunc(row._id)}
+                          >
+                            Select
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            onClick={() => history.push(`/patientProfile/${row._id}`)}
+                          >
+                            Open
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
                   );

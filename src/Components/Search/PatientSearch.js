@@ -8,6 +8,7 @@ import {
 import PatientTableResults from './PatientTableResults';
 
 export default function PatientSearch(props) {
+  const { type, onClickFunc } = props;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -109,7 +110,7 @@ export default function PatientSearch(props) {
         </Button>
       </Grid>
 
-      <PatientTableResults searchResults={searchResults} />
+      <Grid container item ><PatientTableResults searchResults={searchResults} type={type} onClickFunc={onClickFunc} /></Grid>
     </>
   );
 }

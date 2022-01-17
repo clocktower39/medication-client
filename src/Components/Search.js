@@ -22,7 +22,7 @@ export default function Search() {
                 </RadioGroup>
             </FormControl>
             <Grid container spacing={1}>
-                {searchType === 'patient' ? <PatientSearch /> : searchType === 'prescriber' && <PrescriberSearch />}
+                {searchType === 'patient' ? <PatientSearch type="open"/> : searchType === 'prescriber' && <PrescriberSearch />}
             </Grid>
         </Paper>
     )
