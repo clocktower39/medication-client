@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
 import {
   Box,
   Button,
@@ -16,13 +15,9 @@ import {
   Toolbar,
   Typography,
   Paper,
-  IconButton,
-  Tooltip,
   FormControlLabel,
   Switch,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 
 function descendingComparator(a, b, orderBy) {
@@ -55,47 +50,8 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  {
-    id: "firstName",
-    numeric: false,
-    disablePadding: false,
-    label: "First Name",
-  },
-  {
-    id: "lastName",
-    numeric: false,
-    disablePadding: false,
-    label: "Last Name",
-  },
-  {
-    id: "dateOfBirth",
-    numeric: false,
-    disablePadding: false,
-    label: "Date of Birth",
-  },
-  {
-    id: "phoneNumber",
-    numeric: true,
-    disablePadding: false,
-    label: "Phone Number",
-  },
-  {
-    id: "zip",
-    numeric: true,
-    disablePadding: false,
-    label: "Zip Code",
-  },
-  {
-    id: "_id",
-    numeric: true,
-    disablePadding: false,
-    label: "",
-  },
-];
-
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } = props;
+  const { order, orderBy, onRequestSort, headCells } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -105,18 +61,18 @@ function EnhancedTableHead(props) {
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
-            key={headCell.id}
+            key={headCell.propertyName}
             align={"left"}
             padding={"normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
+            sortDirection={orderBy === headCell.propertyName ? order : false}
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
+              active={orderBy === headCell.propertyName}
+              direction={orderBy === headCell.propertyName ? order : "asc"}
+              onClick={createSortHandler(headCell.propertyName)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
+              {orderBy === headCell.propertyName ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>
@@ -130,66 +86,19 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography sx={{ flex: "1 1 100%" }} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
-          Results
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
 
 export default function TableResults(props) {
-  const { searchResults, type, onClickFunc } = props;
+  const { searchResults, type, onClickFunc, fields, headCells, profileType } = props;
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const rows = [...searchResults];
 
@@ -198,15 +107,6 @@ export default function TableResults(props) {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -222,8 +122,6 @@ export default function TableResults(props) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
   const history = useHistory();
@@ -231,7 +129,16 @@ export default function TableResults(props) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <Toolbar
+          sx={{
+            pl: { sm: 2 },
+            pr: { xs: 1, sm: 1 },
+          }}
+        >
+          <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
+            Search Results
+          </Typography>
+        </Toolbar>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -239,12 +146,11 @@ export default function TableResults(props) {
             size={dense ? "small" : "medium"}
           >
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
+              headCells={headCells}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
@@ -252,24 +158,15 @@ export default function TableResults(props) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-${index}`;
-
                   return (
                     <TableRow
                       hover
-                      aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={`table-row-${row._id}`}
-                      selected={isItemSelected}
                     >
-                      <TableCell component="th" id={labelId} scope="row" padding="normal">
-                        {row.firstName}
-                      </TableCell>
-                      <TableCell padding="normal">{row.lastName}</TableCell>
-                      <TableCell padding="normal">{row.dateOfBirth.substr(0, 10)}</TableCell>
-                      <TableCell padding="normal">{row.phoneNumber}</TableCell>
-                      <TableCell padding="normal">{row.zip}</TableCell>
+                      {fields.map(field => (
+                        <TableCell key={`${row._id}-table-cell-${field.propertyName}`} padding="normal">{field.propertyName === 'dateOfBirth' ? row[field.propertyName].substr(0, 10) : row[field.propertyName]}</TableCell>
+                      ))}
                       <TableCell padding="normal">
                         {type === 'select' ? (
                           <Button
@@ -281,7 +178,7 @@ export default function TableResults(props) {
                         ) : (
                           <Button
                             variant="outlined"
-                            onClick={() => history.push(`/patientProfile/${row._id}`)}
+                            onClick={() => history.push(`/${profileType}Profile/${row._id}`)}
                           >
                             Open
                           </Button>

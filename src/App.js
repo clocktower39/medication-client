@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Components/Home';
 import Navbar from './Components/Navbar';
-import Search from './Components/Search';
+import MainSearch from './Components/MainSearch';
 import EnrollContainer from './Components/Enroll/EnrollContainer';
 import PatientProfile from './Components/Profile/PatientProfile';
 import PrescriberProfile from './Components/Profile/PrescriberProfile';
@@ -26,7 +26,7 @@ function App() {
           <Navbar />
           <Switch>
             <Route exact path="/"><Home /></Route>
-            <Route exact path="/search"><Search /></Route>
+            <Route exact path="/search"><MainSearch /></Route>
             <Route exact path="/enroll"><EnrollContainer /></Route>
             <Route path="/patientProfile"><PatientProfile /></Route>
             <Route path="/prescriberProfile"><PrescriberProfile /></Route>

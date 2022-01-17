@@ -4,7 +4,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { AddCircle, ExpandMore, RemoveCircle } from '@mui/icons-material';
-import PatientSearch from '../Search/PatientSearch';
+import Search from '../Search/Search';
 
 const useStyles = makeStyles({
     root: {},
@@ -61,7 +61,6 @@ export default function PrescriberProfile(props) {
     const handleAccountChange = (e, setter) => {
         setter(e.target.value)
     }
-
 
     const createRelationship = (patientId) => {
         fetch('https://stark-garden-91538.herokuapp.com/manageRelationship', {
@@ -236,36 +235,36 @@ export default function PrescriberProfile(props) {
                                 <Grid container item xs={12} spacing={1} >
                                     <Grid container item xs={12} md={6} lg={12} spacing={1} >
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">First Name</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={firstName} onChange={(e) => handleAccountChange(e, setFirstName)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={firstName} onChange={(e) => handleAccountChange(e, setFirstName)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Last Name</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={lastName} onChange={(e) => handleAccountChange(e, setLastName)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={lastName} onChange={(e) => handleAccountChange(e, setLastName)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Phone Number</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={phoneNumber} onChange={(e) => handleAccountChange(e, setPhoneNumber)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={phoneNumber} onChange={(e) => handleAccountChange(e, setPhoneNumber)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Fax Number</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={faxNumber} onChange={(e) => handleAccountChange(e, setFaxNumber)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={faxNumber} onChange={(e) => handleAccountChange(e, setFaxNumber)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Email</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={email} onChange={(e) => handleAccountChange(e, setEmail)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={email} onChange={(e) => handleAccountChange(e, setEmail)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">NPI Number</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={npiNumber} onChange={(e) => handleAccountChange(e, setNpiNumber)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={npiNumber} onChange={(e) => handleAccountChange(e, setNpiNumber)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">DEA Number</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={deaNumber} onChange={(e) => handleAccountChange(e, setDeaNumber)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={deaNumber} onChange={(e) => handleAccountChange(e, setDeaNumber)} /></Grid>
                                     </Grid>
 
                                     <Grid container item xs={12} md={6} lg={12} spacing={1} >
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Practice Name</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={practiceName} onChange={(e) => handleAccountChange(e, setPracticeName)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={practiceName} onChange={(e) => handleAccountChange(e, setPracticeName)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Address 1</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={address1} onChange={(e) => handleAccountChange(e, setAddress1)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={address1} onChange={(e) => handleAccountChange(e, setAddress1)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Address 2</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={address2} onChange={(e) => handleAccountChange(e, setAddress2)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={address2} onChange={(e) => handleAccountChange(e, setAddress2)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">City</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={city} onChange={(e) => handleAccountChange(e, setCity)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={city} onChange={(e) => handleAccountChange(e, setCity)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">State</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={state} onChange={(e) => handleAccountChange(e, setState)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={state} onChange={(e) => handleAccountChange(e, setState)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Zip Code</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={zip} onChange={(e) => handleAccountChange(e, setZip)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={zip} onChange={(e) => handleAccountChange(e, setZip)} /></Grid>
                                         <Grid container item xs={4} sx={{ alignContent: 'center', }}><Typography variant="body1">Country</Typography></Grid>
-                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small"value={country} onChange={(e) => handleAccountChange(e, setCountry)} /></Grid>
+                                        <Grid container item xs={8} sx={{ alignContent: 'center', }}><TextField fullWidth size="small" value={country} onChange={(e) => handleAccountChange(e, setCountry)} /></Grid>
                                     </Grid>
                                     <Grid container item xs={12} justifyContent="center" >
                                         <Button variant="outlined" sx={{ margin: '5px' }} onClick={() => {
@@ -296,7 +295,21 @@ export default function PrescriberProfile(props) {
                                     <div>
                                         <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
                                     </div>
-                                    <Grid container spacing={1} ><PatientSearch type="select" onClickFunc={createRelationship} /></Grid>
+                                    <Grid container spacing={1} >
+                                        <Search
+                                            profileType="patient"
+                                            fieldObjects={[
+                                                { label: 'First Name', propertyName: 'firstName', value: '' },
+                                                { label: 'Last Name', propertyName: 'lastName', value: '' },
+                                                { label: 'Phone Number', propertyName: 'phoneNumber', value: '' },
+                                                { label: 'Date of Birth', propertyName: 'dateOfBirth', value: '' },
+                                                { label: 'Zip Code', propertyName: 'zip', value: '' },
+                                            ]}
+                                            searchUrl={"https://stark-garden-91538.herokuapp.com/searchPatients"}
+                                            type="select"
+                                            onClickFunc={createRelationship}
+                                        />
+                                    </Grid>
                                 </div>
                             </Modal>
                             <TableContainer component={Paper}>
@@ -311,8 +324,8 @@ export default function PrescriberProfile(props) {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {patients.length > 0 ? patients.map(patient => (
-                                            <RelationshipHistorySection patient={patient} />
+                                        {patients.length > 0 ? patients.map((patient, i) => (
+                                            <RelationshipHistorySection key={`relationship-patient-${i}`} patient={patient} />
                                         )) :
                                             <TableRow>
                                                 <TableCell>No active patients</TableCell>
