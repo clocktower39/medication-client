@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   Box,
@@ -124,7 +124,7 @@ export default function TableResults(props) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-  const history = useHistory();
+  const navigate = useNavigate ();
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -178,7 +178,7 @@ export default function TableResults(props) {
                         ) : (
                           <Button
                             variant="outlined"
-                            onClick={() => history.push(`/${profileType}Profile/${row._id}`)}
+                            onClick={() => navigate(`/${profileType}Profile/${row._id}`)}
                           >
                             Open
                           </Button>
