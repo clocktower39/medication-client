@@ -4,6 +4,7 @@ import { Grid, Paper, Typography } from '@mui/material/';
 
 export default function Home() {
     const agent = useSelector(state => state.agent);
+    const schedule = useSelector(state => state.schedule);
 
     const PinnedSubheaderList = (props) => {
         const { projects, breakdown } = props;
@@ -43,7 +44,7 @@ export default function Home() {
             }} >Welcome {agent.username}!</Typography>
             <Grid container spacing={1} sx={{ justifyContent: "center", alignItems: "center" }}>
                 <Grid container item xs={12} spacing={3} sx={{ justifyContent: "center", alignItems: "center" }}>
-                    {agent.schedule.week.map(day => (
+                    {schedule.week.map(day => (
                         <Grid item xs={12} sm={6} md={4} key={day.day} >
                             <Paper sx={theme => ({
                                 padding: theme.spacing(1),

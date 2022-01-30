@@ -3,7 +3,8 @@ import { Paper, Grid, FormControlLabel, FormControl, FormLabel, RadioGroup, Radi
 import Search from './Search/Search';
 
 
-export default function MainSearch() {
+export default function MainSearch(props) {
+    const { serverURL } = props;
     const [searchType, setSearchType] = useState('patient');
 
     const handleChange = (event) => {
@@ -31,7 +32,7 @@ export default function MainSearch() {
                             { label: 'Date of Birth', propertyName: 'dateOfBirth', value: '' },
                             { label: 'Zip Code', propertyName: 'zip', value: '' },
                         ]}
-                        searchUrl={"https://stark-garden-91538.herokuapp.com/searchPatients"}
+                        searchUrl={`${serverURL}/searchPatients`}
                     /> :
                     <Search
                         profileType="prescriber"
@@ -45,7 +46,7 @@ export default function MainSearch() {
                             { label: 'DEA', propertyName: 'deaNumber', value: '' },
                             { label: 'Zip Code', propertyName: 'zip', value: '' },
                         ]}
-                        searchUrl={"https://stark-garden-91538.herokuapp.com/searchPrescribers"}
+                        searchUrl={`${serverURL}/searchPrescribers`}
                     />}
             </Grid>
         </Paper>

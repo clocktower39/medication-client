@@ -30,6 +30,7 @@ const useStyles = makeStyles({
 })
 
 export default function PrescriberProfile(props) {
+    const { serverURL, patient } = props;
     const classes = useStyles();
     const location = useLocation();
     const [prescriber, setPrescriber] = useState(null);
@@ -63,7 +64,7 @@ export default function PrescriberProfile(props) {
     }
 
     const createRelationship = (patientId) => {
-        fetch('https://stark-garden-91538.herokuapp.com/manageRelationship', {
+        fetch(`${serverURL}/manageRelationship`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({
@@ -78,7 +79,7 @@ export default function PrescriberProfile(props) {
     }
 
     const submitNote = () => {
-        fetch('https://stark-garden-91538.herokuapp.com/submitNote', {
+        fetch(`${serverURL}/submitNote`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({
@@ -98,7 +99,7 @@ export default function PrescriberProfile(props) {
 
     const updatePrescriberEdit = () => {
 
-        fetch('https://stark-garden-91538.herokuapp.com/updatePrescriber', {
+        fetch(`${serverURL}/updatePrescriber`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({ filter: { _id: prescriber._id }, update: { firstName, lastName, phoneNumber, faxNumber, email, npiNumber, deaNumber, practiceName, address1, address2, city, state, zip, country } }),
@@ -131,12 +132,12 @@ export default function PrescriberProfile(props) {
         const [expandHistory, setExpandHistory] = useState(false);
         return (
             <>
-                <TableRow key={props.patient._id}>
-                    <TableCell><Link to={`/patientProfile/${props.patient._id}`}>{props.patient._id}</Link></TableCell>
-                    <TableCell>{props.patient.firstName}</TableCell>
-                    <TableCell>{props.patient.lastName}</TableCell>
-                    <TableCell>{props.patient.dateOfBirth.substr(0, 10)}</TableCell>
-                    <TableCell>{props.patient.zip}</TableCell>
+                <TableRow key={patient._id}>
+                    <TableCell><Link to={`/patientProfile/${patient._id}`}>{patient._id}</Link></TableCell>
+                    <TableCell>{patient.firstName}</TableCell>
+                    <TableCell>{patient.lastName}</TableCell>
+                    <TableCell>{patient.dateOfBirth.substr(0, 10)}</TableCell>
+                    <TableCell>{patient.zip}</TableCell>
                     <TableCell><IconButton onClick={() => setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
                 </TableRow>
                 {expandHistory === true && (
@@ -148,7 +149,7 @@ export default function PrescriberProfile(props) {
                             <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
                         </TableRow>
 
-                        {props.patient.completeHistory.map(historyItem => (
+                        {patient.completeHistory.map(historyItem => (
                             <TableRow key={historyItem.date}>
                                 <TableCell colSpan={1} ></TableCell>
                                 <TableCell colSpan={2} >{historyItem.date}</TableCell>
@@ -163,15 +164,15 @@ export default function PrescriberProfile(props) {
     useEffect(() => {
         const getAccountInfo = async () => {
             // fetch the prescriber object
-            const prescriberObject = await fetch(`https://stark-garden-91538.herokuapp.com${location.pathname}`).then(res => res.json()).then(data => data[0]);
+            const prescriberObject = await fetch(`${serverURL}${location.pathname}`).then(res => res.json()).then(data => data[0]);
 
             // fetch the prescriber relationships
-            const relationshipsArray = await fetch(`https://stark-garden-91538.herokuapp.com/relationships/prescriber/${prescriberObject._id}`).then(res => res.json());
+            const relationshipsArray = await fetch(`${serverURL}/relationships/prescriber/${prescriberObject._id}`).then(res => res.json());
             const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item.patientId))];
 
             // add each PT from the relationship history
             uniqueRelationshipsArray.forEach((id, i) => {
-                fetch(`https://stark-garden-91538.herokuapp.com/patientProfile/${id}`)
+                fetch(`${serverURL}/patientProfile/${id}`)
                     .then(res => res.json())
                     .then(ptData => {
                         setPatients(prevPatientList => [...prevPatientList, { ...ptData[0], completeHistory: relationshipsArray.filter(item => item.patientId === id) }]);
@@ -179,7 +180,7 @@ export default function PrescriberProfile(props) {
             })
 
             // fetch the account notes
-            fetch(`https://stark-garden-91538.herokuapp.com/notes/${prescriberObject._id}`).then(res => res.json()).then(data => setNotes(data));
+            fetch(`${serverURL}/notes/${prescriberObject._id}`).then(res => res.json()).then(data => setNotes(data));
             resetEditData(prescriberObject);
 
             return prescriberObject;
@@ -305,7 +306,7 @@ export default function PrescriberProfile(props) {
                                                 { label: 'Date of Birth', propertyName: 'dateOfBirth', value: '' },
                                                 { label: 'Zip Code', propertyName: 'zip', value: '' },
                                             ]}
-                                            searchUrl={"https://stark-garden-91538.herokuapp.com/searchPatients"}
+                                            searchUrl={`${serverURL}/searchPatients`}
                                             type="select"
                                             onClickFunc={createRelationship}
                                         />
