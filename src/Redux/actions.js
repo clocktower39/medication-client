@@ -1,16 +1,10 @@
 import jwt from 'jwt-decode';
+import serverURL from '../serverURL';
 
 export const LOGIN_AGENT = 'LOGIN_AGENT';
 export const LOGOUT_AGENT = 'LOGOUT_AGENT';
 export const SIGNUP_AGENT = 'SIGNUP_AGENT';
 export const ERROR = 'ERROR';
-
-// dev server
-// const currentIP = window.location.href.split(":")[1];
-// const serverURL = `http:${currentIP}:5518`;
-
-// live server
-const serverURL = "https://stark-garden-91538.herokuapp.com";
 
 export function signupUser(user) {
     return async (dispatch, getState) => {

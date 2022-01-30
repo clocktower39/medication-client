@@ -5,6 +5,7 @@ import { Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Tabl
 import { makeStyles } from '@mui/styles';
 import { AddCircle, ExpandMore, RemoveCircle } from '@mui/icons-material';
 import Search from '../Search/Search';
+import serverURL from '../../serverURL';
 
 const useStyles = makeStyles({
     root: {},
@@ -30,7 +31,7 @@ const useStyles = makeStyles({
 })
 
 export default function PrescriberProfile(props) {
-    const { serverURL, patient } = props;
+    const { patient } = props;
     const classes = useStyles();
     const location = useLocation();
     const [prescriber, setPrescriber] = useState(null);

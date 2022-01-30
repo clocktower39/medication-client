@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Paper, Grid, FormControlLabel, FormControl, FormLabel, RadioGroup, Radio } from '@mui/material';
 import Search from './Search/Search';
+import serverURL from '../serverURL';
 
 
 export default function MainSearch(props) {
-    const { serverURL } = props;
     const [searchType, setSearchType] = useState('patient');
 
     const handleChange = (event) => {
