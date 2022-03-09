@@ -34,7 +34,6 @@ const useStyles = makeStyles({
 })
 
 export default function PatientProfile(props) {
-    const { prescriber } = props;
     const classes = useStyles();
     const location = useLocation();
     const [newNote, setNewNote] = useState('');
@@ -158,7 +157,7 @@ export default function PatientProfile(props) {
             })
     }
 
-    const RelationshipHistorySection = (props) => {
+    const RelationshipHistorySection = ({ prescriber }) => {
         const [expandHistory, setExpandHistory] = useState(false);
         return (
             <>

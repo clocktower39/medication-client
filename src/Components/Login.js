@@ -53,7 +53,7 @@ export const Login = (props) => {
   }
   return (
     <Container maxWidth="sm">
-      <Grid container className={classes.root} component={Paper} spacing={3}>
+      <Grid container className={classes.root} component={Paper} spacing={3} sx={{ marginTop: '25px', }}>
         <Grid item xs={12}>
           <Typography variant="h4" gutterBottom>
             Log in
@@ -90,7 +90,7 @@ export const Login = (props) => {
         <Grid item xs={12}>
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             className={classes.button}
             onClick={(e) => handleLoginAttempt(e)}
             disabled={disableButtonDuringLogin}

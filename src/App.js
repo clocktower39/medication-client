@@ -42,11 +42,11 @@ function App() {
             <Route exact path="/enroll" element={<EnrollContainer />} />
           </Route>
           
-          <Route exact path="/patientProfile/*" element={<AuthRoute />}>
+          <Route exact path="/patientProfile/" element={<AuthRoute />}>
             <Route exact path="/patientProfile/*" element={<PatientProfile/>} />
           </Route>
 
-          <Route exact path="/prescriberProfile/*" element={<AuthRoute />}>
+          <Route exact path="/prescriberProfile/" element={<AuthRoute />}>
             <Route exact path="/prescriberProfile/*" element={<PrescriberProfile />} />
           </Route>
 
