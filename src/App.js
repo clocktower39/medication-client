@@ -1,5 +1,4 @@
 import { Container, ThemeProvider } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import Navbar from "./Components/Navbar";
@@ -8,26 +7,27 @@ import EnrollContainer from "./Components/Enroll/EnrollContainer";
 import PatientProfile from "./Components/Profile/PatientProfile";
 import PrescriberProfile from "./Components/Profile/PrescriberProfile";
 import Login from './Components/Login';
+import Signup from './Components/Signup';
 import AuthRoute from './Components/AuthRoute';
 import theme from "./theme";
 import "./App.css";
 
-const useStyles = makeStyles({
+const classes = {
   root: {
     height: "100%",
     backgroundColor: "#2C2F33",
   },
-});
+};
 
 function App() {
-  const classes = useStyles();
   return (
     <ThemeProvider theme={theme}>
-      <Container className={classes.root} maxWidth="lg">
+      <Container sx={classes.root} maxWidth="lg">
         <Router basename="/medication-tracking-system/">
           <Navbar />
           <Routes>
             <Route exact path="/login" element={<Login />} />
+            <Route exact path="/signup" element={<Signup />} />
 
           {/* Must be logged in and have JWT token to authenticate */}
           <Route exact path="/" element={<AuthRoute />}>

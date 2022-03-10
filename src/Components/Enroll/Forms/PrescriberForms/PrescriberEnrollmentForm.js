@@ -1,36 +1,35 @@
 import React, { useState } from "react";
 import { Button, Grid, Link, StepLabel, Paper, Stepper, Step, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Review from "./Review";
 import AddressForm from "./AddressForm";
 import PrescriberDemographics from "./PrescriberDemographics";
 
-const useStyles = makeStyles((theme) => ({
+const classes = {
   appBar: {
     position: "relative",
   },
-  layout: {
+  layout: (theme) => ({
     width: "auto",
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 600,
       marginLeft: "auto",
       marginRight: "auto",
     },
-  },
-  paper: {
+  }),
+  paper: (theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     padding: theme.spacing(2),
-  },
-  stepper: {
+  }),
+  stepper: (theme) => ({
     padding: theme.spacing(3, 0, 5),
-  },
-  button: {
+  }),
+  button: (theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
-  },
-}));
+  }),
+};
 
 const steps = ["Personal Information", "Address", "Review enrollment information"];
 
@@ -61,7 +60,6 @@ function Copyright() {
 }
 
 export default function PrescriberEnrollmentForm() {
-  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
   const [firstName, setFirstName] = useState("");
@@ -243,11 +241,11 @@ export default function PrescriberEnrollmentForm() {
     <>
       <CssBaseline />
       <main className={classes.layout}>
-        <Paper className={classes.paper}>
+        <Paper sx={(theme) => classes.paper(theme)}>
           <Typography component="h1" variant="h4" align="center">
             Prescriber Enrollment
           </Typography>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
+          <Stepper activeStep={activeStep} sx={(theme) => classes.stepper(theme)}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -264,7 +262,7 @@ export default function PrescriberEnrollmentForm() {
                 {getStepContent(activeStep, page1, page2)}
                 <Grid container item xs={12} spacing={2} sx={{ justifyContent: 'center', marginTop: '15px' }}>
                   {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button} variant="outlined" sx={{ margin: '0 5px' }}>
+                    <Button onClick={handleBack} sx={(theme) => classes.button(theme)} variant="outlined" >
                       Back
                     </Button>
                   )}
@@ -272,8 +270,7 @@ export default function PrescriberEnrollmentForm() {
                     variant="contained"
                     color="primary"
                     onClick={handleNext}
-                    className={classes.button}
-                    sx={{ margin: '0 5px' }}
+                    sx={(theme) => classes.button(theme)}
                   >
                     {activeStep === steps.length - 1 ? "Enroll" : "Next"}
                   </Button>

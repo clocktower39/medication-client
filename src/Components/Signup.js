@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Button, Container, Grid, Paper, TextField, Typography } from "@mui/material";
-import { loginUser } from "../Redux/actions";
 
 const classes = {
   root: {
@@ -11,51 +10,31 @@ const classes = {
     marginTop: '25px',
   },
   textField: {
-    margin: "5px",
+    margin: "12px",
   },
-  button: {},
 };
 
 export const Login = (props) => {
-  const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [username, setUsername] = useState(
     localStorage.getItem("username") ? localStorage.getItem("username") : ""
   );
   const [password, setPassword] = useState("");
-  const [disableButtonDuringLogin, setDisableButtonDuringLogin] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [accessCode, setAccessCode] = useState("");
   const agent = useSelector((state) => state.agent);
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleLoginAttempt(e);
-    }
-  };
-  const handleLoginAttempt = (e) => {
-    if (username && password) {
-      setDisableButtonDuringLogin(true);
-      dispatch(loginUser(JSON.stringify({ username, password }))).then((res) => {
-        if (res.error) {
-          setError(true);
-        }
-        setDisableButtonDuringLogin(false);
-      });
-      localStorage.setItem("username", username);
-    } else {
-      setDisableButtonDuringLogin(false);
-      setError(true);
-    }
-  };
+  const handleKeyDown = (e) => {};
 
   if (agent.username) {
     return <Navigate to={{ pathname: "/" }} />;
   }
   return (
     <Container maxWidth="sm">
-      <Grid container sx={classes.root} component={Paper} spacing={2} >
+      <Grid container sx={classes.root} component={Paper} spacing={3} >
         <Grid item xs={12}>
           <Typography variant="h4" gutterBottom>
-            Log in
+            Sign up
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -63,7 +42,6 @@ export const Login = (props) => {
             color="secondary"
             error={error === true ? true : false}
             helperText={error === true ? "Please enter your username" : false}
-            sx={classes.textField}
             label="Username"
             value={username}
             onKeyDown={(e) => handleKeyDown(e)}
@@ -75,7 +53,6 @@ export const Login = (props) => {
             color="secondary"
             error={error === true ? true : false}
             helperText={error === true ? "Please enter your password" : false}
-            sx={classes.textField}
             label="Password"
             value={password}
             type="password"
@@ -87,14 +64,43 @@ export const Login = (props) => {
           />
         </Grid>
         <Grid item xs={12}>
+          <TextField
+            color="secondary"
+            error={error === true ? true : false}
+            helperText={error === true ? "Confirm password" : false}
+            className={classes.textField}
+            label="Confirm Password"
+            value={confirmPassword}
+            type="password"
+            onKeyDown={(e) => handleKeyDown(e)}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              e.target.value === "" ? setError(true) : setError(false);
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            color="secondary"
+            error={error === true ? true : false}
+            helperText={error === true ? "Access code" : false}
+            className={classes.textField}
+            label="Access code"
+            value={accessCode}
+            onKeyDown={(e) => handleKeyDown(e)}
+            onChange={(e) => {
+              setAccessCode(e.target.value);
+              e.target.value === "" ? setError(true) : setError(false);
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
           <Button
             variant="contained"
             color="primary"
-            sx={classes.button}
-            onClick={(e) => handleLoginAttempt(e)}
-            disabled={disableButtonDuringLogin}
+            className={classes.button}
           >
-            Login
+            Sign up
           </Button>
         </Grid>
       </Grid>

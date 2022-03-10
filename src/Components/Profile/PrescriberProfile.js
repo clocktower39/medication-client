@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
-import { Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { Box, Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { AddCircle, ExpandMore, RemoveCircle } from '@mui/icons-material';
 import Search from '../Search/Search';
 import serverURL from '../../serverURL';
 
-const useStyles = makeStyles({
+const classes = {
     root: {},
     rootGrid: {
         marginTop: '12.5px',
@@ -28,10 +27,9 @@ const useStyles = makeStyles({
         overflowY: 'scroll',
         height: '90%'
     },
-})
+};
 
 export default function PrescriberProfile(props) {
-    const classes = useStyles();
     const location = useLocation();
     const [prescriber, setPrescriber] = useState(null);
     const [patients, setPatients] = useState([]);
@@ -191,9 +189,9 @@ export default function PrescriberProfile(props) {
 
     return prescriber === null ? <LinearProgress variant="indeterminate" /> : (
         <Container maxWidth="lg">
-            <Grid container spacing={3} className={classes.rootGrid}>
+            <Grid container spacing={3} sx={classes.rootGrid}>
                 <Grid container item lg={4} xs={12}>
-                    <Paper className={classes.Paper}>
+                    <Paper sx={classes.Paper}>
                         <Typography variant="h5" align="center" gutterBottom >Prescriber Profile Summary</Typography>
                         <Grid container item xs={12} >
                             {!editMode ?
@@ -284,7 +282,7 @@ export default function PrescriberProfile(props) {
                 </Grid>
                 <Grid container item lg={8} xs={12}>
                     <Grid container item xs={12}>
-                        <Paper className={classes.Paper}>
+                        <Paper sx={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
                             <Typography variant="h6" align="center" >Patients <IconButton onClick={() => setToggleRelationshipModal(true)}><AddCircle /></IconButton></Typography>
                             <Modal
@@ -292,7 +290,7 @@ export default function PrescriberProfile(props) {
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
                             >
-                                <div className={classes.ModalPaper}>
+                                <Box sx={classes.ModalPaper}>
                                     <div>
                                         <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
                                     </div>
@@ -311,7 +309,7 @@ export default function PrescriberProfile(props) {
                                             onClickFunc={createRelationship}
                                         />
                                     </Grid>
-                                </div>
+                                </Box>
                             </Modal>
                             <TableContainer component={Paper}>
                                 <Table size="small">
@@ -338,7 +336,7 @@ export default function PrescriberProfile(props) {
                         </Paper>
                     </Grid>
                     <Grid container item xs={12}>
-                        <Paper className={classes.Paper}>
+                        <Paper sx={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
                             <Grid container >
                                 <Grid container item xs={12} sx={{ alignContent: 'center', }}><TextField onChange={handleNoteChange} multiline fullWidth value={newNote} /></Grid>
@@ -371,7 +369,7 @@ export default function PrescriberProfile(props) {
                         </Paper>
                     </Grid>
                     <Grid container item xs={12}>
-                        <Paper className={classes.Paper}>
+                        <Paper sx={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Services</Typography>
                             <TableContainer component={Paper}>
                                 <Table size="small">

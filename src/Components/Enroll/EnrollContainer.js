@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme } from '@mui/styles';
+import { useTheme } from '@mui/styles';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -44,16 +44,15 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+const classes = {
+  root: (theme) => ({
     backgroundColor: theme.palette.background.paper,
     width: '100%',
     minHeight: 'calc(100% - 64px)',
-  },
-}));
+  }),
+};
 
 export default function EnrollContainer() {
-  const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -66,7 +65,7 @@ export default function EnrollContainer() {
   };
 
   return (
-    <div className={classes.root}>
+    <Box sx={(t)=>classes.root(t)}>
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -91,6 +90,6 @@ export default function EnrollContainer() {
           <PatientEnrollmentForm />
         </TabPanel>
       </SwipeableViews>
-    </div>
+    </Box>
   );
 }

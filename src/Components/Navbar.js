@@ -35,8 +35,8 @@ export default function Navbar() {
             </>
           ) : (
             <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center',}}>
-                <Button color="inherit" >Login</Button>
-                <Button color="inherit" >Sign up</Button>
+                <Button color="inherit" component={Link} to="/login" >Login</Button>
+                <Button color="inherit" component={Link} to="/signup" >Sign up</Button>
             </Box>
           )}
         </Toolbar>
