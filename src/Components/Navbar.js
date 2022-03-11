@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
-import { Home, Search, Create } from "@mui/icons-material";
+import { Home, Search, Create, Person } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../Redux/actions";
 
@@ -25,6 +25,9 @@ export default function Navbar() {
                 </Button>
                 <Button color="inherit" component={Link} to="/enroll">
                   <Create />
+                </Button>
+                <Button color="inherit" component={Link} to={`/agent/${agent._id}`}>
+                  <Person />
                 </Button>
               </Box>
               <Box>

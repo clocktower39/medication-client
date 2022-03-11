@@ -6,6 +6,7 @@ import MainSearch from "./Components/MainSearch";
 import EnrollContainer from "./Components/Enroll/EnrollContainer";
 import PatientProfile from "./Components/Profile/PatientProfile";
 import PrescriberProfile from "./Components/Profile/PrescriberProfile";
+import AgentProfile from "./Components/Profile/AgentProfile";
 import Login from './Components/Login';
 import Signup from './Components/Signup';
 import AuthRoute from './Components/AuthRoute';
@@ -48,6 +49,10 @@ function App() {
 
           <Route exact path="/prescriberProfile/" element={<AuthRoute />}>
             <Route exact path="/prescriberProfile/*" element={<PrescriberProfile />} />
+          </Route>
+
+          <Route exact path="/agent/" element={<AuthRoute />}>
+            <Route exact path="/agent/*" element={<AgentProfile />} />
           </Route>
 
           </Routes>

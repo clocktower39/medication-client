@@ -1,7 +1,7 @@
-import { LOGIN_AGENT, LOGOUT_AGENT, ERROR } from './actions';
-import { agent, schedule } from './states'
+import { LOGIN_AGENT, LOGOUT_AGENT, UPDATE_AGENT_PROFILE_DATA, ERROR } from './actions';
+import { agent, schedule, agentProfile } from './states'
 
-export let reducer = (state = { agent, schedule }, action) => {
+export let reducer = (state = { agent, schedule, agentProfile }, action) => {
     switch (action.type) {
         case LOGIN_AGENT:
             return {
@@ -16,6 +16,10 @@ export let reducer = (state = { agent, schedule }, action) => {
                 agent: {
                 },
             }
+        case UPDATE_AGENT_PROFILE_DATA:
+                return {
+                    agentProfile:{},
+                }
         case ERROR:
             return {
                 ...state,

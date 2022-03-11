@@ -4,6 +4,7 @@ import serverURL from '../serverURL';
 export const LOGIN_AGENT = 'LOGIN_AGENT';
 export const LOGOUT_AGENT = 'LOGOUT_AGENT';
 export const SIGNUP_AGENT = 'SIGNUP_AGENT';
+export const UPDATE_AGENT_PROFILE_DATA = 'UPDATE_AGENT_PROFILE_DATA';
 export const ERROR = 'ERROR';
 
 export function signupUser(user) {
@@ -89,5 +90,33 @@ export function logoutUser() {
         return dispatch({
             type: LOGOUT_AGENT
         })
+    }
+}
+
+export function getAgent(user) {
+    return async (dispatch, getState) => {
+        const response = await fetch(`${serverURL}/login`, {
+            method: 'post',
+            dataType: 'json',
+            body: user,
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        const data = await response.json();
+        if (data.error) {
+            return dispatch({
+                type: ERROR,
+                error: data.error
+            });
+        }
+        const accessToken = data.accessToken;
+        const decodedAccessToken = jwt(accessToken);
+
+        localStorage.setItem('JWT_AUTH_TOKEN', accessToken);
+        return dispatch({
+            type: LOGIN_AGENT,
+            agent: decodedAccessToken,
+        });
     }
 }
