@@ -52,7 +52,7 @@ function App() {
           </Route>
 
           <Route exact path="/agent/" element={<AuthRoute />}>
-            <Route exact path="/agent/*" element={<AgentProfile />} />
+            <Route exact path="/agent/:agentId" element={<AgentProfile />} />
           </Route>
 
           </Routes>

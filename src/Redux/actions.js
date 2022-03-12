@@ -4,7 +4,7 @@ import serverURL from '../serverURL';
 export const LOGIN_AGENT = 'LOGIN_AGENT';
 export const LOGOUT_AGENT = 'LOGOUT_AGENT';
 export const SIGNUP_AGENT = 'SIGNUP_AGENT';
-export const UPDATE_AGENT_PROFILE_DATA = 'UPDATE_AGENT_PROFILE_DATA';
+export const UPDATE_AGENT_PROFILE_AGENT = 'UPDATE_AGENT_PROFILE_AGENT';
 export const ERROR = 'ERROR';
 
 export function signupUser(user) {
@@ -93,30 +93,21 @@ export function logoutUser() {
     }
 }
 
-export function getAgent(user) {
+export function getAgent(agentId) {
     return async (dispatch, getState) => {
-        const response = await fetch(`${serverURL}/login`, {
+        const response = await fetch(`${serverURL}/agentInfo`, {
             method: 'post',
             dataType: 'json',
-            body: user,
+            body: JSON.stringify({_id: agentId}),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
         const data = await response.json();
-        if (data.error) {
-            return dispatch({
-                type: ERROR,
-                error: data.error
-            });
-        }
-        const accessToken = data.accessToken;
-        const decodedAccessToken = jwt(accessToken);
-
-        localStorage.setItem('JWT_AUTH_TOKEN', accessToken);
+        if(data.agent)
         return dispatch({
-            type: LOGIN_AGENT,
-            agent: decodedAccessToken,
+            type: UPDATE_AGENT_PROFILE_AGENT,
+            agent: data.agent,
         });
     }
 }
