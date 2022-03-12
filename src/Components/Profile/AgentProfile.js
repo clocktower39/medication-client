@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Avatar, Container, Grid, Paper, Typography } from "@mui/material";
-import { getAgent } from '../../Redux/actions';
+import { getAgentInfo, getAgentNotes } from '../../Redux/actions';
 import Loading from '../Loading';
 
 const classes = {
@@ -19,16 +19,17 @@ export default function AgentProfile() {
   const agentProfile = useSelector(state => state.agentProfile);
   const [loading, setLoading] = useState(true);
 
-  useEffect(()=>{
-    dispatch(getAgent(params.agentId));
-  },[dispatch, params.agentId])
+  useEffect(() => {
+    dispatch(getAgentInfo(params.agentId));
+    dispatch(getAgentNotes(params.agentId));
+  }, [dispatch, params.agentId])
 
-  useEffect(()=> {
-    if(agentProfile.agent){
+  useEffect(() => {
+    if (agentProfile.agent && agentProfile.notes) {
       setLoading(false);
     }
   }, [agentProfile])
-  
+
   return loading ? <Loading /> : (
     <Container maxWidth="lg" sx={{ padding: "7.5px 0px" }}>
       <Grid container>
@@ -41,7 +42,7 @@ export default function AgentProfile() {
             <Typography variant="h6">{agentProfile.agent.role}</Typography>
             <Typography variant="h5">{agentProfile.agent.firstName} {agentProfile.agent.lastName}</Typography>
           </Grid>
-          <Grid container item xs={10} sx={{ justifyContent: 'center',}}>
+          <Grid container item xs={10} sx={{ justifyContent: 'center', }}>
             <Grid container item><Typography variant="body1">Supervisor: {agentProfile.agent.supervisor}</Typography></Grid>
             <Grid container item><Typography variant="body1">Projects: {agentProfile.agent.projects.join(', ')}</Typography></Grid>
           </Grid>
@@ -61,7 +62,7 @@ export default function AgentProfile() {
             <Typography variant="h5">Notes</Typography>
           </Grid>
           <Grid container item>
-            <Typography variant="h5">Table</Typography>
+            {agentProfile.notes.map(note => <Grid key={`note-${note.date}-${note._id}`} container item xs={12}>{note.note}</Grid>)}
           </Grid>
         </Grid>
       </Grid>

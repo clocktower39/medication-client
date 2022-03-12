@@ -5,6 +5,8 @@ export const LOGIN_AGENT = 'LOGIN_AGENT';
 export const LOGOUT_AGENT = 'LOGOUT_AGENT';
 export const SIGNUP_AGENT = 'SIGNUP_AGENT';
 export const UPDATE_AGENT_PROFILE_AGENT = 'UPDATE_AGENT_PROFILE_AGENT';
+export const UPDATE_AGENT_PROFILE_SERVICES = 'UPDATE_AGENT_PROFILE_SERVICES';
+export const UPDATE_AGENT_PROFILE_NOTES = 'UPDATE_AGENT_PROFILE_NOTES';
 export const ERROR = 'ERROR';
 
 export function signupUser(user) {
@@ -93,7 +95,7 @@ export function logoutUser() {
     }
 }
 
-export function getAgent(agentId) {
+export function getAgentInfo(agentId) {
     return async (dispatch, getState) => {
         const response = await fetch(`${serverURL}/agentInfo`, {
             method: 'post',
@@ -108,6 +110,25 @@ export function getAgent(agentId) {
         return dispatch({
             type: UPDATE_AGENT_PROFILE_AGENT,
             agent: data.agent,
+        });
+    }
+}
+
+export function getAgentNotes(agentId) {
+    return async (dispatch, getState) => {
+        const response = await fetch(`${serverURL}/agentNotes`, {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify({accountId: agentId}),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        const data = await response.json();
+        if(data)
+        return dispatch({
+            type: UPDATE_AGENT_PROFILE_NOTES,
+            notes: data,
         });
     }
 }
