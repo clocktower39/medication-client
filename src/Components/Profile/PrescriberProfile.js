@@ -84,7 +84,7 @@ export default function PrescriberProfile(props) {
                 note: newNote,
                 accountId: prescriber._id,
                 noteType: 'user',
-                createdBy: agent.username,
+                createdBy: { username: agent.username, accountId: agent._id },
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -358,7 +358,7 @@ export default function PrescriberProfile(props) {
                                                 <TableRow key={n._id}>
                                                     <TableCell>{n.date}</TableCell>
                                                     <TableCell>{n.noteType}</TableCell>
-                                                    <TableCell>{n.createdBy}</TableCell>
+                                                    <TableCell><Typography component={Link} to={`/agent/${n.createdBy.accountId}`}>{n.createdBy.username}</Typography></TableCell>
                                                     <TableCell>{n.note}</TableCell>
                                                 </TableRow>
                                             )) :
