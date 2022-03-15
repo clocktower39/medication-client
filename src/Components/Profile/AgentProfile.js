@@ -62,7 +62,7 @@ export default function AgentProfile() {
             <Typography variant="h5">Notes</Typography>
           </Grid>
           <Grid container item>
-            {agentProfile.notes.map(note => <Grid key={`note-${note.date}-${note._id}`} container item xs={12}>{note.note}</Grid>)}
+            {agentProfile.notes.length > 0 ? agentProfile.notes.map(note => <Grid key={`note-${note.date}-${note._id}`} container item xs={12}>{note.note}</Grid>):<>No notes</>}
           </Grid>
         </Grid>
       </Grid>

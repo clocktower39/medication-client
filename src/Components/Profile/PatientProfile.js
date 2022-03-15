@@ -143,7 +143,7 @@ export default function PatientProfile(props) {
         fetch(`${serverURL}/submitLab`, {
             method: 'post',
             dataType: 'json',
-            body: JSON.stringify({ anc, bloodDrawDate, accountId: patient._id, createdBy: agent.username }),
+            body: JSON.stringify({ anc, bloodDrawDate, accountId: patient._id, createdBy: { username: agent.username, accountId: agent._id }}),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
@@ -431,7 +431,7 @@ export default function PatientProfile(props) {
                                                 <TableCell>{lab.timestamp}</TableCell>
                                                 <TableCell>{lab.bloodDrawDate}</TableCell>
                                                 <TableCell>{lab.anc}</TableCell>
-                                                <TableCell>{lab.createdBy}</TableCell>
+                                                    <TableCell><Typography component={Link} to={`/agent/${lab.createdBy.accountId}`}>{lab.createdBy.username}</Typography></TableCell>
                                             </TableRow>
                                         ))}
 

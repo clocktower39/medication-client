@@ -13,6 +13,7 @@ export let reducer = (state = { agent, schedule, agentProfile }, action) => {
             }
         case LOGOUT_AGENT:
             return {
+                ...state,
                 agent: {
                 },
             }

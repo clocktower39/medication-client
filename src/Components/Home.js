@@ -44,7 +44,7 @@ export default function Home() {
             }} >Welcome {agent.username}!</Typography>
             <Grid container spacing={1} sx={{ justifyContent: "center", alignItems: "center" }}>
                 <Grid container item xs={12} spacing={3} sx={{ justifyContent: "center", alignItems: "center" }}>
-                    {schedule.week.map(day => (
+                    {schedule && schedule.week.map(day => (
                         <Grid item xs={12} sm={6} md={4} key={day.day} >
                             <Paper sx={theme => ({
                                 padding: theme.spacing(1),
