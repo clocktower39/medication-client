@@ -46,6 +46,16 @@ export const Login = (props) => {
       setError(true);
     }
   };
+  const handleGuestLogin = (e) => {
+      setDisableButtonDuringLogin(true);
+      dispatch(loginUser(JSON.stringify({ username: 'GUEST', password: 'GUEST' }))).then((res) => {
+        if (res.error) {
+          setError(true);
+        }
+        setDisableButtonDuringLogin(false);
+      });
+      localStorage.setItem("username", 'GUEST');
+  };
 
   if (agent.username) {
     return <Navigate to={{ pathname: "/" }} />;
@@ -95,6 +105,17 @@ export const Login = (props) => {
             disabled={disableButtonDuringLogin}
           >
             Login
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={classes.button}
+            onClick={handleGuestLogin}
+            disabled={disableButtonDuringLogin}
+          >
+            GUEST MODE
           </Button>
         </Grid>
       </Grid>
