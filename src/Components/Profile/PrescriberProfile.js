@@ -358,7 +358,7 @@ export default function PrescriberProfile(props) {
                                                 <TableRow key={n._id}>
                                                     <TableCell>{n.date}</TableCell>
                                                     <TableCell>{n.noteType}</TableCell>
-                                                    <TableCell><Typography component={Link} to={`/agent/${n.createdBy.accountId}`}>{n.createdBy.username}</Typography></TableCell>
+                                                    <TableCell><Typography component={Link} to={`/agentProfile/${n.createdBy.accountId}`}>{n.createdBy.username}</Typography></TableCell>
                                                     <TableCell>{n.note}</TableCell>
                                                 </TableRow>
                                             )) :

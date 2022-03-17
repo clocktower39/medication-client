@@ -26,7 +26,7 @@ export default function Navbar() {
                 <Button color="inherit" component={Link} to="/enroll">
                   <Create />
                 </Button>
-                <Button color="inherit" component={Link} to={`/agent/${agent._id}`}>
+                <Button color="inherit" component={Link} to={`/agentProfile/${agent._id}`}>
                   <Person />
                 </Button>
               </Box>

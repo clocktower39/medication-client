@@ -51,6 +51,7 @@ export default function Search(props) {
 
     useEffect(()=>{
         setFields([...fieldObjects]);
+        setSearchResults([]);
     },[fieldObjects])
 
     return (

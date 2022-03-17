@@ -52,8 +52,8 @@ function App() {
             <Route exact path="/prescriberProfile/*" element={<PrescriberProfile />} />
           </Route>
 
-          <Route exact path="/agent/" element={<AuthRoute />}>
-            <Route exact path="/agent/:agentId" element={<AgentProfile />} />
+          <Route exact path="/agentProfile/" element={<AuthRoute />}>
+            <Route exact path="/agentProfile/:agentId" element={<AgentProfile />} />
           </Route>
 
           </Routes>

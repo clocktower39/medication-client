@@ -18,7 +18,7 @@ export default function MainSearch(props) {
                 <RadioGroup row aria-label="account-type" name="account-type" value={searchType} onChange={handleChange} sx={{ justifyContent: 'center', }} >
                     <FormControlLabel value="patient" control={<Radio />} label="Patient" labelPlacement="bottom" />
                     <FormControlLabel value="prescriber" control={<Radio />} label="Prescriber" labelPlacement="bottom" />
-                    <FormControlLabel value="pharmacy" disabled control={<Radio />} label="Pharmacy" labelPlacement="bottom" />
+                    <FormControlLabel value="agent" control={<Radio />} label="Agent" labelPlacement="bottom" />
                 </RadioGroup>
             </FormControl>
             <Grid container spacing={1}>
@@ -32,8 +32,8 @@ export default function MainSearch(props) {
                             { label: 'Date of Birth', propertyName: 'dateOfBirth', value: '' },
                             { label: 'Zip Code', propertyName: 'zip', value: '' },
                         ]}
-                        searchUrl={`${serverURL}/searchPatients`}
-                    /> :
+                        searchUrl={`${serverURL}/patientSearch`}
+                    /> : searchType === 'prescriber' ?
                     <Search
                         profileType="prescriber"
                         fieldObjects={[
@@ -46,8 +46,21 @@ export default function MainSearch(props) {
                             { label: 'DEA', propertyName: 'deaNumber', value: '' },
                             { label: 'Zip Code', propertyName: 'zip', value: '' },
                         ]}
-                        searchUrl={`${serverURL}/searchPrescribers`}
-                    />}
+                        searchUrl={`${serverURL}/prescriberSearch`}
+                    /> :
+                    <Search
+                        profileType="agent"
+                        fieldObjects={[
+                            { label: 'Username', propertyName: 'username', value: '' },
+                            { label: 'First Name', propertyName: 'firstName', value: '' },
+                            { label: 'Last Name', propertyName: 'lastName', value: '' },
+                            { label: 'Email', propertyName: 'email', value: '' },
+                            { label: 'Role', propertyName: 'role', value: '' },
+                            { label: 'Supervisor', propertyName: 'supervisor', value: '' },
+                        ]}
+                        searchUrl={`${serverURL}/agentSearch`}
+                    />
+                    }
             </Grid>
         </Paper>
     )
