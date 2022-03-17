@@ -1,5 +1,5 @@
 import React from "react";
-import { CircularProgress, Typography } from "@mui/material";
+import { LinearProgress, } from "@mui/material";
 
 const classes = {
   root: {
@@ -11,11 +11,10 @@ const classes = {
   },
 };
 
-export default function CircularIndeterminate() {
+export default function Loading() {
   return (
     <div className={classes.root}>
-      <Typography variant="h4">Loading</Typography>
-      <CircularProgress />
+      <LinearProgress />
     </div>
   );
 }

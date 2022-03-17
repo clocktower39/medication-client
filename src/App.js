@@ -7,6 +7,7 @@ import EnrollContainer from "./Components/Enroll/EnrollContainer";
 import PatientProfile from "./Components/Profile/PatientProfile";
 import PrescriberProfile from "./Components/Profile/PrescriberProfile";
 import AgentProfile from "./Components/Profile/AgentProfile";
+import Footer from './Components/Footer';
 import Login from './Components/Login';
 import Signup from './Components/Signup';
 import AuthRoute from './Components/AuthRoute';
@@ -56,6 +57,7 @@ function App() {
           </Route>
 
           </Routes>
+          <Footer />
         </Router>
       </Container>
     </ThemeProvider>

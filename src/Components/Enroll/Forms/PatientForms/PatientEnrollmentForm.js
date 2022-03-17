@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Grid, Link, StepLabel, Paper, Stepper, Step, Typography } from "@mui/material";
+import { Button, Grid, StepLabel, Paper, Stepper, Step, Typography } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Review from "./Review";
 import AddressForm from "./AddressForm";
@@ -49,19 +49,6 @@ function getStepContent(step, page1, page2) {
     default:
       throw new Error("Unknown step");
   }
-}
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        MattKearns.dev
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
 }
 
 export default function PatientEnrollmentForm() {
@@ -237,7 +224,6 @@ export default function PatientEnrollmentForm() {
             )}
           </>
         </Paper>
-        <Copyright />
       </main>
     </>
   );
