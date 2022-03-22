@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Grid, StepLabel, Paper, Stepper, Step, Typography } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Review from "./Review";
-import AddressForm from "./AddressForm";
 import PatientDemographics from "./PatientDemographics";
 
 const classes = {
@@ -36,16 +35,16 @@ const classes = {
   }),
 };
 
-const steps = ["Personal Information", "Address", "Review enrollment information"];
+const steps = ["Demographics", "Review", "Status"];
 
-function getStepContent(step, page1, page2) {
+function getStepContent(step, page1) {
   switch (step) {
     case 0:
       return <PatientDemographics values={page1.values} />;
     case 1:
-      return <AddressForm values={page2.values} />;
+      return <Review values={{ ...page1.values }} />;
     case 2:
-      return <Review values={{ ...page1.values, ...page2.values }} />;
+      return <div>Patient enrolled</div>;
     default:
       throw new Error("Unknown step");
   }
@@ -102,11 +101,6 @@ export default function PatientEnrollmentForm() {
         error: dateOfBirthError,
         setError: setDateOfBirthError,
       },
-    },
-  };
-
-  const page2 = {
-    values: {
       address1: {
         value: address1,
         setValue: setAddress1,
@@ -148,7 +142,17 @@ export default function PatientEnrollmentForm() {
 
   const handleNext = () => {
     if (activeStep === 0) {
-      if (firstName !== "" && lastName !== "" && phoneNumber !== "" && dateOfBirth !== "") {
+      if (
+        firstName !== "" &&
+        lastName !== "" &&
+        phoneNumber !== "" &&
+        dateOfBirth !== "" &&
+        address1 !== "" &&
+        city !== "" &&
+        state !== "" &&
+        zip !== "" &&
+        country !== ""
+      ) {
         Object.keys(page1.values).forEach((value) => page1.values[value].setError(""));
         setActiveStep(activeStep + 1);
       } else {
@@ -161,19 +165,6 @@ export default function PatientEnrollmentForm() {
         });
       }
     } else if (activeStep === 1) {
-      if (address1 !== "" && city !== "" && state !== "" && zip !== "" && country !== "") {
-        Object.keys(page2.values).forEach((value) => page2.values[value].setError(""));
-        setActiveStep(activeStep + 1);
-      } else {
-        Object.keys(page2.values).forEach((value) => {
-          if (page2.values[value].value === "" && value !== "address2") {
-            page2.values[value].setError("Required Field Empty");
-          } else {
-            page2.values[value].setError("");
-          }
-        });
-      }
-    } else {
       setActiveStep(activeStep + 1);
     }
   };
@@ -198,30 +189,27 @@ export default function PatientEnrollmentForm() {
             ))}
           </Stepper>
           <>
-            {activeStep === steps.length ? (
-              <>
-                <Typography variant="subtitle1">Patient Enrolled</Typography>
-              </>
-            ) : (
-              <>
-                {getStepContent(activeStep, page1, page2)}
-                <Grid container item xs={12} spacing={2} sx={{ justifyContent: 'center', marginTop: '15px' }}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} sx={(theme) => classes.button(theme)} variant="outlined" >
-                      Back
-                    </Button>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    sx={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? "Enroll" : "Next"}
-                  </Button>
-                </Grid>
-              </>
-            )}
+            {getStepContent(activeStep, page1)}
+            <Grid
+              container
+              item
+              xs={12}
+              spacing={2}
+              sx={{ justifyContent: "center", marginTop: "15px" }}
+            >
+              {activeStep !== 0 && (
+                <Button
+                  onClick={handleBack}
+                  sx={(theme) => classes.button(theme)}
+                  variant="outlined"
+                >
+                  Back
+                </Button>
+              )}
+              <Button variant="contained" color="primary" onClick={handleNext} sx={classes.button}>
+                {activeStep === steps.length - 1 ? "Enroll" : "Next"}
+              </Button>
+            </Grid>
           </>
         </Paper>
       </main>
