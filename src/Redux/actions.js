@@ -66,7 +66,7 @@ export function changePassword(currentPassword, newPassword) {
         const response = await fetch(`${serverURL}/changePassword`, {
             method: 'post',
             dataType: 'json',
-            body: { currentPassword, newPassword},
+            body: JSON.stringify({ currentPassword, newPassword}),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": bearer,

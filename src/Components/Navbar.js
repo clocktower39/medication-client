@@ -4,18 +4,14 @@ import {
   AppBar,
   Box,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Menu,
   MenuItem,
-  TextField,
   Toolbar,
 } from "@mui/material";
 import { Home, Search, Create, Person, Settings } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../Redux/actions";
+import ChangePassword from './ChangePassword';
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -67,27 +63,7 @@ export default function Navbar() {
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
               {passwordModal && open && (
-                <Dialog
-                  open={open}
-                  onClose={handlePasswordClose}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Change password"}
-                  </DialogTitle>
-                  <DialogContent>
-                    <TextField fullWidth label="Current Password" />
-                    <TextField fullWidth label="New Password" />
-                    <TextField fullWidth label="Confirm New Password" />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handlePasswordClose}>Cancel</Button>
-                    <Button onClick={handlePasswordClose} autoFocus>
-                      Submit
-                    </Button>
-                  </DialogActions>
-                </Dialog>
+                <ChangePassword open={open} handlePasswordClose={handlePasswordClose} />
               )}
             </>
           ) : (
