@@ -11,6 +11,7 @@ import {
 import { Home, Search, Create, Person, Settings } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../Redux/actions";
+import EditAccount from './EditAccount';
 import ChangePassword from './ChangePassword';
 
 export default function Navbar() {
@@ -22,6 +23,10 @@ export default function Navbar() {
   const [passwordModal, setPasswordModal] = useState(false);
   const handlePasswordOpen = () => setPasswordModal(true);
   const handlePasswordClose = () => setPasswordModal(false);
+  
+  const [accountModal, setAccountModal] = useState(false);
+  const handleAccountOpen = () => setAccountModal(true);
+  const handleAccountClose = () => setAccountModal(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -59,11 +64,15 @@ export default function Navbar() {
                 </Button>
               </Box>
               <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
+                <MenuItem onClick={handleAccountOpen}>Edit account</MenuItem>
                 <MenuItem onClick={handlePasswordOpen}>Change password</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
               {passwordModal && open && (
                 <ChangePassword open={open} handlePasswordClose={handlePasswordClose} />
+              )}
+              {accountModal && open && (
+                <EditAccount open={open} handleAccountClose={handleAccountClose} />
               )}
             </>
           ) : (
