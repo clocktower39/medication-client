@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Avatar,
   IconButton,
@@ -9,10 +10,18 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { Close } from '@mui/icons-material';
-import { } from "../Redux/actions";
+import { Close } from "@mui/icons-material";
+import { logoutUser } from "../Redux/actions";
+import ChangePassword from './ChangePassword';
 
-export default function EditAccount({ open, handleAccountClose }) {
+export default function AccountSettings({ open, handleAccountClose }) {
+  const dispatch = useDispatch();
+
+  const [passwordModal, setPasswordModal] = useState(false);
+  const handlePasswordOpen = () => setPasswordModal(true);
+  const handlePasswordClose = () => setPasswordModal(false);
+
+  const handleLogout = () => dispatch(logoutUser()).then(()=> handleAccountClose());
 
   return (
     <Dialog
@@ -21,9 +30,13 @@ export default function EditAccount({ open, handleAccountClose }) {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title" >{"Edit profile"}
-      <IconButton onClick={handleAccountClose} sx={{ float: 'right', }}><Close /></IconButton></DialogTitle>
-      
+      <DialogTitle id="alert-dialog-title">
+        {"Edit profile"}
+        <IconButton onClick={handleAccountClose} sx={{ float: "right" }}>
+          <Close />
+        </IconButton>
+      </DialogTitle>
+
       <DialogContent>
         <Grid container spacing={1} sx={{ padding: "10px 0px" }}>
           <Grid item container xs={12}>
@@ -55,9 +68,7 @@ export default function EditAccount({ open, handleAccountClose }) {
               <Typography>Contact Information</Typography>
               <Button>Edit</Button>
             </Grid>
-            <Grid item container xs={12} >
-              
-            </Grid>
+            <Grid item container xs={12}></Grid>
           </Grid>
           <Grid item container xs={12}>
             <Grid
@@ -67,11 +78,12 @@ export default function EditAccount({ open, handleAccountClose }) {
               sx={{ justifyContent: "space-between", alignItems: "center" }}
             >
               <Typography>Change Password</Typography>
-              <Button>Update</Button>
+              <Button onClick={handlePasswordOpen} >Update</Button>
+              {passwordModal && open && (
+                <ChangePassword open={open} handlePasswordClose={handlePasswordClose} />
+              )}
             </Grid>
-            <Grid item container xs={12} >
-              
-            </Grid>
+            <Grid item container xs={12}></Grid>
           </Grid>
           <Grid item container xs={12}>
             <Grid
@@ -83,10 +95,20 @@ export default function EditAccount({ open, handleAccountClose }) {
               <Typography>Projects</Typography>
               <Button>Request Update</Button>
             </Grid>
-            <Grid item container xs={12} >
-            </Grid>
+            <Grid item container xs={12}></Grid>
           </Grid>
-
+          <Grid item container xs={12}>
+            <Grid
+              item
+              container
+              xs={12}
+              sx={{ justifyContent: "space-between", alignItems: "center" }}
+            >
+              <Typography></Typography>
+              <Button onClick={handleLogout} >Logout</Button>
+            </Grid>
+            <Grid item container xs={12}></Grid>
+          </Grid>
         </Grid>
       </DialogContent>
     </Dialog>
