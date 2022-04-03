@@ -1,37 +1,11 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { Grid, Paper, Typography } from '@mui/material/';
+import Schedule from './Schedule';
 
 export default function Home() {
     const agent = useSelector(state => state.agent);
     const schedule = useSelector(state => state.schedule);
-
-    const PinnedSubheaderList = (props) => {
-        const { projects, breakdown } = props;
-        return (
-            <Grid container item xs={12} component={Paper}>
-                <Grid container item xs={12} sx={{ justifyContent: 'center', }} ><Typography variant="body1" gutterBottom >Schedule</Typography></Grid>
-                <Grid container item xs={12}>
-                    {breakdown.map(scheduleSection => (
-                        <Grid container item xs={12} key={scheduleSection.start} >
-                            <Grid container item xs={6} sx={{ justifyContent: 'center', }}>
-                                <Typography variant="body1" >{`${scheduleSection.start} - ${scheduleSection.end}: `}</Typography>
-                            </Grid>
-                            <Grid container item xs={6} sx={{ justifyContent: 'center', }}>
-                                <Typography variant="body1" >{`${scheduleSection.task}`}</Typography>
-                            </Grid>
-                        </Grid>
-                    ))}
-                </Grid>
-                <Grid container item xs={12} sx={{ justifyContent: 'center', marginTop: '15px' }} ><Typography variant="body1" gutterBottom >Projects</Typography></Grid>
-                {projects.map((project) => (
-                    <Grid container item xs={6} key={project} sx={{ justifyContent: 'center', }}>
-                        <Typography variant="body1" >{project}</Typography>
-                    </Grid>
-                ))}
-            </Grid>
-        );
-    }
 
     return (
         <div style={{
@@ -53,7 +27,7 @@ export default function Home() {
                                 color: 'rgba(255, 255, 255, 0.7)',
                             })}>
                                 <Typography variant="h6" gutterBottom >{day.day}</Typography>
-                                <PinnedSubheaderList breakdown={day.breakdown} projects={day.projects} />
+                                <Schedule breakdown={day.breakdown} projects={day.projects} />
                             </Paper>
                         </Grid>
                     ))}

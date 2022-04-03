@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import { Avatar, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { getAgentInfo, getAgentNotes } from "../../Redux/actions";
 import Loading from "../Loading";
+import Schedule from '../Schedule';
 
 const classes = {
   Avatar: {
@@ -17,6 +18,7 @@ export default function AgentProfile() {
   const dispatch = useDispatch();
   const params = useParams();
   const agentProfile = useSelector((state) => state.agentProfile);
+  const schedule = useSelector(state => state.schedule);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -60,6 +62,27 @@ export default function AgentProfile() {
                 Projects: {agentProfile.agent.projects.join(", ")}
               </Typography>
             </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid container component={Paper} sx={classes.PaperSection}>
+          <Grid container item sx={{ justifyContent: "center" }}>
+            <Typography variant="h5">Schedule</Typography>
+          </Grid>
+          <Grid container sx={{ justifyContent: 'space-around', }} >
+            {schedule && schedule.week.map(day => (
+              <Grid container item xs={2} key={day.day} >
+                <Paper sx={theme => ({
+                  padding: theme.spacing(1),
+                  textAlign: 'center',
+                  backgroundColor: '#424242',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                })}>
+                  <Typography variant="h6" gutterBottom >{day.day}</Typography>
+                  <Schedule breakdown={day.breakdown} projects={day.projects} />
+                </Paper>
+              </Grid>
+            ))}
           </Grid>
         </Grid>
 

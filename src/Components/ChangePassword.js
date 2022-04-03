@@ -13,8 +13,6 @@ export default function ChangePassword({ open, handlePasswordClose }) {
 
   const handleSubmitChange = () => {
     if(currentPassword !== '' && newPassword !== '' && newPassword === confirmNewPassword){
-      console.log(currentPassword)
-      console.log(newPassword)
       dispatch(changePassword(currentPassword, newPassword)).then(()=> handlePasswordClose())
     }
   }
