@@ -13,6 +13,7 @@ import {
 import { Close } from "@mui/icons-material";
 import { logoutUser } from "../Redux/actions";
 import ChangePassword from './ChangePassword';
+import ContactInfo from './ContactInfo';
 
 export default function AccountSettings({ open, handleAccountClose }) {
   const dispatch = useDispatch();
@@ -20,6 +21,10 @@ export default function AccountSettings({ open, handleAccountClose }) {
   const [passwordModal, setPasswordModal] = useState(false);
   const handlePasswordOpen = () => setPasswordModal(true);
   const handlePasswordClose = () => setPasswordModal(false);
+
+  const [contactInfoModal, setContactInfoModal] = useState(false);
+  const handleContactInfoOpen = () => setContactInfoModal(true);
+  const handleContactInfoClose = () => setContactInfoModal(false);
 
   const handleLogout = () => dispatch(logoutUser()).then(()=> handleAccountClose());
 
@@ -66,7 +71,10 @@ export default function AccountSettings({ open, handleAccountClose }) {
               sx={{ justifyContent: "space-between", alignItems: "center" }}
             >
               <Typography>Contact Information</Typography>
-              <Button>Edit</Button>
+              <Button onClick={handleContactInfoOpen} >Edit</Button>
+              {contactInfoModal && open && (
+                <ContactInfo open={open} handleContactInfoClose={handleContactInfoClose} />
+              )}
             </Grid>
             <Grid item container xs={12}></Grid>
           </Grid>
