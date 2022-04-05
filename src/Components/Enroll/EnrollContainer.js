@@ -48,7 +48,7 @@ const classes = {
   root: (theme) => ({
     backgroundColor: theme.palette.background.paper,
     width: '100%',
-    minHeight: 'calc(100% - 64px)',
+    minHeight: 'calc(100% - 84px)',
   }),
 };
 

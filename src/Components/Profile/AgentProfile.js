@@ -69,18 +69,10 @@ export default function AgentProfile() {
           <Grid container item sx={{ justifyContent: "center" }}>
             <Typography variant="h5">Schedule</Typography>
           </Grid>
-          <Grid container sx={{ justifyContent: 'space-around', }} >
+          <Grid container item xs={12} spacing={1} sx={{ justifyContent: "center", alignItems: "center" }}>
             {schedule && schedule.week.map(day => (
-              <Grid container item xs={2} key={day.day} >
-                <Paper sx={theme => ({
-                  padding: theme.spacing(1),
-                  textAlign: 'center',
-                  backgroundColor: '#424242',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                })}>
-                  <Typography variant="h6" gutterBottom >{day.day}</Typography>
-                  <Schedule breakdown={day.breakdown} projects={day.projects} />
-                </Paper>
+              <Grid item xs={12} key={day.day} >
+                <Schedule breakdown={day.breakdown} projects={day.projects} day={day.day} />
               </Grid>
             ))}
           </Grid>
