@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Accordion, AccordionDetails, AccordionSummary, Grid, Typography } from '@mui/material/';
 import { ExpandMore } from '@mui/icons-material/';
 
 export default function Schedule(props) {
     const { day, projects, breakdown } = props;
+    const [expanded, setExpanded] = useState(false);
+
     return (
-            <Accordion sx={{ color: '#fff', backgroundColor: '#424242', }}>
+        <Grid container item xs={12} sm={6} md={4} sx={expanded?{ alignSelf: 'stretch', }:{ alignSelf: 'flex-start', }} >
+            <Accordion sx={{ color: '#fff', backgroundColor: '#424242', }} expanded={expanded} onChange={(e)=>setExpanded(prev=>!prev)} >
                 <AccordionSummary
                     expandIcon={<ExpandMore />}
                     aria-controls="panel1a-content"
@@ -35,5 +38,6 @@ export default function Schedule(props) {
                     ))}
                 </AccordionDetails>
             </Accordion>
+        </Grid>
     );
 }
