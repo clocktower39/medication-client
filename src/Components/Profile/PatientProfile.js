@@ -37,6 +37,7 @@ export default function PatientProfile(props) {
     const [newNote, setNewNote] = useState('');
     const [patient, setPatient] = useState(null);
     const [prescribers, setPrescribers] = useState([]);
+    const [services, setServices] = useState([]);
     const [notes, setNotes] = useState([]);
     const agent = useSelector(state => state.agent);
     const [editMode, setEditMode] = useState(false);
@@ -86,7 +87,7 @@ export default function PatientProfile(props) {
                 note: newNote,
                 accountId: patient._id,
                 noteType: 'user',
-                createdBy: { username: agent.username, accountId: agent._id},
+                createdBy: { username: agent.username, accountId: agent._id },
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -143,7 +144,7 @@ export default function PatientProfile(props) {
         fetch(`${serverURL}/submitLab`, {
             method: 'post',
             dataType: 'json',
-            body: JSON.stringify({ anc, bloodDrawDate, accountId: patient._id, createdBy: { username: agent.username, accountId: agent._id }}),
+            body: JSON.stringify({ anc, bloodDrawDate, accountId: patient._id, createdBy: { username: agent.username, accountId: agent._id } }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
@@ -189,6 +190,7 @@ export default function PatientProfile(props) {
 
     useEffect(() => {
         setPrescribers([]);
+        setServices([]);
         const getAccountInfo = async () => {
             // fetch the patient object
             const patientObject = await fetch(`${serverURL}${location.pathname}`).then(res => res.json()).then(data => data[0]);
@@ -196,6 +198,10 @@ export default function PatientProfile(props) {
             // fetch the patient relationships
             const relationshipsArray = await fetch(`${serverURL}/relationships/patient/${patientObject._id}`).then(res => res.json());
             const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item.prescriberId))];
+
+            // fetch the patient services
+            const servicesArray = await fetch(`${serverURL}/services/${patientObject._id}`).then(res => res.json());
+            setServices(servicesArray);
 
             // add each PR from the relationship history
             uniqueRelationshipsArray.forEach((id) => {
@@ -391,6 +397,45 @@ export default function PatientProfile(props) {
                     </Grid>
                     <Grid container item xs={12}>
                         <Paper sx={classes.Paper}>
+                            <Grid container item sx={{ justifyContent: "center" }}>
+                                <Typography variant="h5">Services</Typography>
+                            </Grid>
+                            <TableContainer component={Paper}>
+                                <Table size="small">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Date</TableCell>
+                                            <TableCell>Created By</TableCell>
+                                            <TableCell>Type</TableCell>
+                                            <TableCell>Summary</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {services.length > 0 ? (
+                                            services.map((service) => (
+                                                <TableRow key={service._id}>
+                                                    <TableCell>{service.timestamp}</TableCell>
+                                                    <TableCell>
+                                                        <Typography component={Link} to={`/agentProfile/${service.createdBy.accountId}`}>
+                                                            {service.createdBy.username}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>{service.type}</TableCell>
+                                                    <TableCell>{service.summary}</TableCell>
+                                                </TableRow>
+                                            ))
+                                        ) : (
+                                            <TableRow>
+                                                <TableCell>No services </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Paper>
+                    </Grid>
+                    <Grid container item xs={12}>
+                        <Paper sx={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Labs</Typography>
                             <Grid container justifyContent="center" spacing={1} sx={{ marginBottom: '15px' }}>
                                 <Grid item xs={6} sm={5} >
@@ -431,7 +476,7 @@ export default function PatientProfile(props) {
                                                 <TableCell>{lab.timestamp}</TableCell>
                                                 <TableCell>{lab.bloodDrawDate}</TableCell>
                                                 <TableCell>{lab.anc}</TableCell>
-                                                    <TableCell><Typography component={Link} to={`/agentProfile/${lab.createdBy.accountId}`}>{lab.createdBy.username}</Typography></TableCell>
+                                                <TableCell><Typography component={Link} to={`/agentProfile/${lab.createdBy.accountId}`}>{lab.createdBy.username}</Typography></TableCell>
                                             </TableRow>
                                         ))}
 
