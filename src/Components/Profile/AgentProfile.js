@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 import { Avatar, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { getAgentInfo, getAgentNotes } from "../../Redux/actions";
+import { getAgentInfo, getAgentServices, getAgentNotes } from "../../Redux/actions";
 import Loading from "../Loading";
 import Schedule from '../Schedule';
 
@@ -24,6 +24,7 @@ export default function AgentProfile() {
   useEffect(() => {
     dispatch(getAgentInfo(params.agentId));
     dispatch(getAgentNotes(params.agentId));
+    dispatch(getAgentServices(params.agentId));
   }, [dispatch, params.agentId]);
 
   useEffect(() => {
@@ -84,22 +85,21 @@ export default function AgentProfile() {
                 <TableRow>
                   <TableCell>Date</TableCell>
                   <TableCell>Account</TableCell>
-                  <TableCell>Service</TableCell>
+                  <TableCell>Type</TableCell>
                   <TableCell>Summary</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* temporary, until services are integrated */}
-                {false ? (
+                {agentProfile.services.length > 0 ? (
                   agentProfile.services.map((service) => (
                     <TableRow key={service._id}>
-                      <TableCell>{service.date}</TableCell>
+                      <TableCell>{service.timestamp}</TableCell>
                       <TableCell>
-                        <Typography component={Link} to={`/patientProfile/${service.accountId}`}>
-                          {service.accountId}
+                        <Typography component={Link} to={`/${service.account.type}Profile/${service.account.id}`}>
+                          {service.account.id}
                         </Typography>
                       </TableCell>
-                      <TableCell>{service.service}</TableCell>
+                      <TableCell>{service.type}</TableCell>
                       <TableCell>{service.summary}</TableCell>
                     </TableRow>
                   ))

@@ -191,5 +191,6 @@ export let schedule = {
 }
 
 export let agentProfile = {
+    services: [],
     notes: [],
 };

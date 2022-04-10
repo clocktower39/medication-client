@@ -25,7 +25,7 @@ export let reducer = (state = { agent, schedule, agentProfile }, action) => {
         case UPDATE_AGENT_PROFILE_SERVICES:
                 return {
                     ...state,
-                    agentProfile:{ ...state.agentProfile, services: {...action.services }, },
+                    agentProfile:{ ...state.agentProfile, services: [...action.services ], },
                 }
         case UPDATE_AGENT_PROFILE_NOTES:
                 return {

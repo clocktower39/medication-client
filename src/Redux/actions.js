@@ -163,3 +163,13 @@ export function getAgentNotes(agentId) {
         });
     }
 }
+export function getAgentServices(agentId) {
+    return async (dispatch, getState) => {
+        const data = await fetch(`${serverURL}/agentServices/${agentId}`).then(res => res.json());
+        if(data)
+        return dispatch({
+            type: UPDATE_AGENT_PROFILE_SERVICES,
+            services: data,
+        });
+    }
+}
