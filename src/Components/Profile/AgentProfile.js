@@ -22,9 +22,11 @@ export default function AgentProfile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(getAgentInfo(params.agentId));
-    dispatch(getAgentNotes(params.agentId));
-    dispatch(getAgentServices(params.agentId));
+    if(params.agentId !== 'undefined'){
+      dispatch(getAgentInfo(params.agentId));
+      dispatch(getAgentNotes(params.agentId));
+      dispatch(getAgentServices(params.agentId));
+    }
   }, [dispatch, params.agentId]);
 
   useEffect(() => {
