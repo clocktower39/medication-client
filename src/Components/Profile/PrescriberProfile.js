@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
 import { Box, Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { AddCircle, ExpandMore, RemoveCircle } from '@mui/icons-material';
 import Search from '../Search/Search';
+import Notes from './Notes';
 import serverURL from '../../serverURL';
 
 const classes = {
@@ -33,9 +33,6 @@ export default function PrescriberProfile(props) {
     const location = useLocation();
     const [prescriber, setPrescriber] = useState(null);
     const [patients, setPatients] = useState([]);
-    const [newNote, setNewNote] = useState('');
-    const [notes, setNotes] = useState([]);
-    const agent = useSelector(state => state.agent);
     const [editMode, setEditMode] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -52,10 +49,6 @@ export default function PrescriberProfile(props) {
     const [zip, setZip] = useState('');
     const [country, setCountry] = useState('');
     const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
-
-    const handleNoteChange = (e) => {
-        setNewNote(e.target.value);
-    }
 
     const handleAccountChange = (e, setter) => {
         setter(e.target.value)
@@ -74,25 +67,6 @@ export default function PrescriberProfile(props) {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-    }
-
-    const submitNote = () => {
-        fetch(`${serverURL}/submitNote`, {
-            method: 'post',
-            dataType: 'json',
-            body: JSON.stringify({
-                note: newNote,
-                accountId: prescriber._id,
-                noteType: 'user',
-                createdBy: { username: agent.username, accountId: agent._id },
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-            .then(res => res.json())
-            .then(data => setNotes(prevNotes => [...prevNotes, data.note]))
-        setNewNote('');
     }
 
     const updatePrescriberEdit = () => {
@@ -176,10 +150,6 @@ export default function PrescriberProfile(props) {
                         setPatients(prevPatientList => [...prevPatientList, { ...ptData[0], completeHistory: relationshipsArray.filter(item => item.patientId === id) }]);
                     })
             })
-
-            // fetch the account notes
-            fetch(`${serverURL}/notes/${prescriberObject._id}`).then(res => res.json()).then(data => setNotes(data));
-            resetEditData(prescriberObject);
 
             return prescriberObject;
         }
@@ -335,39 +305,9 @@ export default function PrescriberProfile(props) {
                             </TableContainer>
                         </Paper>
                     </Grid>
-                    <Grid container item xs={12}>
-                        <Paper sx={classes.Paper}>
-                            <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
-                            <Grid container >
-                                <Grid container item xs={12} sx={{ alignContent: 'center', }}><TextField onChange={handleNoteChange} multiline fullWidth value={newNote} /></Grid>
-                                <Grid container item xs={12} sx={{ alignContent: 'center', justifyContent: 'center', }}><IconButton onClick={submitNote}><AddCircle /></IconButton></Grid>
-                            </Grid>
-                            <TableContainer component={Paper}>
-                                <Table size="small">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Date</TableCell>
-                                            <TableCell>Note Type</TableCell>
-                                            <TableCell>Created By</TableCell>
-                                            <TableCell>Note Summary</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {notes.length > 0 ?
-                                            notes.map(n => (
-                                                <TableRow key={n._id}>
-                                                    <TableCell>{n.date}</TableCell>
-                                                    <TableCell>{n.noteType}</TableCell>
-                                                    <TableCell><Typography component={Link} to={`/agentProfile/${n.createdBy.accountId}`}>{n.createdBy.username}</Typography></TableCell>
-                                                    <TableCell>{n.note}</TableCell>
-                                                </TableRow>
-                                            )) :
-                                            <TableRow><TableCell>No notes </TableCell></TableRow>}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </Paper>
-                    </Grid>
+                    
+                    <Notes account={prescriber} setAccount={setPrescriber} accountType="prescriber" />
+
                     <Grid container item xs={12}>
                         <Paper sx={classes.Paper}>
                             <Typography variant="h5" align="center" gutterBottom >Services</Typography>

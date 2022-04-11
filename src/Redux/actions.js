@@ -150,7 +150,7 @@ export function getAgentNotes(agentId) {
         const response = await fetch(`${serverURL}/agentNotes`, {
             method: 'post',
             dataType: 'json',
-            body: JSON.stringify({accountId: agentId}),
+            body: JSON.stringify({id: agentId}),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }

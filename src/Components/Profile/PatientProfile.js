@@ -4,6 +4,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { Box, Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { AddCircle, ExpandMore, RemoveCircle } from '@mui/icons-material';
 import Search from '../Search/Search';
+import Notes from './Notes';
 import serverURL from '../../serverURL';
 
 const classes = {
@@ -34,11 +35,9 @@ const classes = {
 
 export default function PatientProfile(props) {
     const location = useLocation();
-    const [newNote, setNewNote] = useState('');
     const [patient, setPatient] = useState(null);
     const [prescribers, setPrescribers] = useState([]);
     const [services, setServices] = useState([]);
-    const [notes, setNotes] = useState([]);
     const agent = useSelector(state => state.agent);
     const [editMode, setEditMode] = useState(false);
     const [firstName, setFirstName] = useState('');
@@ -56,9 +55,6 @@ export default function PatientProfile(props) {
     const [anc, setAnc] = useState('');
     const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
 
-    const handleNoteChange = (e) => {
-        setNewNote(e.target.value);
-    }
 
     const handleAccountChange = (e, setter) => {
         setter(e.target.value)
@@ -77,25 +73,6 @@ export default function PatientProfile(props) {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-    }
-
-    const submitNote = () => {
-        fetch(`${serverURL}/submitNote`, {
-            method: 'post',
-            dataType: 'json',
-            body: JSON.stringify({
-                note: newNote,
-                accountId: patient._id,
-                noteType: 'user',
-                createdBy: { username: agent.username, accountId: agent._id },
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-            .then(res => res.json())
-            .then(data => setNotes(prevNotes => [...prevNotes, data.note]))
-        setNewNote('');
     }
 
     const resetEditData = (matchObject) => {
@@ -211,10 +188,6 @@ export default function PatientProfile(props) {
                         setPrescribers(prevPrescriberList => [...prevPrescriberList, { ...prData[0], completeHistory: relationshipsArray.filter(item => item.prescriberId === id) }]);
                     })
             })
-
-            // fetch the account notes
-            fetch(`${serverURL}/notes/${patientObject._id}`).then(res => res.json()).then(data => setNotes(data));
-            resetEditData(patientObject);
 
             // fetch patients labs
             fetch(`${serverURL}/labs/${patientObject._id}`).then(res => res.json()).then(data => {
@@ -362,39 +335,9 @@ export default function PatientProfile(props) {
                             </TableContainer>
                         </Paper>
                     </Grid>
-                    <Grid container item xs={12}>
-                        <Paper sx={classes.Paper}>
-                            <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
-                            <Grid container >
-                                <Grid container item xs={12} sx={{ alignContent: 'center', }}><TextField onChange={handleNoteChange} multiline fullWidth value={newNote} /></Grid>
-                                <Grid container item xs={12} sx={{ alignContent: 'center', justifyContent: 'center', }}><IconButton onClick={submitNote}><AddCircle /></IconButton></Grid>
-                            </Grid>
-                            <TableContainer component={Paper}>
-                                <Table size="small">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Date</TableCell>
-                                            <TableCell>Note Type</TableCell>
-                                            <TableCell>Created By</TableCell>
-                                            <TableCell>Note Summary</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {notes.length > 0 ?
-                                            notes.map(n => (
-                                                <TableRow key={n._id}>
-                                                    <TableCell>{n.date}</TableCell>
-                                                    <TableCell>{n.noteType}</TableCell>
-                                                    <TableCell><Typography component={Link} to={`/agentProfile/${n.createdBy.accountId}`}>{n.createdBy.username}</Typography></TableCell>
-                                                    <TableCell>{n.note}</TableCell>
-                                                </TableRow>
-                                            )) :
-                                            <TableRow><TableCell>No notes </TableCell></TableRow>}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </Paper>
-                    </Grid>
+                    
+                    <Notes account={patient} setAccount={setPatient} accountType="patient" />
+
                     <Grid container item xs={12}>
                         <Paper sx={classes.Paper}>
                             <Grid container item sx={{ justifyContent: "center" }}>

@@ -122,7 +122,8 @@ export default function AgentProfile() {
               <TableHead>
                 <TableRow>
                   <TableCell>Date</TableCell>
-                  <TableCell>Account</TableCell>
+                  <TableCell>Account Type</TableCell>
+                  <TableCell>Id</TableCell>
                   <TableCell>Note Summary</TableCell>
                 </TableRow>
               </TableHead>
@@ -130,13 +131,14 @@ export default function AgentProfile() {
                 {agentProfile.notes.length > 0 ? (
                   agentProfile.notes.map((n) => (
                     <TableRow key={n._id}>
-                      <TableCell>{n.date}</TableCell>
+                      <TableCell>{n.timestamp}</TableCell>
+                      <TableCell>{n.account.type}</TableCell>
                       <TableCell>
-                        <Typography component={Link} to={`/patientProfile/${n.accountId}`}>
-                          {n.accountId}
+                        <Typography component={Link} to={`/${n.account.type}Profile/${n.account.id}`}>
+                          {n.account.id}
                         </Typography>
                       </TableCell>
-                      <TableCell>{n.note}</TableCell>
+                      <TableCell>{n.summary}</TableCell>
                     </TableRow>
                   ))
                 ) : (
