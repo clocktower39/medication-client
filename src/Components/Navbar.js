@@ -20,7 +20,7 @@ export default function Navbar() {
   return (
     <div style={{ flexGrow: 1, paddingBottom: 64 }}>
       <AppBar position="fixed">
-        <Toolbar className="nav-container">
+        <Toolbar>
           {agent._id ? (
             <>
               <Box sx={{ flexGrow: 1 }}>

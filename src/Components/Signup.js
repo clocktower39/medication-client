@@ -68,7 +68,7 @@ export const Login = (props) => {
             color="secondary"
             error={error === true ? true : false}
             helperText={error === true ? "Confirm password" : false}
-            className={classes.textField}
+            sx={classes.textField}
             label="Confirm Password"
             value={confirmPassword}
             type="password"
@@ -84,7 +84,7 @@ export const Login = (props) => {
             color="secondary"
             error={error === true ? true : false}
             helperText={error === true ? "Access code" : false}
-            className={classes.textField}
+            sx={classes.textField}
             label="Access code"
             value={accessCode}
             onKeyDown={(e) => handleKeyDown(e)}
@@ -98,7 +98,7 @@ export const Login = (props) => {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
+            sx={classes.button}
           >
             Sign up
           </Button>

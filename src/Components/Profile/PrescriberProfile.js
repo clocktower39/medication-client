@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import { Box, Button, Container, Grid, IconButton, LinearProgress, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
-import { AddCircle, ExpandMore, RemoveCircle } from '@mui/icons-material';
-import Search from '../Search/Search';
+import { useLocation } from 'react-router-dom';
+import { Button, Container, Grid, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import Relationships from './Relationships';
 import Notes from './Notes';
 import serverURL from '../../serverURL';
 
 const classes = {
-    root: {},
     rootGrid: {
         marginTop: '12.5px',
     },
@@ -17,22 +15,11 @@ const classes = {
         width: '100%',
         overflow: 'hidden',
     },
-    ModalPaper: {
-        position: 'absolute',
-        padding: '7.5px',
-        width: '65%',
-        backgroundColor: '#fcfcfc',
-        top: '5%',
-        left: '17.5%',
-        overflowY: 'scroll',
-        height: '90%'
-    },
 };
 
 export default function PrescriberProfile(props) {
     const location = useLocation();
     const [prescriber, setPrescriber] = useState(null);
-    const [patients, setPatients] = useState([]);
     const [editMode, setEditMode] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -48,25 +35,9 @@ export default function PrescriberProfile(props) {
     const [state, setState] = useState('');
     const [zip, setZip] = useState('');
     const [country, setCountry] = useState('');
-    const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
 
     const handleAccountChange = (e, setter) => {
         setter(e.target.value)
-    }
-
-    const createRelationship = (patientId) => {
-        fetch(`${serverURL}/manageRelationship`, {
-            method: 'post',
-            dataType: 'json',
-            body: JSON.stringify({
-                patientId,
-                prescriberId: prescriber._id,
-                action: 'activate',
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
     }
 
     const updatePrescriberEdit = () => {
@@ -100,56 +71,10 @@ export default function PrescriberProfile(props) {
         setCountry(matchObject.country);
     }
 
-    const RelationshipHistorySection = ({ patient }) => {
-        const [expandHistory, setExpandHistory] = useState(false);
-        return (
-            <>
-                <TableRow key={patient._id}>
-                    <TableCell><Link to={`/patientProfile/${patient._id}`}>{patient._id}</Link></TableCell>
-                    <TableCell>{patient.firstName}</TableCell>
-                    <TableCell>{patient.lastName}</TableCell>
-                    <TableCell>{patient.dateOfBirth.substr(0, 10)}</TableCell>
-                    <TableCell>{patient.zip}</TableCell>
-                    <TableCell><IconButton onClick={() => setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
-                </TableRow>
-                {expandHistory === true && (
-                    <>
-
-                        <TableRow>
-                            <TableCell colSpan={1} className={classes.TableHeader}></TableCell>
-                            <TableCell colSpan={2} className={classes.TableHeader}>Date</TableCell>
-                            <TableCell colSpan={2} className={classes.TableHeader}>Action</TableCell>
-                        </TableRow>
-
-                        {patient.completeHistory.map(historyItem => (
-                            <TableRow key={historyItem.date}>
-                                <TableCell colSpan={1} ></TableCell>
-                                <TableCell colSpan={2} >{historyItem.date}</TableCell>
-                                <TableCell colSpan={2} >{historyItem.action}</TableCell>
-                            </TableRow>
-                        ))}
-                    </>
-                )}
-            </>)
-    }
-
     useEffect(() => {
         const getAccountInfo = async () => {
             // fetch the prescriber object
             const prescriberObject = await fetch(`${serverURL}${location.pathname}`).then(res => res.json()).then(data => data[0]);
-
-            // fetch the prescriber relationships
-            const relationshipsArray = await fetch(`${serverURL}/relationships/prescriber/${prescriberObject._id}`).then(res => res.json());
-            const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item.patientId))];
-
-            // add each PT from the relationship history
-            uniqueRelationshipsArray.forEach((id, i) => {
-                fetch(`${serverURL}/patientProfile/${id}`)
-                    .then(res => res.json())
-                    .then(ptData => {
-                        setPatients(prevPatientList => [...prevPatientList, { ...ptData[0], completeHistory: relationshipsArray.filter(item => item.patientId === id) }]);
-                    })
-            })
 
             return prescriberObject;
         }
@@ -251,60 +176,8 @@ export default function PrescriberProfile(props) {
                     </Paper>
                 </Grid>
                 <Grid container item lg={8} xs={12}>
-                    <Grid container item xs={12}>
-                        <Paper sx={classes.Paper}>
-                            <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
-                            <Typography variant="h6" align="center" >Patients <IconButton onClick={() => setToggleRelationshipModal(true)}><AddCircle /></IconButton></Typography>
-                            <Modal
-                                open={toggleRelationshipModal}
-                                aria-labelledby="simple-modal-title"
-                                aria-describedby="simple-modal-description"
-                            >
-                                <Box sx={classes.ModalPaper}>
-                                    <div>
-                                        <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
-                                    </div>
-                                    <Grid container spacing={1} >
-                                        <Search
-                                            profileType="patient"
-                                            fieldObjects={[
-                                                { label: 'First Name', propertyName: 'firstName', value: '' },
-                                                { label: 'Last Name', propertyName: 'lastName', value: '' },
-                                                { label: 'Phone Number', propertyName: 'phoneNumber', value: '' },
-                                                { label: 'Date of Birth', propertyName: 'dateOfBirth', value: '' },
-                                                { label: 'Zip Code', propertyName: 'zip', value: '' },
-                                            ]}
-                                            searchUrl={`${serverURL}/searchPatients`}
-                                            type="select"
-                                            onClickFunc={createRelationship}
-                                        />
-                                    </Grid>
-                                </Box>
-                            </Modal>
-                            <TableContainer component={Paper}>
-                                <Table size="small">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>ID</TableCell>
-                                            <TableCell>First Name</TableCell>
-                                            <TableCell>Last Name</TableCell>
-                                            <TableCell>Date of Birth</TableCell>
-                                            <TableCell>Zip Code</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {patients.length > 0 ? patients.map((patient, i) => (
-                                            <RelationshipHistorySection key={`relationship-patient-${i}`} patient={patient} />
-                                        )) :
-                                            <TableRow>
-                                                <TableCell>No active patients</TableCell>
-                                            </TableRow>
-                                        }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </Paper>
-                    </Grid>
+
+                    <Relationships account={prescriber} accountType="prescriber" searchType={"patient"} />
                     
                     <Notes account={prescriber} setAccount={setPrescriber} accountType="prescriber" />
 
