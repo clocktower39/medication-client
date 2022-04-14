@@ -130,6 +130,7 @@ export default function PatientProfile(props) {
             fetch(`${serverURL}/labs/${patientObject._id}`).then(res => res.json()).then(data => {
                 setLabs(data)
             });
+            resetEditData(patientObject);
 
             return patientObject;
         }

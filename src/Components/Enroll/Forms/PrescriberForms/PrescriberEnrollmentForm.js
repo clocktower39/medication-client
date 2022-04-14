@@ -8,14 +8,6 @@ const classes = {
   appBar: {
     position: "relative",
   },
-  layout: (theme) => ({
-    width: "auto",
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: "auto",
-      marginRight: "auto",
-    },
-  }),
   paper: (theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
@@ -208,9 +200,9 @@ export default function PrescriberEnrollmentForm() {
   return (
     <>
       <CssBaseline />
-      <main className={classes.layout}>
+      <main>
         <Paper sx={(theme) => classes.paper(theme)}>
-          <Typography component="h1" variant="h4" align="center">
+          <Typography variant="h4" align="center">
             Prescriber Enrollment
           </Typography>
           <Stepper activeStep={activeStep} sx={(theme) => classes.stepper(theme)}>

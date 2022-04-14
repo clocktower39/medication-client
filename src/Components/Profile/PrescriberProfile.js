@@ -78,7 +78,10 @@ export default function PrescriberProfile(props) {
 
             return prescriberObject;
         }
-        getAccountInfo().then(res => setPrescriber(res));
+        getAccountInfo().then(res => {
+            setPrescriber(res);
+            resetEditData(res);
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

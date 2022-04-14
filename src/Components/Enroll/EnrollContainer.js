@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
+import { AppBar, Box, Tab, Tabs, } from '@mui/material';
 import { useTheme } from '@mui/styles';
-import AppBar from '@mui/material/AppBar';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 
 import PrescriberEnrollmentForm from './Forms/PrescriberForms/PrescriberEnrollmentForm';
 import PatientEnrollmentForm from './Forms/PatientForms/PatientEnrollmentForm';
@@ -24,7 +20,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
