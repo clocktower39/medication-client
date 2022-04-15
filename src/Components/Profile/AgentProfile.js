@@ -51,6 +51,7 @@ export default function AgentProfile() {
             sx={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}
           >
             <Typography variant="h6">{agentProfile.agent.username}</Typography>
+            <Typography variant="caption">{agentProfile.agent._id}</Typography>
             <Typography variant="h6">{agentProfile.agent.role}</Typography>
             <Typography variant="h5">
               {agentProfile.agent.firstName} {agentProfile.agent.lastName}

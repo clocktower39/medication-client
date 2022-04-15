@@ -90,6 +90,37 @@ export function changePassword(currentPassword, newPassword) {
     }
 }
 
+export function updateContactInfo({ email, firstName, lastName }) {
+    return async (dispatch, getState) => {
+        const bearer = `Bearer ${localStorage.getItem('JWT_AUTH_TOKEN')}`;
+
+        const response = await fetch(`${serverURL}/updateContactInfo`, {
+            method: 'post',
+            dataType: 'json',
+            body: JSON.stringify({ email, firstName, lastName }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": bearer,
+            }
+        })
+        const data = await response.json();
+        if (data.error) {
+            return dispatch({
+                type: ERROR,
+                error: data.error
+            });
+        }
+        const accessToken = data.accessToken;
+        const decodedAccessToken = jwt(accessToken);
+
+        localStorage.setItem('JWT_AUTH_TOKEN', accessToken);
+        return dispatch({
+            type: LOGIN_AGENT,
+            agent: decodedAccessToken,
+        });
+    }
+}
+
 export const loginJWT = (token) => {
     return async (dispatch, getState) => {
         const bearer = `Bearer ${localStorage.getItem('JWT_AUTH_TOKEN')}`;

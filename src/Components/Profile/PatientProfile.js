@@ -144,6 +144,7 @@ export default function PatientProfile(props) {
                 <Grid container item lg={4} xs={12}>
                     <Paper sx={classes.Paper}>
                         <Typography variant="h5" align="center" gutterBottom >Patient Profile Summary</Typography>
+                        <Typography variant="body1" align="center" gutterBottom >ID: {patient._id}</Typography>
                         <Grid container item xs={12} spacing={1} >
                             {!editMode ?
                                 <Grid container item xs={12} spacing={1} sx={{ justifyContent: 'center', }}>
