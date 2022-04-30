@@ -25,12 +25,15 @@ export default function Search(props) {
         // convert back into an object
         const filteredParams = Object.fromEntries(notEmpty);
 
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+
         fetch(searchUrl, {
             method: "post",
             dataType: "json",
             body: JSON.stringify(filteredParams),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
+                "Authorization": bearer,
             },
         })
             .then((res) => res.json())

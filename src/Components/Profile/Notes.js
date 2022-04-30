@@ -24,6 +24,8 @@ export default function Notes({ account, setAccount, accountType }) {
     }
 
     const submitNote = async () => {
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+
         const response = await fetch(`${serverURL}/submitNote`, {
             method: 'post',
             dataType: 'json',
@@ -39,7 +41,8 @@ export default function Notes({ account, setAccount, accountType }) {
                 },
             }),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": bearer,
             }
         });
         const data = await response.json();
@@ -55,7 +58,9 @@ export default function Notes({ account, setAccount, accountType }) {
 
     useEffect(() => {
         // fetch the account notes
-        const getAccountNotes = async () => fetch(`${serverURL}/notes/${account._id}`).then(res => res.json()).then(data => setNotes(data));
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+        
+        const getAccountNotes = async () => fetch(`${serverURL}/notes/${account._id}`, { headers: { "Authorization": bearer }}).then(res => res.json()).then(data => setNotes(data));
         getAccountNotes().then(res => setAccount(prev => ({ ...prev, notes: res }) ));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

@@ -41,13 +41,15 @@ export default function PrescriberProfile(props) {
     }
 
     const updatePrescriberEdit = () => {
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
 
         fetch(`${serverURL}/updatePrescriber`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({ filter: { _id: prescriber._id }, update: { firstName, lastName, phoneNumber, faxNumber, email, npiNumber, deaNumber, practiceName, address1, address2, city, state, zip, country } }),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": bearer,
             }
         }).then(() => {
             setPrescriber({ firstName, lastName, phoneNumber, faxNumber, email, npiNumber, deaNumber, practiceName, address1, address2, city, state, zip, country })
@@ -73,8 +75,9 @@ export default function PrescriberProfile(props) {
 
     useEffect(() => {
         const getAccountInfo = async () => {
+            const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
             // fetch the prescriber object
-            const prescriberObject = await fetch(`${serverURL}${location.pathname}`).then(res => res.json()).then(data => data[0]);
+            const prescriberObject = await fetch(`${serverURL}${location.pathname}`, { headers: { "Authorization": bearer }} ).then(res => res.json()).then(data => data[0]);
 
             return prescriberObject;
         }

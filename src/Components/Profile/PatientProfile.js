@@ -72,13 +72,15 @@ export default function PatientProfile(props) {
     }
 
     const updatePatientEdit = () => {
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
 
         fetch(`${serverURL}/updatePatient`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({ filter: { _id: patient._id }, update: { firstName, lastName, dateOfBirth, phoneNumber, address1, address2, city, state, zip, country } }),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": bearer,
             }
         }).then(() => {
             setPatient({
@@ -101,12 +103,15 @@ export default function PatientProfile(props) {
     }
 
     const addLab = () => {
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+
         fetch(`${serverURL}/submitLab`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({ anc, bloodDrawDate, accountId: patient._id, createdBy: { username: agent.username, accountId: agent._id } }),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": bearer,
             }
         }).then(res => res.json())
             .then(data => {
@@ -119,15 +124,16 @@ export default function PatientProfile(props) {
     useEffect(() => {
         setServices([]);
         const getAccountInfo = async () => {
+            const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
             // fetch the patient object
-            const patientObject = await fetch(`${serverURL}${location.pathname}`).then(res => res.json()).then(data => data[0]);
-            
+            const patientObject = await fetch(`${serverURL}${location.pathname}`, { headers: { "Authorization": bearer }} ).then(res => res.json()).then(data => data[0]);
+
             // fetch the patient services
-            const servicesArray = await fetch(`${serverURL}/services/${patientObject._id}`).then(res => res.json());
+            const servicesArray = await fetch(`${serverURL}/services/${patientObject._id}`, { headers: { "Authorization": bearer }} ).then(res => res.json());
             setServices(servicesArray);
 
             // fetch patients labs
-            fetch(`${serverURL}/labs/${patientObject._id}`).then(res => res.json()).then(data => {
+            fetch(`${serverURL}/labs/${patientObject._id}`, { headers: { "Authorization": bearer }} ).then(res => res.json()).then(data => {
                 setLabs(data)
             });
             resetEditData(patientObject);
@@ -218,7 +224,7 @@ export default function PatientProfile(props) {
                 <Grid container item lg={8} xs={12}>
 
                     <Relationships account={patient} accountType="patient" searchType={"prescriber"} />
-                    
+
                     <Notes account={patient} setAccount={setPatient} accountType="patient" />
 
                     <Grid container item xs={12}>

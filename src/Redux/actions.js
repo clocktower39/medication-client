@@ -159,12 +159,15 @@ export function logoutUser() {
 
 export function getAgentInfo(agentId) {
     return async (dispatch, getState) => {
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+
         const response = await fetch(`${serverURL}/agentInfo`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({_id: agentId}),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                Authorization: bearer,
             }
         })
         const data = await response.json();
@@ -178,12 +181,15 @@ export function getAgentInfo(agentId) {
 
 export function getAgentNotes(agentId) {
     return async (dispatch, getState) => {
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+
         const response = await fetch(`${serverURL}/agentNotes`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({id: agentId}),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                Authorization: bearer,
             }
         })
         const data = await response.json();
@@ -196,7 +202,9 @@ export function getAgentNotes(agentId) {
 }
 export function getAgentServices(agentId) {
     return async (dispatch, getState) => {
-        const data = await fetch(`${serverURL}/agentServices/${agentId}`).then(res => res.json());
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+
+        const data = await fetch(`${serverURL}/agentServices/${agentId}`,{ headers: { Authorization: bearer, }}).then(res => res.json());
         if(data)
         return dispatch({
             type: UPDATE_AGENT_PROFILE_SERVICES,

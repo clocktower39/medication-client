@@ -36,6 +36,8 @@ export default function Relationships({ account, accountType, searchType }) {
     const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
 
     const createRelationship = (prescriberId) => {
+        const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+
         fetch(`${serverURL}/manageRelationship`, {
             method: 'post',
             dataType: 'json',
@@ -45,7 +47,8 @@ export default function Relationships({ account, accountType, searchType }) {
                 action: 'activate',
             }),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": bearer,
             }
         })
     }
@@ -115,13 +118,15 @@ export default function Relationships({ account, accountType, searchType }) {
     useEffect(() => {
         setRelatedAccounts([]);
         const getRelationships = async () => {
+            
+const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
             // fetch the patient relationships
-            const relationshipsArray = await fetch(`${serverURL}/relationships/${accountType}/${account._id}`).then(res => res.json());
+            const relationshipsArray = await fetch(`${serverURL}/relationships/${accountType}/${account._id}`, { headers: { "Authorization": bearer }} ).then(res => res.json());
             const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item[`${searchType}Id`]))];
 
             // add each PR from the relationship history
             uniqueRelationshipsArray.forEach((id) => {
-                fetch(`${serverURL}/${searchType}Profile/${id}`)
+                fetch(`${serverURL}/${searchType}Profile/${id}`, { headers: { "Authorization": bearer }} )
                     .then(res => res.json())
                     .then(data => {
                         setRelatedAccounts(prevList => [...prevList, { ...data[0], completeHistory: relationshipsArray.filter(item => item[`${searchType}Id`] === id) }]);
