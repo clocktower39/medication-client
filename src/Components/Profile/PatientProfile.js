@@ -70,17 +70,38 @@ export default function PatientProfile(props) {
   const [anc, setAnc] = useState("");
 
   const dataGridLabsRows = labs.map((lab) => {
-    // const linkToProfile = `/agentProfile/${lab.createdBy.accountId}`;
+    lab.linkToCreatedByUser = `/agentProfile/${lab.createdBy.accountId}`;
     lab.createdByUsername = lab.createdBy.username;
     return lab;
   });
 
   const dataGridLabsColumns = [
-    { field: "_id", headerName: "id", },
-    { field: "timestamp", headerName: "Timestamp", },
-    { field: "bloodDrawDate", headerName: "BDD", },
-    { field: "anc", headerName: "ANC", },
-    { field: "createdByUsername", headerName: "Created By", },
+    {
+      field: "_id",
+      headerName: "id",
+      flex: 1,
+    },
+    {
+      field: "timestamp",
+      headerName: "Timestamp",
+      flex: 1,
+    },
+    {
+      field: "bloodDrawDate",
+      headerName: "BDD",
+      flex: 1,
+    },
+    {
+      field: "anc",
+      headerName: "ANC",
+      flex: 1,
+    },
+    {
+      field: "createdByUsername",
+      headerName: "Created By",
+      flex: 1,
+      renderCell: (params) => (<Typography component={Link} to={params.row.linkToCreatedByUser}>{params.row.createdByUsername}</Typography>)
+    },
   ];
 
   const handleAccountChange = (e, setter) => {
@@ -517,14 +538,15 @@ export default function PatientProfile(props) {
                   </IconButton>
                 </Grid>
               </Grid>
-              <div style={{height: "350px"}}>
-              <DataGrid
-                getRowId={(row) => row._id}
-                rows={dataGridLabsRows}
-                columns={dataGridLabsColumns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-              /></div>
+              <div style={{ height: "350px" }}>
+                <DataGrid
+                  getRowId={(row) => row._id}
+                  rows={dataGridLabsRows}
+                  columns={dataGridLabsColumns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                />
+              </div>
             </Paper>
           </Grid>
         </Grid>
