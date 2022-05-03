@@ -36,33 +36,37 @@ export default function AgentProfile() {
     }
   }, [agentProfile]);
 
-  const dataGridRows = agentProfile.notes.sort((a, b) => a.timestamp < b.timestamp).map((note) => {
-    note.linkToAccount = `/${note.account.type}Profile/${note.account.id}`;
-    return note;
-  });
-  const dataGridColumns = [
-    {
-      field: "_id",
-      headerName: "ID",
-      flex: 1,
-    },
-    {
-      field: "timestamp",
-      headerName: "Date",
-      flex: 1,
-    },
-    {
-      field: "accountType",
-      headerName: "Account Type",
-      flex: 1,
-      renderCell: (params) => (<Typography component={Link} to={params.row.linkToAccount}>{params.row.account.type}</Typography>)
-    },
-    {
-      field: "summary",
-      headerName: "Note Summary",
-      flex: 1,
-    },
-  ]
+  const dataGridRows = {
+    notes: agentProfile.notes.sort((a, b) => a.timestamp < b.timestamp).map((note) => {
+      note.linkToAccount = `/${note.account.type}Profile/${note.account.id}`;
+      return note;
+    }),
+  }
+  const dataGridColumns = {
+    notes: [
+      {
+        field: "_id",
+        headerName: "ID",
+        flex: 1,
+      },
+      {
+        field: "timestamp",
+        headerName: "Date",
+        flex: 1,
+      },
+      {
+        field: "accountType",
+        headerName: "Account Type",
+        flex: 1,
+        renderCell: (params) => (<Typography component={Link} to={params.row.linkToAccount}>{params.row.account.type}</Typography>)
+      },
+      {
+        field: "summary",
+        headerName: "Note Summary",
+        flex: 1,
+      },
+    ]
+  }
 
   return loading ? (
     <Loading />
@@ -153,8 +157,8 @@ export default function AgentProfile() {
           <Grid container item xs={12} sx={{ height: "375px" }}>
             <DataGrid
               getRowId={(row) => row._id}
-              rows={dataGridRows}
-              columns={dataGridColumns}
+              rows={dataGridRows.notes}
+              columns={dataGridColumns.notes}
               pageSize={5}
               rowsPerPageOptions={[5]}
             />

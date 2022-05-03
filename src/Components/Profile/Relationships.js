@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Grid, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { DataGrid } from "@mui/x-data-grid";
 import { AddCircle, ExpandMore, RemoveCircle } from '@mui/icons-material';
 import Search from '../Search/Search';
 import serverURL from '../../serverURL';
@@ -52,7 +53,8 @@ export default function Relationships({ account, accountType, searchType }) {
             }
         })
     }
-
+    
+    // <RelationshipHistorySection key={`relationship-${searchType}-${i}`} relatedAccount={relatedAccount} searchType={searchType} />
     const RelationshipHistorySection = ({ relatedAccount, searchType }) => {
         const [expandHistory, setExpandHistory] = useState(false);
         return searchType === 'patient' ? (
@@ -115,18 +117,82 @@ export default function Relationships({ account, accountType, searchType }) {
             </>)
     }
 
+    const dataGridColumns = {
+        patient: [
+            {
+                field: "_id",
+                headerName: "ID",
+                flex: 1,
+            },
+            {
+                field: "firstName",
+                headerName: "First Name",
+                flex: 1,
+            },
+            {
+                field: "lastName",
+                headerName: "Last Name",
+                flex: 1,
+            },
+            {
+                field: "dateOfBirth",
+                headerName: "Date of Birth",
+                flex: 1,
+                renderCell: (params) => (params.row.dateOfBirth.substr(0, 10)),
+            },
+            {
+                field: "zip",
+                headerName: "Zip Code",
+                flex: 1,
+            },
+            {
+                field: "expand",
+                headerName: "Zip Code",
+                flex: 1,
+            },
+        ],
+        prescriber: [
+            {
+                field: "_id",
+                headerName: "ID",
+                flex: 1,
+                renderCell: (params) => (<Typography component={Link} to={`/${accountType}Profile/${account._id}`}>{account._id}</Typography>),
+            },
+            {
+                field: "firstName",
+                headerName: "First Name",
+                flex: 1,
+            },
+            {
+                field: "lastName",
+                headerName: "Last Name",
+                flex: 1,
+            },
+            {
+                field: "npiNumber",
+                headerName: "NPI Number",
+                flex: 1,
+            },
+            {
+                field: "deaNumber",
+                headerName: "DEA Number",
+                flex: 1,
+            },
+        ]
+    }
+
     useEffect(() => {
         setRelatedAccounts([]);
         const getRelationships = async () => {
-            
-const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+
+            const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
             // fetch the patient relationships
-            const relationshipsArray = await fetch(`${serverURL}/relationships/${accountType}/${account._id}`, { headers: { "Authorization": bearer }} ).then(res => res.json());
+            const relationshipsArray = await fetch(`${serverURL}/relationships/${accountType}/${account._id}`, { headers: { "Authorization": bearer } }).then(res => res.json());
             const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item[`${searchType}Id`]))];
 
             // add each PR from the relationship history
             uniqueRelationshipsArray.forEach((id) => {
-                fetch(`${serverURL}/${searchType}Profile/${id}`, { headers: { "Authorization": bearer }} )
+                fetch(`${serverURL}/${searchType}Profile/${id}`, { headers: { "Authorization": bearer } })
                     .then(res => res.json())
                     .then(data => {
                         setRelatedAccounts(prevList => [...prevList, { ...data[0], completeHistory: relationshipsArray.filter(item => item[`${searchType}Id`] === id) }]);
@@ -186,39 +252,15 @@ const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
                         </Grid>
                     </Box>
                 </Modal>
-                <TableContainer component={Paper}>
-                    <Table size="small">
-                        <TableHead>
-                            {searchType === "patient" ? (
-                                <TableRow>
-                                    <TableCell sx={classes.TableHeader} >ID</TableCell>
-                                    <TableCell sx={classes.TableHeader} >First Name</TableCell>
-                                    <TableCell sx={classes.TableHeader} >Last Name</TableCell>
-                                    <TableCell sx={classes.TableHeader} >Date of Birth</TableCell>
-                                    <TableCell sx={classes.TableHeader} >Zip Code</TableCell>
-                                </TableRow>
-                            ) : (
-                                <TableRow>
-                                    <TableCell sx={classes.TableHeader} >ID</TableCell>
-                                    <TableCell sx={classes.TableHeader} >First Name</TableCell>
-                                    <TableCell sx={classes.TableHeader} >Last Name</TableCell>
-                                    <TableCell sx={classes.TableHeader} >NPI Number</TableCell>
-                                    <TableCell sx={classes.TableHeader} >DEA Number</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                            )}
-                        </TableHead>
-                        <TableBody>
-                            {relatedAccounts.length > 0 ? relatedAccounts.map((relatedAccount, i) => (
-                                <RelationshipHistorySection key={`relationship-${searchType}-${i}`} relatedAccount={relatedAccount} searchType={searchType} />
-                            )) :
-                                <TableRow>
-                                    <TableCell>No active {searchType}</TableCell>
-                                </TableRow>
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <div style={{ height: "375px" }}>
+                    <DataGrid
+                        getRowId={(row) => row._id}
+                        rows={relatedAccounts}
+                        columns={dataGridColumns['prescriber']}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                    />
+                </div>
             </Paper>
         </Grid>
     )

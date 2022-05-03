@@ -66,7 +66,7 @@ export default function Notes({ account, setAccount, accountType }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const dataGridRows = notes.map((note) => {
+    const dataGridRows = notes.sort((a, b) => a.timestamp < b.timestamp).map((note) => {
         note.linkToCreatedByUser = `/agentProfile/${note.createdBy.id}`;
         note.createdByUsername = note.createdBy.username;
         return note;
