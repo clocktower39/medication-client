@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 import { Avatar, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import { getAgentInfo, getAgentServices, getAgentNotes } from "../../Redux/actions";
 import Loading from "../Loading";
 import Schedule from '../Schedule';
@@ -22,7 +23,7 @@ export default function AgentProfile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if(params.agentId !== 'undefined'){
+    if (params.agentId !== 'undefined') {
       dispatch(getAgentInfo(params.agentId));
       dispatch(getAgentNotes(params.agentId));
       dispatch(getAgentServices(params.agentId));
@@ -34,6 +35,34 @@ export default function AgentProfile() {
       setLoading(false);
     }
   }, [agentProfile]);
+
+  const dataGridRows = agentProfile.notes.sort((a, b) => a.timestamp < b.timestamp).map((note) => {
+    note.linkToAccount = `/${note.account.type}Profile/${note.account.id}`;
+    return note;
+  });
+  const dataGridColumns = [
+    {
+      field: "_id",
+      headerName: "ID",
+      flex: 1,
+    },
+    {
+      field: "timestamp",
+      headerName: "Date",
+      flex: 1,
+    },
+    {
+      field: "accountType",
+      headerName: "Account Type",
+      flex: 1,
+      renderCell: (params) => (<Typography component={Link} to={params.row.linkToAccount}>{params.row.account.type}</Typography>)
+    },
+    {
+      field: "summary",
+      headerName: "Note Summary",
+      flex: 1,
+    },
+  ]
 
   return loading ? (
     <Loading />
@@ -120,38 +149,16 @@ export default function AgentProfile() {
           <Grid container item sx={{ justifyContent: "center" }}>
             <Typography variant="h5">Notes</Typography>
           </Grid>
-          <TableContainer component={Paper}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Account Type</TableCell>
-                  <TableCell>Id</TableCell>
-                  <TableCell>Note Summary</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {agentProfile.notes.length > 0 ? (
-                  agentProfile.notes.map((n) => (
-                    <TableRow key={n._id}>
-                      <TableCell>{n.timestamp}</TableCell>
-                      <TableCell>{n.account.type}</TableCell>
-                      <TableCell>
-                        <Typography component={Link} to={`/${n.account.type}Profile/${n.account.id}`}>
-                          {n.account.id}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>{n.summary}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell>No notes </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+
+          <Grid container item xs={12} sx={{ height: "375px" }}>
+            <DataGrid
+              getRowId={(row) => row._id}
+              rows={dataGridRows}
+              columns={dataGridColumns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </Container>

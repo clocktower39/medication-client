@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
+import { DataGrid } from "@mui/x-data-grid";
 import { AddCircle, } from '@mui/icons-material';
 import serverURL from '../../serverURL';
 
@@ -31,8 +32,8 @@ export default function Notes({ account, setAccount, accountType }) {
             dataType: 'json',
             body: JSON.stringify({
                 account: {
-                  id: account._id,
-                  type: accountType,
+                    id: account._id,
+                    type: accountType,
                 },
                 summary: newNote,
                 createdBy: {
@@ -46,11 +47,11 @@ export default function Notes({ account, setAccount, accountType }) {
             }
         });
         const data = await response.json();
-        if(data.error){
+        if (data.error) {
 
         }
         else {
-            setNotes(prevNotes => [...prevNotes, data.note]);
+            setNotes(prevNotes => [ data.note, ...prevNotes, ]);
             setNewNote('');
         }
     }
@@ -59,43 +60,59 @@ export default function Notes({ account, setAccount, accountType }) {
     useEffect(() => {
         // fetch the account notes
         const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
-        
-        const getAccountNotes = async () => fetch(`${serverURL}/notes/${account._id}`, { headers: { "Authorization": bearer }}).then(res => res.json()).then(data => setNotes(data));
-        getAccountNotes().then(res => setAccount(prev => ({ ...prev, notes: res }) ));
+
+        const getAccountNotes = async () => fetch(`${serverURL}/notes/${account._id}`, { headers: { "Authorization": bearer } }).then(res => res.json()).then(data => setNotes(data));
+        getAccountNotes().then(res => setAccount(prev => ({ ...prev, notes: res })));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-  return (
-    <Grid container item xs={12}>
-        <Paper sx={classes.Paper}>
-            <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
-            <Grid container >
-                <Grid container item xs={12} sx={{ alignContent: 'center', }}><TextField onChange={handleNoteChange} multiline fullWidth value={newNote} /></Grid>
-                <Grid container item xs={12} sx={{ alignContent: 'center', justifyContent: 'center', }}><IconButton onClick={submitNote}><AddCircle /></IconButton></Grid>
-            </Grid>
-            <TableContainer component={Paper}>
-                <Table size="small">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Date</TableCell>
-                            <TableCell>Created By</TableCell>
-                            <TableCell>Note Summary</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {notes.length > 0 ?
-                            notes.map(n => (
-                                <TableRow key={n._id}>
-                                    <TableCell>{n.timestamp}</TableCell>
-                                    <TableCell><Typography component={Link} to={`/agentProfile/${n.createdBy.id}`}>{n.createdBy.username}</Typography></TableCell>
-                                    <TableCell>{n.summary}</TableCell>
-                                </TableRow>
-                            )) :
-                            <TableRow><TableCell>No notes </TableCell></TableRow>}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Paper>
-    </Grid>
-  )
+    const dataGridRows = notes.map((note) => {
+        note.linkToCreatedByUser = `/agentProfile/${note.createdBy.id}`;
+        note.createdByUsername = note.createdBy.username;
+        return note;
+      });
+    const dataGridColumns = [
+        {
+            field: "_id",
+            headerName: "ID",
+            flex: 1,
+        },
+        {
+            field: "timestamp",
+            headerName: "Date",
+            flex: 1,
+        },
+        {
+            field: "createdByUsername",
+            headerName: "Created By",
+            flex: 1,
+            renderCell: (params) => (<Typography component={Link} to={params.row.linkToCreatedByUser}>{params.row.createdByUsername}</Typography>)
+        },
+        {
+            field: "summary",
+            headerName: "Note Summary",
+            flex: 1,
+        },
+    ]
+
+    return (
+        <Grid container item xs={12}>
+            <Paper sx={classes.Paper}>
+                <Typography variant="h5" align="center" gutterBottom >Notes</Typography>
+                <Grid container >
+                    <Grid container item xs={12} sx={{ alignContent: 'center', }}><TextField onChange={handleNoteChange} multiline fullWidth value={newNote} /></Grid>
+                    <Grid container item xs={12} sx={{ alignContent: 'center', justifyContent: 'center', }}><IconButton onClick={submitNote}><AddCircle /></IconButton></Grid>
+                </Grid>
+                <div style={{ height: "375px" }}>
+                    <DataGrid
+                        getRowId={(row) => row._id}
+                        rows={dataGridRows}
+                        columns={dataGridColumns}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                    />
+                </div>
+            </Paper>
+        </Grid>
+    )
 }

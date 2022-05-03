@@ -69,13 +69,13 @@ export default function PatientProfile(props) {
   const [bloodDrawDate, setBloodDrawDate] = useState(new Date().toISOString().slice(0, 10));
   const [anc, setAnc] = useState("");
 
-  const dataGridLabsRows = labs.map((lab) => {
+  const dataGridRows = labs.sort((a,b) => a.timestamp < b.timestamp).map((lab) => {
     lab.linkToCreatedByUser = `/agentProfile/${lab.createdBy.accountId}`;
     lab.createdByUsername = lab.createdBy.username;
     return lab;
   });
 
-  const dataGridLabsColumns = [
+  const dataGridColumns = [
     {
       field: "_id",
       headerName: "id",
@@ -538,11 +538,11 @@ export default function PatientProfile(props) {
                   </IconButton>
                 </Grid>
               </Grid>
-              <div style={{ height: "350px" }}>
+              <div style={{ height: "375px" }}>
                 <DataGrid
                   getRowId={(row) => row._id}
-                  rows={dataGridLabsRows}
-                  columns={dataGridLabsColumns}
+                  rows={dataGridRows}
+                  columns={dataGridColumns}
                   pageSize={5}
                   rowsPerPageOptions={[5]}
                 />
