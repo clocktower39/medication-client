@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Grid, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Dialog, Grid, IconButton, Modal, Paper, Typography } from '@mui/material';
 import { DataGrid } from "@mui/x-data-grid";
-import { AddCircle, ExpandMore, RemoveCircle } from '@mui/icons-material';
+import { AddCircle,  RemoveCircle } from '@mui/icons-material';
 import Search from '../Search/Search';
 import serverURL from '../../serverURL';
 
@@ -34,7 +34,9 @@ const classes = {
 
 export default function Relationships({ account, accountType, searchType }) {
     const [relatedAccounts, setRelatedAccounts] = useState([]);
-    const [toggleRelationshipModal, setToggleRelationshipModal] = useState(false);
+    const [toggleRelationshipSearchModal, setToggleRelationshipSearchModal] = useState(false);
+    const [toggleRelationshipHistoryDialog, setToggleRelationshipHistoryDialog] = useState(false);
+    const [currentRelationshipHistory, setCurrentRelationshipHistory] = useState([{}]);
 
     const createRelationship = (prescriberId) => {
         const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
@@ -54,67 +56,39 @@ export default function Relationships({ account, accountType, searchType }) {
         })
     }
     
-    // <RelationshipHistorySection key={`relationship-${searchType}-${i}`} relatedAccount={relatedAccount} searchType={searchType} />
-    const RelationshipHistorySection = ({ relatedAccount, searchType }) => {
-        const [expandHistory, setExpandHistory] = useState(false);
-        return searchType === 'patient' ? (
-            <>
-                <TableRow key={relatedAccount._id}>
-                    <TableCell><Link to={`/patientProfile/${relatedAccount._id}`}>{relatedAccount._id}</Link></TableCell>
-                    <TableCell>{relatedAccount.firstName}</TableCell>
-                    <TableCell>{relatedAccount.lastName}</TableCell>
-                    <TableCell>{relatedAccount.dateOfBirth.substr(0, 10)}</TableCell>
-                    <TableCell>{relatedAccount.zip}</TableCell>
-                    <TableCell><IconButton onClick={() => setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
-                </TableRow>
-                {expandHistory === true && (
-                    <>
+    const RelationshipHistory = ({ history }) => {
 
-                        <TableRow>
-                            <TableCell colSpan={1} sx={classes.TableHeader}></TableCell>
-                            <TableCell colSpan={2} sx={classes.TableHeader}>Date</TableCell>
-                            <TableCell colSpan={2} sx={classes.TableHeader}>Action</TableCell>
-                        </TableRow>
+        const dataGridColumns = [
+            {
+                field : "date",
+                headerName: "Date",
+                flex: 1,
+            },
+            {
+                field : "action",
+                headerName: "Action",
+                flex: 1,
+            },
+        ];
 
-                        {relatedAccount.completeHistory.map(historyItem => (
-                            <TableRow key={historyItem.date}>
-                                <TableCell colSpan={1} ></TableCell>
-                                <TableCell colSpan={2} >{historyItem.date}</TableCell>
-                                <TableCell colSpan={2} >{historyItem.action}</TableCell>
-                            </TableRow>
-                        ))}
-                    </>
-                )}
-            </>
-        ) : (
-            <>
-                <TableRow key={relatedAccount._id}>
-                    <TableCell><Link to={`/${searchType}Profile/${relatedAccount._id}`}>{relatedAccount._id}</Link></TableCell>
-                    <TableCell>{relatedAccount.firstName}</TableCell>
-                    <TableCell>{relatedAccount.lastName}</TableCell>
-                    <TableCell>{relatedAccount.npiNumber || ""}</TableCell>
-                    <TableCell>{relatedAccount.deaNumber || ""}</TableCell>
-                    <TableCell><IconButton onClick={() => setExpandHistory(prevState => !prevState)}><ExpandMore /></IconButton></TableCell>
-                </TableRow >
-                {expandHistory === true && (
-                    <>
-                        <TableRow>
-                            <TableCell colSpan={1} sx={classes.TableHeader}></TableCell>
-                            <TableCell colSpan={2} sx={classes.TableHeader}>Date</TableCell>
-                            <TableCell colSpan={2} sx={classes.TableHeader}>Action</TableCell>
-                        </TableRow>
-
-                        {relatedAccount.completeHistory.map(historyItem => (
-                            <TableRow key={historyItem.date}>
-                                <TableCell colSpan={1} ></TableCell>
-                                <TableCell colSpan={2} >{historyItem.date}</TableCell>
-                                <TableCell colSpan={2} >{historyItem.action}</TableCell>
-                            </TableRow>
-                        ))}
-                    </>
-                )
-                }
-            </>)
+        return (
+        <div style={{ height: "375px" }}>
+            <DataGrid
+                getRowId={(row) => row._id}
+                rows={history}
+                columns={dataGridColumns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                onCellDoubleClick={(params, event) => {
+                    if (!event.ctrlKey) {
+                      event.defaultMuiPrevented = true;
+                    }
+                    setToggleRelationshipHistoryDialog(true)
+                  }}
+            />
+        </div>
+        )
+        
     }
 
     const dataGridColumns = {
@@ -207,15 +181,15 @@ export default function Relationships({ account, accountType, searchType }) {
         <Grid container item xs={12}>
             <Paper sx={classes.Paper}>
                 <Typography variant="h5" align="center" gutterBottom >Relations/Affiliations</Typography>
-                <Typography variant="h6" align="center" >{searchType[0].toUpperCase() + searchType.slice(1)} <IconButton onClick={() => setToggleRelationshipModal(true)}><AddCircle /></IconButton></Typography>
+                <Typography variant="h6" align="center" >{searchType[0].toUpperCase() + searchType.slice(1)} <IconButton onClick={() => setToggleRelationshipSearchModal(true)}><AddCircle /></IconButton></Typography>
                 <Modal
-                    open={toggleRelationshipModal}
+                    open={toggleRelationshipSearchModal}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     <Box sx={classes.ModalPaper}>
                         <div>
-                            <IconButton onClick={() => setToggleRelationshipModal(false)}><RemoveCircle /></IconButton>
+                            <IconButton onClick={() => setToggleRelationshipSearchModal(false)}><RemoveCircle /></IconButton>
                         </div>
                         <Grid container spacing={1} >
                             {searchType === "patient" ? (
@@ -252,6 +226,9 @@ export default function Relationships({ account, accountType, searchType }) {
                         </Grid>
                     </Box>
                 </Modal>
+                <Dialog open={toggleRelationshipHistoryDialog} onClose={()=>setToggleRelationshipHistoryDialog(false)} maxWidth="md" fullWidth >
+                    <RelationshipHistory history={currentRelationshipHistory} />
+                </Dialog>
                 <div style={{ height: "375px" }}>
                     <DataGrid
                         getRowId={(row) => row._id}
@@ -259,6 +236,13 @@ export default function Relationships({ account, accountType, searchType }) {
                         columns={dataGridColumns['prescriber']}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
+                        onCellDoubleClick={(params, event) => {
+                            if (!event.ctrlKey) {
+                              event.defaultMuiPrevented = true;
+                            }
+                            setCurrentRelationshipHistory(params.row.completeHistory)
+                            setToggleRelationshipHistoryDialog(true)
+                          }}
                     />
                 </div>
             </Paper>
