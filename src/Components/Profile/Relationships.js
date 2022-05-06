@@ -97,6 +97,7 @@ export default function Relationships({ account, accountType, searchType }) {
                 field: "_id",
                 headerName: "ID",
                 flex: 1,
+                renderCell: (params) => (<Typography component={Link} to={`/patientProfile/${params.row._id}`}>{params.row._id}</Typography>),
             },
             {
                 field: "firstName",
@@ -119,18 +120,13 @@ export default function Relationships({ account, accountType, searchType }) {
                 headerName: "Zip Code",
                 flex: 1,
             },
-            {
-                field: "expand",
-                headerName: "Zip Code",
-                flex: 1,
-            },
         ],
         prescriber: [
             {
                 field: "_id",
                 headerName: "ID",
                 flex: 1,
-                renderCell: (params) => (<Typography component={Link} to={`/${accountType}Profile/${account._id}`}>{account._id}</Typography>),
+                renderCell: (params) => (<Typography component={Link} to={`/prescriberProfile/${params.row._id}`}>{params.row._id}</Typography>),
             },
             {
                 field: "firstName",
@@ -233,10 +229,10 @@ export default function Relationships({ account, accountType, searchType }) {
                     <DataGrid
                         getRowId={(row) => row._id}
                         rows={relatedAccounts}
-                        columns={dataGridColumns['prescriber']}
+                        columns={dataGridColumns[searchType]}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
-                        onCellDoubleClick={(params, event) => {
+                        onRowDoubleClick={(params, event) => {
                             if (!event.ctrlKey) {
                               event.defaultMuiPrevented = true;
                             }

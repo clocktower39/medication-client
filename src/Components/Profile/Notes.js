@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
+import { Dialog, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
 import { DataGrid } from "@mui/x-data-grid";
 import { AddCircle, } from '@mui/icons-material';
 import serverURL from '../../serverURL';
@@ -19,6 +19,8 @@ export default function Notes({ account, setAccount, accountType }) {
     const [newNote, setNewNote] = useState('');
     const [notes, setNotes] = useState([]);
     const agent = useSelector(state => state.agent);
+    const [currentNote, setCurrentNote] = useState({});
+    const [toggleCurrentNoteDialog, setToggleCurrentNoteDialog] = useState(false);
 
     const handleNoteChange = (e) => {
         setNewNote(e.target.value);
@@ -51,7 +53,7 @@ export default function Notes({ account, setAccount, accountType }) {
 
         }
         else {
-            setNotes(prevNotes => [ data.note, ...prevNotes, ]);
+            setNotes(prevNotes => [data.note, ...prevNotes,]);
             setNewNote('');
         }
     }
@@ -70,13 +72,9 @@ export default function Notes({ account, setAccount, accountType }) {
         note.linkToCreatedByUser = `/agentProfile/${note.createdBy.id}`;
         note.createdByUsername = note.createdBy.username;
         return note;
-      });
+    });
+
     const dataGridColumns = [
-        {
-            field: "_id",
-            headerName: "ID",
-            flex: 1,
-        },
         {
             field: "timestamp",
             headerName: "Date",
@@ -95,6 +93,16 @@ export default function Notes({ account, setAccount, accountType }) {
         },
     ]
 
+    const NoteDetails = ({ currentNote }) => {
+        return (
+            <Grid container>
+                <Grid container item xs={12} ><Typography component={Link} to={`/agentProfile/${currentNote.createdBy.id}`}>{currentNote.createdBy.username}</Typography></Grid>
+                <Grid container item xs={12} ><Typography >{currentNote.timestamp}</Typography></Grid>
+                <Grid container item xs={12} ><Typography >{currentNote.summary}</Typography></Grid>
+            </Grid>
+        );
+    }
+
     return (
         <Grid container item xs={12}>
             <Paper sx={classes.Paper}>
@@ -103,6 +111,9 @@ export default function Notes({ account, setAccount, accountType }) {
                     <Grid container item xs={12} sx={{ alignContent: 'center', }}><TextField onChange={handleNoteChange} multiline fullWidth value={newNote} /></Grid>
                     <Grid container item xs={12} sx={{ alignContent: 'center', justifyContent: 'center', }}><IconButton onClick={submitNote}><AddCircle /></IconButton></Grid>
                 </Grid>
+                <Dialog open={toggleCurrentNoteDialog} onClose={() => setToggleCurrentNoteDialog(false)} maxWidth="md" fullWidth >
+                    <NoteDetails currentNote={currentNote} />
+                </Dialog>
                 <div style={{ height: "375px" }}>
                     <DataGrid
                         getRowId={(row) => row._id}
@@ -110,6 +121,13 @@ export default function Notes({ account, setAccount, accountType }) {
                         columns={dataGridColumns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
+                        onRowDoubleClick={(params, event) => {
+                            if (!event.ctrlKey) {
+                                event.defaultMuiPrevented = true;
+                            }
+                            setCurrentNote(params.row)
+                            setToggleCurrentNoteDialog(true)
+                        }}
                     />
                 </div>
             </Paper>
