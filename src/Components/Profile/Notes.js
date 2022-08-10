@@ -69,7 +69,7 @@ export default function Notes({ account, setAccount, accountType }) {
     }, []);
 
     const dataGridRows = notes.sort((a, b) => a.timestamp < b.timestamp).map((note) => {
-        note.linkToCreatedByUser = `/agentProfile/${note.createdBy.id}`;
+        note.linkToCreatedByUser = `/agentProfile/${note.createdBy._id}`;
         note.createdByUsername = note.createdBy.username;
         return note;
     });

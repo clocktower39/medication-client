@@ -58,7 +58,7 @@ export default function AgentProfile() {
         field: "accountType",
         headerName: "Account Type",
         flex: 1,
-        renderCell: (params) => (<Typography component={Link} to={params.row.linkToAccount}>{params.row.account.type}</Typography>)
+        renderCell: (params) => (<Typography component={Link} to={params.row.linkToAccount}>{params.row.account.account.firstName}</Typography>)
       },
       {
         field: "summary",

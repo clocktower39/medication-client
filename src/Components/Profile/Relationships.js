@@ -38,15 +38,15 @@ export default function Relationships({ account, accountType, searchType }) {
     const [toggleRelationshipHistoryDialog, setToggleRelationshipHistoryDialog] = useState(false);
     const [currentRelationshipHistory, setCurrentRelationshipHistory] = useState([{}]);
 
-    const createRelationship = (prescriberId) => {
+    const createRelationship = (prescriber) => {
         const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
 
         fetch(`${serverURL}/manageRelationship`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({
-                patientId: account._id,
-                prescriberId,
+                patient: account._id,
+                prescriber,
                 action: 'activate',
             }),
             headers: {
@@ -158,14 +158,14 @@ export default function Relationships({ account, accountType, searchType }) {
             const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
             // fetch the patient relationships
             const relationshipsArray = await fetch(`${serverURL}/relationships/${accountType}/${account._id}`, { headers: { "Authorization": bearer } }).then(res => res.json());
-            const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item[`${searchType}Id`]))];
+            const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item[`${searchType}`]))];
 
             // add each PR from the relationship history
             uniqueRelationshipsArray.forEach((id) => {
                 fetch(`${serverURL}/${searchType}Profile/${id}`, { headers: { "Authorization": bearer } })
                     .then(res => res.json())
                     .then(data => {
-                        setRelatedAccounts(prevList => [...prevList, { ...data[0], completeHistory: relationshipsArray.filter(item => item[`${searchType}Id`] === id) }]);
+                        setRelatedAccounts(prevList => [...prevList, { ...data[0], completeHistory: relationshipsArray.filter(item => item[`${searchType}`] === id) }]);
                     })
             })
         }
