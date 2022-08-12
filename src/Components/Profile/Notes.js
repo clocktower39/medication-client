@@ -29,6 +29,7 @@ export default function Notes({ account, setAccount, accountType }) {
     const submitNote = async () => {
         const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
 
+        //  needs adjustment
         const response = await fetch(`${serverURL}/submitNote`, {
             method: 'post',
             dataType: 'json',

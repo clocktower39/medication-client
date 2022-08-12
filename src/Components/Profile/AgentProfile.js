@@ -131,8 +131,8 @@ export default function AgentProfile() {
                     <TableRow key={service._id}>
                       <TableCell>{service.timestamp}</TableCell>
                       <TableCell>
-                        <Typography component={Link} to={`/${service.account.type}Profile/${service.account.id}`}>
-                          {service.account.id}
+                        <Typography component={Link} to={`/${service.account.type.toLowerCase()}Profile/${service.account.account._id}`}>
+                        {service.account.type}<br />{service.account.account.firstName} {service.account.account.lastName}
                         </Typography>
                       </TableCell>
                       <TableCell>{service.type}</TableCell>

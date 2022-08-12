@@ -152,6 +152,7 @@ export default function Relationships({ account, accountType, searchType }) {
     }
 
     useEffect(() => {
+        //  needs adjustment, doesnt need to loop anymore, populate does it on the server
         setRelatedAccounts([]);
         const getRelationships = async () => {
 
