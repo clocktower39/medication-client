@@ -152,7 +152,6 @@ export default function Relationships({ account, accountType, searchType }) {
     }
 
     useEffect(() => {
-        //  needs adjustment, doesnt need to loop anymore, populate does it on the server
         setRelatedAccounts([]);
         const getRelationships = async () => {
 
@@ -160,15 +159,7 @@ export default function Relationships({ account, accountType, searchType }) {
             // fetch the patient relationships
             const relationshipsArray = await fetch(`${serverURL}/relationships/${accountType}/${account._id}`, { headers: { "Authorization": bearer } }).then(res => res.json());
             const uniqueRelationshipsArray = [...new Set(relationshipsArray.map(item => item[`${searchType}`]))];
-
-            // add each PR from the relationship history
-            uniqueRelationshipsArray.forEach((id) => {
-                fetch(`${serverURL}/${searchType}Profile/${id}`, { headers: { "Authorization": bearer } })
-                    .then(res => res.json())
-                    .then(data => {
-                        setRelatedAccounts(prevList => [...prevList, { ...data[0], completeHistory: relationshipsArray.filter(item => item[`${searchType}`] === id) }]);
-                    })
-            })
+            setRelatedAccounts(uniqueRelationshipsArray);
         }
         getRelationships();
         // eslint-disable-next-line react-hooks/exhaustive-deps

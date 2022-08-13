@@ -29,20 +29,16 @@ export default function Notes({ account, setAccount, accountType }) {
     const submitNote = async () => {
         const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
 
-        //  needs adjustment
         const response = await fetch(`${serverURL}/submitNote`, {
             method: 'post',
             dataType: 'json',
             body: JSON.stringify({
                 account: {
-                    id: account._id,
+                    account: account._id,
                     type: accountType,
                 },
                 summary: newNote,
-                createdBy: {
-                    username: agent.username,
-                    id: agent._id,
-                },
+                createdBy: agent._id,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",

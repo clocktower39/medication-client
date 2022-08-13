@@ -169,7 +169,6 @@ export default function PatientProfile(props) {
   const addLab = () => {
     const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
 
-    // needs adjustment
     fetch(`${serverURL}/submitLab`, {
       method: "post",
       dataType: "json",
@@ -177,7 +176,7 @@ export default function PatientProfile(props) {
         anc,
         bloodDrawDate,
         accountId: patient._id,
-        createdBy: { username: agent.username, accountId: agent._id },
+        createdBy: agent._id,
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
