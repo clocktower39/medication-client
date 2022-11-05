@@ -107,7 +107,7 @@ export default function AgentProfile() {
             <Typography variant="h5">Schedule</Typography>
           </Grid>
           <Grid container item xs={12} spacing={1} sx={{ justifyContent: "center", alignItems: "center" }}>
-            {schedule && schedule.week.map(day => <Schedule key={day.day} breakdown={day.breakdown} projects={day.projects} day={day.day} />)}
+            {schedule?.week?.map(day => <Schedule key={day.day} breakdown={day.breakdown} projects={day.projects} day={day.day} />)}
           </Grid>
         </Grid>
 

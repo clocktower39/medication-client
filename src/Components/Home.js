@@ -18,7 +18,7 @@ export default function Home() {
             }} >Welcome {agent.username}!</Typography>
             <Grid container spacing={1} sx={{ justifyContent: "center", alignItems: "center" }}>
                 <Grid container item xs={12} spacing={1} sx={{ justifyContent: "center", }}>
-                    {schedule && schedule.week.map(day => <Schedule key={day.day} breakdown={day.breakdown} projects={day.projects} day={day.day} />)}
+                    {schedule?.week?.map(day => <Schedule key={day.day} breakdown={day.breakdown} projects={day.projects} day={day.day} />)}
                 </Grid>
             </Grid>
         </div>
