@@ -1,4 +1,5 @@
-import { Container, ThemeProvider } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';import { Container, ThemeProvider } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import Navbar from "./Components/Navbar";
@@ -12,19 +13,26 @@ import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import NotFoundPage from "./Components/NotFoundPage";
 import AuthRoute from "./Components/AuthRoute";
-import theme from "./theme";
+import { theme } from "./theme";
 import "./App.css";
 
 const classes = {
   root: {
-    height: "100%",
-    backgroundColor: "#2C2F33",
+    minHeight: "100%",
+    backgroundColor: 'background.ATCPaperBackground',
   },
 };
 
 function App() {
+  const themeMode = useSelector(state => state.agent.themeMode);
+  const [themeSelection, setThemeSelection] = useState(theme());
+  
+  useEffect(()=>{
+    setThemeSelection(theme());
+  },[themeMode])
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeSelection}>
       <Container sx={classes.root} maxWidth="lg">
         <Router basename="/medication-tracking-system/">
           <Navbar />

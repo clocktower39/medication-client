@@ -19,6 +19,7 @@ export default function PrescriberDemographics(props) {
             error={values.firstName.error.length > 0}
             helperText={values.firstName.error}
             onChange={(e) => values.firstName.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -33,6 +34,7 @@ export default function PrescriberDemographics(props) {
             error={values.lastName.error.length > 0}
             helperText={values.lastName.error}
             onChange={(e) => values.lastName.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -46,6 +48,7 @@ export default function PrescriberDemographics(props) {
             error={values.phoneNumber.error.length > 0}
             helperText={values.phoneNumber.error}
             onChange={(e) => values.phoneNumber.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -59,6 +62,7 @@ export default function PrescriberDemographics(props) {
             error={values.faxNumber.error.length > 0}
             helperText={values.faxNumber.error}
             onChange={(e) => values.faxNumber.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -72,6 +76,7 @@ export default function PrescriberDemographics(props) {
             error={values.npiNumber.error.length > 0}
             helperText={values.npiNumber.error}
             onChange={(e) => values.npiNumber.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -85,6 +90,7 @@ export default function PrescriberDemographics(props) {
             error={values.deaNumber.error.length > 0}
             helperText={values.deaNumber.error}
             onChange={(e) => values.deaNumber.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -98,6 +104,7 @@ export default function PrescriberDemographics(props) {
             error={values.email.error.length > 0}
             helperText={values.email.error}
             onChange={(e) => values.email.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12}>
@@ -111,6 +118,7 @@ export default function PrescriberDemographics(props) {
             error={values.practiceName.error.length > 0}
             helperText={values.practiceName.error}
             onChange={(e) => values.practiceName.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12}>
@@ -125,6 +133,7 @@ export default function PrescriberDemographics(props) {
             error={values.address1.error.length > 0}
             helperText={values.address1.error}
             onChange={(e) => values.address1.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12}>
@@ -138,6 +147,7 @@ export default function PrescriberDemographics(props) {
             error={values.address2.error.length > 0}
             helperText={values.address2.error}
             onChange={(e) => values.address2.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -151,6 +161,7 @@ export default function PrescriberDemographics(props) {
             error={values.city.error.length > 0}
             helperText={values.city.error}
             onChange={(e) => values.city.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -164,6 +175,7 @@ export default function PrescriberDemographics(props) {
             error={values.state.error.length > 0}
             helperText={values.state.error}
             onChange={(e) => values.state.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -178,6 +190,7 @@ export default function PrescriberDemographics(props) {
             error={values.zip.error.length > 0}
             helperText={values.zip.error}
             onChange={(e) => values.zip.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -192,6 +205,7 @@ export default function PrescriberDemographics(props) {
             error={values.country.error.length > 0}
             helperText={values.country.error}
             onChange={(e) => values.country.setValue(e.target.value)}
+            size="small"
           />
         </Grid>
       </Grid>

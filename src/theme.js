@@ -1,32 +1,49 @@
-import { createTheme } from '@mui/material';
+import { createTheme } from "@mui/material";
+import { store } from './Redux/store';
 
-let theme = createTheme();
-
-theme = createTheme(theme => ({
-    typography: {
-        h1: {
-            fontFamily: "Roboto"
-        },
-        h2: {
-            fontFamily: "Roboto"
-        },
-        h3: {
-            fontFamily: "Roboto"
-        },
-        h4: {
-            fontFamily: "Roboto"
-        },
-        h5: {
-            fontFamily: "Roboto"
-        },
-        h6: {
-            fontFamily: "Roboto"
-        }
+const darkTheme = {
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#2e7d32",
     },
-    overrides: {
-        MuiInputBase: {
-        }
+    secondary: {
+      main: "#ff9800",
+    },
+    secondaryButton: {
+      main: "#ff9800",
+      contrastText: "#fff",
+    },
+    background: {
+      ATCPaperBackground: '#121212',
+      DashboardCard: '#282828',
+      ChartToopTip: '#000',
     }
-}))
+  },
+  props: {
+    MuiTextField: {
+      variant: "outlined",
+    },
+  },
+}
+const lightTheme = {
+  palette: {
+    mode: "light",
+    secondaryButton: {
+      main: "#ff9800",
+      contrastText: "#fff",
+    },
+    background: {
+      ATCPaperBackground: '#FFF',
+      DashboardCard: '#444',
+      ChartToopTip: '#fff',
+    }
+  },
+  props: {
+    MuiTextField: {
+      variant: "outlined",
+    },
+  },
+}
 
-export default theme
+export const theme = () => createTheme(store.getState().agent.themeMode === 'light' ? lightTheme : darkTheme);

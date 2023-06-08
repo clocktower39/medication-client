@@ -21,7 +21,7 @@ const classes = {
         position: 'absolute',
         padding: '7.5px',
         width: '65%',
-        backgroundColor: '#fcfcfc',
+        backgroundColor: 'background.ATCPaperBackground',
         top: '5%',
         left: '17.5%',
         overflowY: 'scroll',
