@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Paper, Grid, FormControlLabel, FormControl, FormLabel, RadioGroup, Radio } from '@mui/material';
-import Search from './Search/Search';
+import Search from '../Components/Search/Search';
 import serverURL from '../serverURL';
 
 

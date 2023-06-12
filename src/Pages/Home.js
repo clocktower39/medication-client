@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Grid, Paper, Typography } from "@mui/material/";
-import Schedule from "./Schedule";
+import Schedule from "../Components/Schedule";
 
 export default function Home() {
   const agent = useSelector((state) => state.agent);

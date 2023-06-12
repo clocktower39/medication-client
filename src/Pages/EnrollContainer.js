@@ -4,8 +4,8 @@ import SwipeableViews from 'react-swipeable-views';
 import { AppBar, Box, Tab, Tabs, } from '@mui/material';
 import { useTheme } from '@mui/styles';
 
-import PrescriberEnrollmentForm from './Forms/PrescriberForms/PrescriberEnrollmentForm';
-import PatientEnrollmentForm from './Forms/PatientForms/PatientEnrollmentForm';
+import PrescriberEnrollmentForm from '../Components/Forms/PrescriberForms/PrescriberEnrollmentForm';
+import PatientEnrollmentForm from '../Components/Forms/PatientForms/PatientEnrollmentForm';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
