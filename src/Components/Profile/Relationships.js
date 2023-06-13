@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Box, Dialog, Grid, IconButton, Modal, Paper, Typography } from '@mui/material';
 import { DataGrid } from "@mui/x-data-grid";
 import { AddCircle,  RemoveCircle } from '@mui/icons-material';
+import dayjs from 'dayjs';
 import Search from '../Search/Search';
 import serverURL from '../../serverURL';
 
@@ -113,7 +114,7 @@ export default function Relationships({ account, accountType, searchType }) {
                 field: "dateOfBirth",
                 headerName: "Date of Birth",
                 flex: 1,
-                renderCell: (params) => (params.row.dateOfBirth.substr(0, 10)),
+                renderCell: (params) => (dayjs(params.row.dateOfBirth).format("YYYY-MM-DD") || 'N/A'),
             },
             {
                 field: "zip",

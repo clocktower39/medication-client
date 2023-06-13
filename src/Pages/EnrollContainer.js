@@ -40,14 +40,6 @@ function a11yProps(index) {
   };
 }
 
-const classes = {
-  root: (theme) => ({
-    backgroundColor: theme.palette.background.paper,
-    width: '100%',
-    minHeight: 'calc(100% - 84px)',
-  }),
-};
-
 export default function EnrollContainer() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -61,7 +53,7 @@ export default function EnrollContainer() {
   };
 
   return (
-    <Box sx={(t)=>classes.root(t)}>
+    <>
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -86,6 +78,6 @@ export default function EnrollContainer() {
           <PatientEnrollmentForm />
         </TabPanel>
       </SwipeableViews>
-    </Box>
+    </>
   );
 }

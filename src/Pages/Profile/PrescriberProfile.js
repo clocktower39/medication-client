@@ -203,10 +203,10 @@ export default function PrescriberProfile(props) {
                                     </TableHead>
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
-                                            <TableCell>STUFF</TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell></TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>

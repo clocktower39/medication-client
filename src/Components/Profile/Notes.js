@@ -28,6 +28,7 @@ export default function Notes({ account, setAccount, accountType }) {
 
     const submitNote = async () => {
         const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+        const capitalizeFirstLetter = (word) => word.charAt(0).toUpperCase() + word.slice(1);
 
         const response = await fetch(`${serverURL}/submitNote`, {
             method: 'post',
@@ -35,7 +36,7 @@ export default function Notes({ account, setAccount, accountType }) {
             body: JSON.stringify({
                 account: {
                     account: account._id,
-                    type: accountType,
+                    type: capitalizeFirstLetter(accountType),
                 },
                 summary: newNote,
                 createdBy: agent._id,

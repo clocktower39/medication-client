@@ -38,7 +38,8 @@ export default function AgentProfile() {
 
   const dataGridRows = {
     notes: agentProfile.notes.sort((a, b) => a.timestamp < b.timestamp).map((note) => {
-      note.linkToAccount = `/${note.account.type}Profile/${note.account.id}`;
+      const capitalizeFirstLetter = (word) => word.charAt(0).toUpperCase() + word.slice(1);
+      note.linkToAccount = `/${capitalizeFirstLetter(note.account.type)}Profile/${note.account.account._id}`;
       return note;
     }),
   }

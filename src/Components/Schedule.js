@@ -7,7 +7,7 @@ export default function Schedule(props) {
     const [expanded, setExpanded] = useState(false);
 
     return (
-        <Grid container item xs={12} sm={6} md={4} sx={expanded?{ alignSelf: 'stretch', }:{ alignSelf: 'flex-start', }} >
+        <Grid container item columns={20} xs={20} sm={10} lg={4} sx={expanded?{ alignSelf: 'stretch', }:{ alignSelf: 'flex-start', }} >
             <Accordion sx={{ color: '#fff', backgroundColor: '#424242', }} expanded={expanded} onChange={(e)=>setExpanded(prev=>!prev)} >
                 <AccordionSummary
                     expandIcon={<ExpandMore />}
@@ -21,10 +21,10 @@ export default function Schedule(props) {
                     <Grid container item xs={12}>
                         {breakdown.map(scheduleSection => (
                             <Grid container item xs={12} key={scheduleSection.start} >
-                                <Grid container item xs={6} sx={{ justifyContent: 'center', }}>
+                                <Grid container item xs={8} sx={{ justifyContent: 'center', }}>
                                     <Typography variant="body1" >{`${scheduleSection.start} - ${scheduleSection.end}: `}</Typography>
                                 </Grid>
-                                <Grid container item xs={6} sx={{ justifyContent: 'center', }}>
+                                <Grid container item xs={4} sx={{ justifyContent: 'center', }}>
                                     <Typography variant="body1" >{`${scheduleSection.task}`}</Typography>
                                 </Grid>
                             </Grid>
